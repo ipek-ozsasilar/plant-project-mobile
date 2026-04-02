@@ -1,0 +1,71 @@
+name: bitirme_mobile
+description: "Bitirme tezi: bitki türü ve hastalık tanıma mobil uygulaması."
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # ikon seti
+  cupertino_icons: ^1.0.8
+  # durum yönetimi
+  flutter_riverpod: ^2.6.1
+  # yönlendirme
+  go_router: ^14.6.2
+  # bağımlılık enjeksiyonu
+  get_it: ^8.0.2
+  # loglama
+  logger: ^2.5.0
+  # responsive
+  responsive_framework: ^1.5.1
+  # ortam değişkenleri
+  envied: ^1.1.1
+  # HTTP istekleri
+  http: ^1.2.2
+  # json serileştirme
+  json_annotation: ^4.9.0
+  # kalıcı depolama
+  shared_preferences: ^2.3.3
+  # görsel seçimi
+  image_picker: ^1.1.2
+  # görüntü işleme
+  image: ^4.3.0
+  # uuid
+  uuid: ^4.5.1
+  # tarih formatı
+  intl: ^0.19.0
+  # eşitlik
+  equatable: ^2.0.7
+  # dosya yolu
+  path: ^1.9.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  # lint kuralları
+  flutter_lints: ^5.0.0
+  # kod üretimi
+  build_runner: ^2.4.13
+  # env üretimi
+  envied_generator: ^1.1.1
+  # json üretimi
+  json_serializable: ^6.8.0
+  # asset üretimi
+  flutter_gen_runner: ^5.7.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/colors/
+
+flutter_gen:
+  output: lib/gen/
+  line_length: 100
+  colors:
+    inputs:
+      - assets/colors/colors.xml

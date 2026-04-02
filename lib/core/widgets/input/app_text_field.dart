@@ -1,0 +1,38 @@
+import 'package:bitirme_mobile/core/enums/size_enum.dart';
+import 'package:flutter/material.dart';
+
+/// Ortak metin alanı.
+class AppTextField extends StatelessWidget {
+  const AppTextField({
+    required this.label,
+    required this.controller,
+    this.keyboardType = TextInputType.text,
+    this.obscureText = false,
+    this.validator,
+    super.key,
+  });
+
+  final String label;
+  final TextEditingController controller;
+  final TextInputType keyboardType;
+  final bool obscureText;
+  final String? Function(String?)? validator;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: controller,
+      keyboardType: keyboardType,
+      obscureText: obscureText,
+      validator: validator,
+      style: TextStyle(fontSize: TextSizesEnum.body.value),
+      decoration: InputDecoration(
+        labelText: label,
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: WidgetSizesEnum.cardRadius.value,
+          vertical: WidgetSizesEnum.cardRadius.value * 0.75,
+        ),
+      ),
+    );
+  }
+}
