@@ -28,6 +28,7 @@ class BitirmeApp extends ConsumerWidget {
 
     return MaterialApp.router(
       title: StringsEnum.appName.value,
+      debugShowCheckedModeBanner: false,
       theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),
       themeMode: themeMode,

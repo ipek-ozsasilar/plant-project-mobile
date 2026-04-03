@@ -13,11 +13,23 @@ mixin ScaffoldMessageMixin {
     messenger.clearSnackBars();
     messenger.showSnackBar(
       SnackBar(
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.symmetric(
+          horizontal: WidgetSizesEnum.bottomNavHorizontalPadding.value,
+          vertical: WidgetSizesEnum.bottomNavBottomPadding.value,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(WidgetSizesEnum.chipRadius.value),
+        ),
         content: Text(
           message,
-          style: TextStyle(fontSize: TextSizesEnum.body.value),
+          style: TextStyle(
+            fontSize: TextSizesEnum.body.value,
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
         ),
-        backgroundColor: isError ? ColorName.error : ColorName.primary,
+        backgroundColor: isError ? ColorName.error : ColorName.primaryDark,
       ),
     );
   }

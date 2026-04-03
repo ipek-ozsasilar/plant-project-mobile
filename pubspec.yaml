@@ -27,6 +27,12 @@ dependencies:
   envied: ^1.1.1
   # HTTP istekleri
   http: ^1.2.2
+  # Firebase çekirdek
+  firebase_core: ^3.8.1
+  # Firebase kimlik
+  firebase_auth: ^5.3.4
+  # Google hesap girişi
+  google_sign_in: ^6.2.2
   # json serileştirme
   json_annotation: ^4.9.0
   # kalıcı depolama
@@ -39,6 +45,8 @@ dependencies:
   uuid: ^4.5.1
   # tarih formatı
   intl: ^0.19.0
+  # modern yazı tipleri
+  google_fonts: ^6.2.1
   # eşitlik
   equatable: ^2.0.7
   # dosya yolu

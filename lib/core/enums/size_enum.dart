@@ -43,13 +43,18 @@ enum IconSizesEnum {
 enum WidgetSizesEnum {
   buttonHeight(52),
   inputHeight(52),
-  cardRadius(16),
+  cardRadius(24),
   chipRadius(20),
+  inputFieldRadius(22),
   divider(1),
-  bottomNavHeight(64),
+  bottomNavHeight(72),
+  bottomNavHorizontalPadding(16),
+  bottomNavBottomPadding(12),
   fabSize(56),
   maxContentWidth(520),
-  regionMinSide(0.12);
+  regionMinSide(0.12),
+  fabBlurRadius(18),
+  fabYOffset(6);
 
   const WidgetSizesEnum(this.value);
   final double value;

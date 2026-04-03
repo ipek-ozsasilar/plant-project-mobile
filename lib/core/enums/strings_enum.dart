@@ -36,6 +36,8 @@ enum StringsEnum {
   goRegister('Hesabınız yok mu? Kayıt olun'),
   goLogin('Zaten hesabınız var mı? Giriş yapın'),
   logout('Çıkış yap'),
+  authOrDivider('veya'),
+  loginWithGoogle('Google ile devam et'),
 
   // Home
   homeTitle('Ana sayfa'),

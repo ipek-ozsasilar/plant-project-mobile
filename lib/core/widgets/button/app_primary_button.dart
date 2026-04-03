@@ -2,7 +2,7 @@ import 'package:bitirme_mobile/core/enums/size_enum.dart';
 import 'package:bitirme_mobile/gen/colors.gen.dart';
 import 'package:flutter/material.dart';
 
-/// Birincil dolgu butonu.
+/// Birincil dolgu butonu — hap şekil, hafif gölge.
 class AppPrimaryButton extends StatelessWidget {
   const AppPrimaryButton({
     required this.label,
@@ -17,25 +17,48 @@ class AppPrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return SizedBox(
       width: double.infinity,
       height: WidgetSizesEnum.buttonHeight.value,
-      child: FilledButton(
-        onPressed: isLoading ? null : onPressed,
-        style: FilledButton.styleFrom(
-          backgroundColor: ColorName.primary,
-          foregroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(WidgetSizesEnum.cardRadius.value),
-          ),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(WidgetSizesEnum.buttonHeight.value / 2),
+          boxShadow: onPressed == null || isLoading
+              ? null
+              : <BoxShadow>[
+                  BoxShadow(
+                    color: ColorName.primary.withValues(alpha: 0.35),
+                    blurRadius: WidgetSizesEnum.fabBlurRadius.value,
+                    offset: Offset(0, WidgetSizesEnum.fabYOffset.value),
+                  ),
+                ],
         ),
-        child: isLoading
-            ? const SizedBox(
-                height: 22,
-                width: 22,
-                child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
-              )
-            : Text(label, style: TextStyle(fontSize: TextSizesEnum.subtitle.value)),
+        child: FilledButton(
+          onPressed: isLoading ? null : onPressed,
+          style: FilledButton.styleFrom(
+            backgroundColor: ColorName.primary,
+            foregroundColor: Colors.white,
+            disabledBackgroundColor: ColorName.primary.withValues(alpha: 0.45),
+            elevation: 0,
+            shadowColor: Colors.transparent,
+            shape: const StadiumBorder(),
+            textStyle: theme.textTheme.titleSmall?.copyWith(
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.2,
+            ),
+          ),
+          child: isLoading
+              ? SizedBox(
+                  height: 22,
+                  width: 22,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: Colors.white.withValues(alpha: 0.95),
+                  ),
+                )
+              : Text(label),
+        ),
       ),
     );
   }

@@ -46,36 +46,61 @@ class _SplashViewState extends ConsumerState<SplashView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorName.surface,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(
-              Icons.eco,
-              size: ImageSizesEnum.hero.value,
-              color: ColorName.primary,
-            ),
-            SizedBox(height: WidgetSizesEnum.cardRadius.value),
-            Text(
-              StringsEnum.appName.value,
-              style: TextStyle(
-                fontSize: TextSizesEnum.headline.value,
-                fontWeight: FontWeight.bold,
-                color: ColorName.onSurface,
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: <Color>[
+              ColorName.surface,
+              ColorName.primaryLight.withValues(alpha: 0.65),
+              ColorName.surface,
+            ],
+            stops: const <double>[0.0, 0.42, 1.0],
+          ),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Icon(
+                Icons.eco_rounded,
+                size: ImageSizesEnum.hero.value,
+                color: ColorName.primary,
+                shadows: <Shadow>[
+                  Shadow(
+                    color: ColorName.primary.withValues(alpha: 0.25),
+                    blurRadius: WidgetSizesEnum.fabBlurRadius.value,
+                  ),
+                ],
               ),
-            ),
-            SizedBox(height: WidgetSizesEnum.divider.value * 4),
-            Text(
-              StringsEnum.splashLoading.value,
-              style: TextStyle(
-                fontSize: TextSizesEnum.body.value,
-                color: ColorName.onSurfaceMuted,
+              SizedBox(height: WidgetSizesEnum.cardRadius.value),
+              Text(
+                StringsEnum.appName.value,
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      fontWeight: FontWeight.w800,
+                      color: ColorName.onSurface,
+                      letterSpacing: -0.5,
+                    ),
               ),
-            ),
-            SizedBox(height: WidgetSizesEnum.cardRadius.value),
-            const CircularProgressIndicator(),
-          ],
+              SizedBox(height: WidgetSizesEnum.divider.value * 4),
+              Text(
+                StringsEnum.splashLoading.value,
+                style: TextStyle(
+                  fontSize: TextSizesEnum.body.value,
+                  color: ColorName.onSurfaceMuted,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              SizedBox(height: WidgetSizesEnum.cardRadius.value),
+              CircularProgressIndicator(
+                color: ColorName.primary,
+                strokeWidth: 3,
+              ),
+            ],
+          ),
         ),
       ),
     );

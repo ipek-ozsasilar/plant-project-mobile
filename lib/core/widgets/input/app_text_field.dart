@@ -1,7 +1,7 @@
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
 import 'package:flutter/material.dart';
 
-/// Ortak metin alanı.
+/// Ortak metin alanı — tema ile yuvarlatılmış çerçeve.
 class AppTextField extends StatelessWidget {
   const AppTextField({
     required this.label,
@@ -25,12 +25,15 @@ class AppTextField extends StatelessWidget {
       keyboardType: keyboardType,
       obscureText: obscureText,
       validator: validator,
-      style: TextStyle(fontSize: TextSizesEnum.body.value),
+      style: TextStyle(
+        fontSize: TextSizesEnum.body.value,
+        fontWeight: FontWeight.w500,
+      ),
       decoration: InputDecoration(
         labelText: label,
         contentPadding: EdgeInsets.symmetric(
-          horizontal: WidgetSizesEnum.cardRadius.value,
-          vertical: WidgetSizesEnum.cardRadius.value * 0.75,
+          horizontal: WidgetSizesEnum.cardRadius.value * 1.1,
+          vertical: WidgetSizesEnum.divider.value * 10,
         ),
       ),
     );

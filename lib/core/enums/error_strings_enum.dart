@@ -7,6 +7,7 @@ enum ErrorStringsEnum {
   crop('Seçilen bölge kırpılamadı.'),
   inference('Tahmin servisi yanıt vermedi.'),
   auth('Oturum bilgisi doğrulanamadı.'),
+  googleSignIn('Google ile giriş tamamlanamadı. İnternet ve yapılandırmayı kontrol edin.'),
   storage('Yerel kayıt okunamadı veya yazılamadı.');
 
   const ErrorStringsEnum(this.value);
