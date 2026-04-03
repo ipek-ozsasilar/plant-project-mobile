@@ -44,6 +44,10 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+# Firebase yapılandırması (API anahtarı içerir — asla repoya eklenmemeli)
+**/android/app/google-services.json
+**/ios/Runner/GoogleService-Info.plist
+
 # Ortam değişkenleri ve gizli anahtarlar (asla repoya eklenmemeli)
 .env
 .env.local

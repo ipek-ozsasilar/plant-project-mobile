@@ -1,0 +1,9 @@
+{
+  "_comment": "Firebase Console'dan indirilen google-services.json dosyasını bu klasöre google-services.json adıyla kopyalayın. Bu örnek dosyayı commit edin; gerçek dosyayı asla commit etmeyin.",
+  "project_info": {
+    "project_number": "YOUR_NUMBER",
+    "project_id": "your-project-id",
+    "storage_bucket": "your-project.appspot.com"
+  },
+  "client": []
+}
