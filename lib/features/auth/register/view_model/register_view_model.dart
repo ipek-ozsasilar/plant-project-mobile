@@ -1,8 +1,5 @@
-import 'package:bitirme_mobile/core/navigation/app_paths.dart';
 import 'package:bitirme_mobile/features/auth/provider/auth_provider.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 /// Kayıt ekranı iş kuralları.
 class RegisterViewModel {
@@ -10,8 +7,8 @@ class RegisterViewModel {
 
   final WidgetRef ref;
 
-  Future<void> submit({
-    required BuildContext context,
+  /// Başarıda `null`, hata mesajı string olarak döner.
+  Future<String?> submit({
     required String name,
     required String email,
     required String password,
@@ -19,11 +16,12 @@ class RegisterViewModel {
     final String trimmedName = name.trim();
     final String trimmedEmail = email.trim();
     if (trimmedName.isEmpty || trimmedEmail.isEmpty || password.isEmpty) {
-      return;
+      return null;
     }
-    await ref.read(authProvider.notifier).saveSession(email: trimmedEmail, name: trimmedName);
-    if (context.mounted) {
-      context.go(AppPaths.home);
-    }
+    return ref.read(authProvider.notifier).registerWithEmailPassword(
+          name: trimmedName,
+          email: trimmedEmail,
+          password: password,
+        );
   }
 }

@@ -49,12 +49,12 @@ abstract final class AppTheme {
       ),
       cardTheme: CardThemeData(
         color: ColorName.surfaceCard,
-        elevation: 0,
-        shadowColor: ColorName.primary.withValues(alpha: 0.12),
-        surfaceTintColor: ColorName.primary.withValues(alpha: 0.06),
+        elevation: WidgetSizesEnum.divider.value * 2,
+        shadowColor: ColorName.primary.withValues(alpha: 0.14),
+        surfaceTintColor: ColorName.primary.withValues(alpha: 0.05),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(WidgetSizesEnum.cardRadius.value),
-          side: BorderSide(color: ColorName.outline.withValues(alpha: 0.65)),
+          side: BorderSide(color: ColorName.outline.withValues(alpha: 0.55)),
         ),
       ),
       filledButtonTheme: FilledButtonThemeData(

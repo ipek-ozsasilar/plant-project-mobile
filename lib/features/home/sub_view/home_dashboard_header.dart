@@ -1,0 +1,109 @@
+import 'package:bitirme_mobile/core/enums/size_enum.dart';
+import 'package:bitirme_mobile/core/enums/strings_enum.dart';
+import 'package:bitirme_mobile/gen/colors.gen.dart';
+import 'package:flutter/material.dart';
+
+/// Ana sayfa üst karşılama alanı (degrade + selamlama).
+class HomeDashboardHeader extends StatelessWidget {
+  const HomeDashboardHeader({
+    required this.displayName,
+    super.key,
+  });
+
+  final String displayName;
+
+  @override
+  Widget build(BuildContext context) {
+    final TextTheme tt = Theme.of(context).textTheme;
+    final String trimmed = displayName.trim();
+    final String initial =
+        trimmed.isEmpty ? '?' : trimmed.characters.first.toUpperCase();
+
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.fromLTRB(
+        WidgetSizesEnum.cardRadius.value * 1.25,
+        WidgetSizesEnum.cardRadius.value * 0.75,
+        WidgetSizesEnum.cardRadius.value * 1.25,
+        WidgetSizesEnum.homeHeaderExtend.value * 1.35,
+      ),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: <Color>[
+            ColorName.primary,
+            ColorName.accent,
+            ColorName.gradientEnd.withValues(alpha: 0.95),
+          ],
+        ),
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(WidgetSizesEnum.homeHeaderExtend.value * 1.1),
+        ),
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+            color: ColorName.primary.withValues(alpha: 0.22),
+            blurRadius: WidgetSizesEnum.cardShadowBlur.value,
+            offset: Offset(0, WidgetSizesEnum.cardShadowOffsetY.value * 0.5),
+          ),
+        ],
+      ),
+      child: SafeArea(
+        bottom: false,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    StringsEnum.homeGreeting.value,
+                    style: tt.titleMedium?.copyWith(
+                      color: Colors.white.withValues(alpha: 0.88),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(height: WidgetSizesEnum.divider.value * 4),
+                  Text(
+                    displayName,
+                    style: tt.headlineSmall?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: -0.4,
+                    ),
+                  ),
+                  SizedBox(height: WidgetSizesEnum.divider.value * 5),
+                  Text(
+                    StringsEnum.appTagline.value,
+                    style: tt.bodyMedium?.copyWith(
+                      color: Colors.white.withValues(alpha: 0.9),
+                      height: 1.35,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              width: WidgetSizesEnum.quickActionTileWidth.value * 0.62,
+              height: WidgetSizesEnum.quickActionTileWidth.value * 0.62,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white.withValues(alpha: 0.22),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.35)),
+              ),
+              child: Text(
+                initial,
+                style: tt.titleLarge?.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

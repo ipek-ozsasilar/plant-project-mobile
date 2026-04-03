@@ -1,6 +1,7 @@
 import 'package:bitirme_mobile/core/services/app_logger.dart';
 import 'package:bitirme_mobile/core/services/auth_storage_service.dart';
 import 'package:bitirme_mobile/core/services/google_sign_in_service.dart';
+import 'package:bitirme_mobile/core/services/user_profile_firestore_service.dart';
 import 'package:bitirme_mobile/core/services/image_crop_service.dart';
 import 'package:bitirme_mobile/core/services/inference_api_service.dart';
 import 'package:bitirme_mobile/core/services/scan_history_service.dart';
@@ -24,5 +25,8 @@ Future<void> setupServiceLocator() async {
   );
   sl.registerLazySingleton<GoogleSignInService>(
     () => GoogleSignInService(logger: sl<AppLogger>()),
+  );
+  sl.registerLazySingleton<UserProfileFirestoreService>(
+    () => UserProfileFirestoreService(logger: sl<AppLogger>()),
   );
 }

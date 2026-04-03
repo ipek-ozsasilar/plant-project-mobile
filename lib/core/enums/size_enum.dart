@@ -47,14 +47,26 @@ enum WidgetSizesEnum {
   chipRadius(20),
   inputFieldRadius(22),
   divider(1),
-  bottomNavHeight(72),
+  bottomNavHeight(80),
   bottomNavHorizontalPadding(16),
   bottomNavBottomPadding(12),
   fabSize(56),
   maxContentWidth(520),
   regionMinSide(0.12),
   fabBlurRadius(18),
-  fabYOffset(6);
+  fabYOffset(6),
+  cardShadowBlur(20),
+  cardShadowOffsetY(8),
+  cardShadowSpread(0),
+  homeHeaderHeight(200),
+  homeHeaderExtend(48),
+  quickActionTileWidth(88),
+  recentCardHeight(132),
+  decorativeBlob(160),
+  authLoginHeroFlexTop(44),
+  authLoginHeroFlexBottom(56),
+  authRegisterHeroFlexTop(40),
+  authRegisterHeroFlexBottom(60);
 
   const WidgetSizesEnum(this.value);
   final double value;

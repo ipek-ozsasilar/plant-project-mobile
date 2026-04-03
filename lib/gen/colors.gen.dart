@@ -14,54 +14,57 @@ import 'package:flutter/material.dart';
 class ColorName {
   ColorName._();
 
-  /// Color: #FF9EB5
-  static const Color accent = Color(0xFFFF9EB5);
+  /// Color: #40916C
+  static const Color accent = Color(0xFF40916C);
 
-  /// Color: #E85D75
-  static const Color error = Color(0xFFE85D75);
+  /// Color: #C94C4C
+  static const Color error = Color(0xFFC94C4C);
 
   /// Color: #4285F4
   static const Color googleBrandBlue = Color(0xFF4285F4);
 
-  /// Color: #CE93D8
-  static const Color info = Color(0xFFCE93D8);
+  /// Color: #95D5B2
+  static const Color gradientEnd = Color(0xFF95D5B2);
 
-  /// Color: #2C1F28
-  static const Color onSurface = Color(0xFF2C1F28);
+  /// Color: #2A9D8F
+  static const Color info = Color(0xFF2A9D8F);
 
-  /// Color: #FAF0F4
-  static const Color onSurfaceDark = Color(0xFFFAF0F4);
+  /// Color: #102A27
+  static const Color onSurface = Color(0xFF102A27);
 
-  /// Color: #8B7785
-  static const Color onSurfaceMuted = Color(0xFF8B7785);
+  /// Color: #E8F0EC
+  static const Color onSurfaceDark = Color(0xFFE8F0EC);
 
-  /// Color: #F0D0E0
-  static const Color outline = Color(0xFFF0D0E0);
+  /// Color: #5C7068
+  static const Color onSurfaceMuted = Color(0xFF5C7068);
 
-  /// Color: #EC6B9A
-  static const Color primary = Color(0xFFEC6B9A);
+  /// Color: #C5D4CC
+  static const Color outline = Color(0xFFC5D4CC);
 
-  /// Color: #C2186D
-  static const Color primaryDark = Color(0xFFC2186D);
+  /// Color: #1B4332
+  static const Color primary = Color(0xFF1B4332);
 
-  /// Color: #FAD4E4
-  static const Color primaryLight = Color(0xFFFAD4E4);
+  /// Color: #081C15
+  static const Color primaryDark = Color(0xFF081C15);
 
-  /// Color: #7CB98A
-  static const Color success = Color(0xFF7CB98A);
+  /// Color: #D8F3DC
+  static const Color primaryLight = Color(0xFFD8F3DC);
 
-  /// Color: #FFFBFD
-  static const Color surface = Color(0xFFFFFBFD);
+  /// Color: #2D6A4F
+  static const Color success = Color(0xFF2D6A4F);
+
+  /// Color: #F0F4F1
+  static const Color surface = Color(0xFFF0F4F1);
 
   /// Color: #FFFFFF
   static const Color surfaceCard = Color(0xFFFFFFFF);
 
-  /// Color: #2A222C
-  static const Color surfaceCardDark = Color(0xFF2A222C);
+  /// Color: #1A2E26
+  static const Color surfaceCardDark = Color(0xFF1A2E26);
 
-  /// Color: #1A1218
-  static const Color surfaceDark = Color(0xFF1A1218);
+  /// Color: #0D1F18
+  static const Color surfaceDark = Color(0xFF0D1F18);
 
-  /// Color: #FFD180
-  static const Color warning = Color(0xFFFFD180);
+  /// Color: #E9C46A
+  static const Color warning = Color(0xFFE9C46A);
 }

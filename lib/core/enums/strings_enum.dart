@@ -22,6 +22,9 @@ enum StringsEnum {
   onboardingNext('İleri'),
   onboardingSkip('Atla'),
   onboardingStart('Başla'),
+  onboardingStep1('1 / 3'),
+  onboardingStep2('2 / 3'),
+  onboardingStep3('3 / 3'),
 
   // Auth
   loginTitle('Hoş geldiniz'),
@@ -50,6 +53,22 @@ enum StringsEnum {
   homeStatScans('Toplam tarama'),
   homeStatSpecies('Tür tespiti'),
   homeStatAlerts('Uyarı'),
+  homeSearchHint('Bitki, hastalık veya rehber ara…'),
+  homeQuickAccessTitle('Hızlı erişim'),
+  homeHeroBadge('Yapay zeka'),
+  homeTipTitle('Günün ipucu'),
+  homeTipBody(
+    'Yaprak damarları net görünsün diye yumuşak ışık kullanın; gölgede çekim güven skorunu düşürür.',
+  ),
+  homeEmptyTitle('Henüz taramanız yok'),
+  homeEmptySubtitle('İlk fotoğrafınızı ekleyerek bitkilerinizi izlemeye başlayın.'),
+  homeStartScan('Tarama başlat'),
+  moreScreenTitle('Keşfet ve yönet'),
+  moreScreenSubtitle('Rehber, profil ve ayarlar tek yerde.'),
+  moreTileGuideDesc('Çekim ve çoklu bitki önerileri'),
+  moreTileProfileDesc('Hesap ve görünen ad'),
+  moreTileSettingsDesc('Tema ve uygulama tercihleri'),
+  moreTileAboutDesc('Proje ve sorumluluk reddi'),
 
   // Shell
   navHome('Ana'),

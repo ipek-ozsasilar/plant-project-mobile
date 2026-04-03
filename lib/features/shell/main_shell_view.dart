@@ -124,7 +124,7 @@ class _NavIcon extends StatelessWidget {
           children: <Widget>[
             AnimatedContainer(
               duration: const Duration(milliseconds: 200),
-              padding: EdgeInsets.all(WidgetSizesEnum.divider.value * 3),
+              padding: EdgeInsets.all(WidgetSizesEnum.divider.value * 2),
               decoration: BoxDecoration(
                 color: selected ? ColorName.primaryLight.withValues(alpha: 0.55) : Colors.transparent,
                 borderRadius: BorderRadius.circular(WidgetSizesEnum.chipRadius.value),
@@ -135,11 +135,14 @@ class _NavIcon extends StatelessWidget {
                 size: IconSizesEnum.medium.value + 2,
               ),
             ),
-            SizedBox(height: WidgetSizesEnum.divider.value * 2),
+            SizedBox(height: WidgetSizesEnum.divider.value),
             Text(
               label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontSize: TextSizesEnum.caption.value,
+                height: 1.15,
                 fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
                 color: selected ? active : idle,
               ),

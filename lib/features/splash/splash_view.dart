@@ -45,63 +45,109 @@ class _SplashViewState extends ConsumerState<SplashView> {
 
   @override
   Widget build(BuildContext context) {
+    final TextTheme tt = Theme.of(context).textTheme;
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: <Color>[
-              ColorName.surface,
-              ColorName.primaryLight.withValues(alpha: 0.65),
-              ColorName.surface,
-            ],
-            stops: const <double>[0.0, 0.42, 1.0],
-          ),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Icon(
-                Icons.eco_rounded,
-                size: ImageSizesEnum.hero.value,
-                color: ColorName.primary,
-                shadows: <Shadow>[
-                  Shadow(
-                    color: ColorName.primary.withValues(alpha: 0.25),
-                    blurRadius: WidgetSizesEnum.fabBlurRadius.value,
-                  ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: <Color>[
+                  ColorName.surface,
+                  ColorName.primaryLight.withValues(alpha: 0.75),
+                  ColorName.gradientEnd.withValues(alpha: 0.45),
                 ],
+                stops: const <double>[0.0, 0.45, 1.0],
               ),
-              SizedBox(height: WidgetSizesEnum.cardRadius.value),
-              Text(
-                StringsEnum.appName.value,
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.w800,
-                      color: ColorName.onSurface,
-                      letterSpacing: -0.5,
-                    ),
-              ),
-              SizedBox(height: WidgetSizesEnum.divider.value * 4),
-              Text(
-                StringsEnum.splashLoading.value,
-                style: TextStyle(
-                  fontSize: TextSizesEnum.body.value,
-                  color: ColorName.onSurfaceMuted,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              SizedBox(height: WidgetSizesEnum.cardRadius.value),
-              CircularProgressIndicator(
-                color: ColorName.primary,
-                strokeWidth: 3,
-              ),
-            ],
+            ),
           ),
-        ),
+          Positioned(
+            right: -WidgetSizesEnum.decorativeBlob.value * 0.15,
+            top: WidgetSizesEnum.cardRadius.value * 2,
+            child: Container(
+              width: WidgetSizesEnum.decorativeBlob.value,
+              height: WidgetSizesEnum.decorativeBlob.value,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: ColorName.primary.withValues(alpha: 0.08),
+              ),
+            ),
+          ),
+          Positioned(
+            left: -WidgetSizesEnum.homeHeaderExtend.value,
+            bottom: WidgetSizesEnum.cardRadius.value * 4,
+            child: Container(
+              width: WidgetSizesEnum.decorativeBlob.value * 0.55,
+              height: WidgetSizesEnum.decorativeBlob.value * 0.55,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: ColorName.accent.withValues(alpha: 0.15),
+              ),
+            ),
+          ),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 1.25),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: ColorName.surfaceCard,
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                        color: ColorName.primary.withValues(alpha: 0.18),
+                        blurRadius: WidgetSizesEnum.cardShadowBlur.value,
+                        offset: Offset(0, WidgetSizesEnum.cardShadowOffsetY.value * 0.65),
+                      ),
+                    ],
+                  ),
+                  child: Icon(
+                    Icons.eco_rounded,
+                    size: ImageSizesEnum.hero.value * 0.62,
+                    color: ColorName.primary,
+                  ),
+                ),
+                SizedBox(height: WidgetSizesEnum.cardRadius.value * 1.35),
+                Text(
+                  StringsEnum.appName.value,
+                  style: tt.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: ColorName.onSurface,
+                    letterSpacing: -0.6,
+                  ),
+                ),
+                SizedBox(height: WidgetSizesEnum.divider.value * 6),
+                Text(
+                  StringsEnum.appTagline.value,
+                  textAlign: TextAlign.center,
+                  style: tt.bodyLarge?.copyWith(
+                    color: ColorName.onSurfaceMuted,
+                    fontWeight: FontWeight.w500,
+                    height: 1.35,
+                  ),
+                ),
+                SizedBox(height: WidgetSizesEnum.cardRadius.value * 1.65),
+                Text(
+                  StringsEnum.splashLoading.value,
+                  style: TextStyle(
+                    fontSize: TextSizesEnum.body.value,
+                    color: ColorName.onSurfaceMuted,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                SizedBox(height: WidgetSizesEnum.cardRadius.value * 0.85),
+                CircularProgressIndicator(
+                  color: ColorName.primary,
+                  strokeWidth: WidgetSizesEnum.divider.value * 3,
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

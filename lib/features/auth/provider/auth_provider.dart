@@ -1,6 +1,9 @@
+import 'package:bitirme_mobile/core/enums/error_strings_enum.dart';
 import 'package:bitirme_mobile/core/services/app_logger.dart';
 import 'package:bitirme_mobile/core/services/auth_storage_service.dart';
+import 'package:bitirme_mobile/core/services/firebase_auth_error_mapper.dart';
 import 'package:bitirme_mobile/core/services/google_sign_in_service.dart';
+import 'package:bitirme_mobile/core/services/user_profile_firestore_service.dart';
 import 'package:bitirme_mobile/service_locator/service_locator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,7 +18,7 @@ class AuthState {
   bool get isAuthenticated => email != null && email!.isNotEmpty;
 }
 
-/// Oturum: Firebase (Google) ve yerel e-posta oturumu.
+/// Oturum: Firebase (e-posta/şifre, Google) ve yerel önbellek.
 class AuthNotifier extends Notifier<AuthState> {
   @override
   AuthState build() {
@@ -45,6 +48,73 @@ class AuthNotifier extends Notifier<AuthState> {
     state = AuthState(email: email, displayName: name);
   }
 
+  /// E-posta/şifre girişi. Başarıda `null`, aksi halde gösterilecek mesaj.
+  Future<String?> signInWithEmailPassword(String email, String password) async {
+    try {
+      final UserCredential cred = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      final User? u = cred.user;
+      if (u == null) {
+        return ErrorStringsEnum.auth.value;
+      }
+      final String e = u.email ?? email;
+      final String name =
+          u.displayName ?? (e.contains('@') ? e.split('@').first : e);
+      await saveSession(email: e, name: name);
+      await sl<UserProfileFirestoreService>().upsertFromFirebaseUser(
+        u,
+        authProvider: 'password',
+      );
+      return null;
+    } on FirebaseAuthException catch (e) {
+      sl<AppLogger>().w('signInWithEmailPassword', e);
+      return firebaseAuthCodeToMessage(e.code);
+    } catch (e, st) {
+      sl<AppLogger>().e('signInWithEmailPassword', e, st);
+      return ErrorStringsEnum.generic.value;
+    }
+  }
+
+  /// E-posta/şifre kaydı. Başarıda `null`, aksi halde gösterilecek mesaj.
+  Future<String?> registerWithEmailPassword({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final UserCredential cred =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      final User? u0 = cred.user;
+      if (u0 == null) {
+        return ErrorStringsEnum.auth.value;
+      }
+      await u0.updateDisplayName(name);
+      await u0.reload();
+      final User? u = FirebaseAuth.instance.currentUser;
+      if (u == null) {
+        return ErrorStringsEnum.auth.value;
+      }
+      final String e = u.email ?? email;
+      await saveSession(email: e, name: name);
+      await sl<UserProfileFirestoreService>().upsertFromFirebaseUser(
+        u,
+        authProvider: 'password',
+      );
+      return null;
+    } on FirebaseAuthException catch (e) {
+      sl<AppLogger>().w('registerWithEmailPassword', e);
+      return firebaseAuthCodeToMessage(e.code);
+    } catch (e, st) {
+      sl<AppLogger>().e('registerWithEmailPassword', e, st);
+      return ErrorStringsEnum.generic.value;
+    }
+  }
+
   /// Google ile giriş. İptal veya hata durumunda `false`.
   Future<bool> signInWithGoogle() async {
     try {
@@ -58,6 +128,10 @@ class AuthNotifier extends Notifier<AuthState> {
       final String name =
           u.displayName ?? (email.contains('@') ? email.split('@').first : email);
       await saveSession(email: email, name: name);
+      await sl<UserProfileFirestoreService>().upsertFromFirebaseUser(
+        u,
+        authProvider: 'google.com',
+      );
       return true;
     } catch (e, st) {
       sl<AppLogger>().e('Google sign-in', e, st);
