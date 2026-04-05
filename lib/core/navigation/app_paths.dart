@@ -1,5 +1,6 @@
 /// GoRouter yolları.
 abstract final class AppPaths {
+  static const String language = '/language';
   static const String splash = '/splash';
   static const String onboarding = '/onboarding';
   static const String login = '/login';

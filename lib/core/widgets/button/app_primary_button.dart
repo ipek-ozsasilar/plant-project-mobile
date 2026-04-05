@@ -1,5 +1,4 @@
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
-import 'package:bitirme_mobile/gen/colors.gen.dart';
 import 'package:flutter/material.dart';
 
 /// Birincil dolgu butonu — hap şekil, hafif gölge.
@@ -18,6 +17,7 @@ class AppPrimaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final ColorScheme cs = theme.colorScheme;
     return SizedBox(
       width: double.infinity,
       height: WidgetSizesEnum.buttonHeight.value,
@@ -28,7 +28,7 @@ class AppPrimaryButton extends StatelessWidget {
               ? null
               : <BoxShadow>[
                   BoxShadow(
-                    color: ColorName.primary.withValues(alpha: 0.35),
+                    color: cs.primary.withValues(alpha: 0.35),
                     blurRadius: WidgetSizesEnum.fabBlurRadius.value,
                     offset: Offset(0, WidgetSizesEnum.fabYOffset.value),
                   ),
@@ -37,9 +37,9 @@ class AppPrimaryButton extends StatelessWidget {
         child: FilledButton(
           onPressed: isLoading ? null : onPressed,
           style: FilledButton.styleFrom(
-            backgroundColor: ColorName.primary,
-            foregroundColor: Colors.white,
-            disabledBackgroundColor: ColorName.primary.withValues(alpha: 0.45),
+            backgroundColor: cs.primary,
+            foregroundColor: cs.onPrimary,
+            disabledBackgroundColor: cs.primary.withValues(alpha: 0.45),
             elevation: 0,
             shadowColor: Colors.transparent,
             shape: const StadiumBorder(),
@@ -54,7 +54,7 @@ class AppPrimaryButton extends StatelessWidget {
                   width: 22,
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
-                    color: Colors.white.withValues(alpha: 0.95),
+                    color: cs.onPrimary.withValues(alpha: 0.95),
                   ),
                 )
               : Text(label),

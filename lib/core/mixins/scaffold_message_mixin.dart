@@ -11,6 +11,7 @@ mixin ScaffoldMessageMixin {
   }) {
     final ScaffoldMessengerState messenger = ScaffoldMessenger.of(context);
     messenger.clearSnackBars();
+    final ColorScheme cs = Theme.of(context).colorScheme;
     messenger.showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
@@ -26,10 +27,10 @@ mixin ScaffoldMessageMixin {
           style: TextStyle(
             fontSize: TextSizesEnum.body.value,
             fontWeight: FontWeight.w600,
-            color: Colors.white,
+            color: isError ? Colors.white : cs.onPrimary,
           ),
         ),
-        backgroundColor: isError ? ColorName.error : ColorName.primaryDark,
+        backgroundColor: isError ? ColorName.error : cs.primary,
       ),
     );
   }

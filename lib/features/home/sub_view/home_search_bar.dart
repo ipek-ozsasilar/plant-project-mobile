@@ -1,6 +1,6 @@
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
-import 'package:bitirme_mobile/core/enums/strings_enum.dart';
-import 'package:bitirme_mobile/gen/colors.gen.dart';
+import 'package:bitirme_mobile/core/locale/l10n_context.dart';
+import 'package:bitirme_mobile/core/theme/app_palette.dart';
 import 'package:flutter/material.dart';
 
 /// Üst arama çubuğu görünümü (dokununca [onTap] — örn. tarama).
@@ -19,12 +19,12 @@ class HomeSearchBar extends StatelessWidget {
         borderRadius: BorderRadius.circular(WidgetSizesEnum.inputFieldRadius.value * 1.1),
         child: Ink(
           decoration: BoxDecoration(
-            color: ColorName.surfaceCard,
+            color: context.palSurfaceCard,
             borderRadius: BorderRadius.circular(WidgetSizesEnum.inputFieldRadius.value * 1.1),
-            border: Border.all(color: ColorName.outline.withValues(alpha: 0.55)),
+            border: Border.all(color: context.palOutline.withValues(alpha: 0.55)),
             boxShadow: <BoxShadow>[
               BoxShadow(
-                color: ColorName.onSurface.withValues(alpha: 0.05),
+                color: context.palOnSurface.withValues(alpha: 0.05),
                 blurRadius: WidgetSizesEnum.cardShadowBlur.value * 0.55,
                 offset: Offset(0, WidgetSizesEnum.divider.value * 5),
               ),
@@ -39,15 +39,15 @@ class HomeSearchBar extends StatelessWidget {
               children: <Widget>[
                 Icon(
                   Icons.search_rounded,
-                  color: ColorName.primary,
+                  color: context.palPrimary,
                   size: IconSizesEnum.large.value,
                 ),
                 SizedBox(width: WidgetSizesEnum.cardRadius.value * 0.75),
                 Expanded(
                   child: Text(
-                    StringsEnum.homeSearchHint.value,
+                    context.l10n.homeSearchHint,
                     style: tt.bodyMedium?.copyWith(
-                      color: ColorName.onSurfaceMuted,
+                      color: context.palMuted,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -55,13 +55,13 @@ class HomeSearchBar extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(WidgetSizesEnum.divider.value * 8),
                   decoration: BoxDecoration(
-                    color: ColorName.primaryLight.withValues(alpha: 0.65),
+                    color: context.palPrimarySoftBg,
                     borderRadius: BorderRadius.circular(WidgetSizesEnum.chipRadius.value),
                   ),
                   child: Icon(
                     Icons.tune_rounded,
                     size: IconSizesEnum.medium.value,
-                    color: ColorName.primaryDark,
+                    color: context.palPrimary,
                   ),
                 ),
               ],

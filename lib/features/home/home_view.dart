@@ -1,6 +1,7 @@
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
-import 'package:bitirme_mobile/core/enums/strings_enum.dart';
+import 'package:bitirme_mobile/core/locale/l10n_context.dart';
 import 'package:bitirme_mobile/core/navigation/app_paths.dart';
+import 'package:bitirme_mobile/core/theme/app_palette.dart';
 import 'package:bitirme_mobile/core/widgets/surface/soft_elevation_card.dart';
 import 'package:bitirme_mobile/features/auth/provider/auth_provider.dart';
 import 'package:bitirme_mobile/features/history/provider/history_provider.dart';
@@ -11,7 +12,6 @@ import 'package:bitirme_mobile/features/home/sub_view/home_quick_actions_row.dar
 import 'package:bitirme_mobile/features/home/sub_view/home_recent_strip.dart';
 import 'package:bitirme_mobile/features/home/sub_view/home_scan_hero_card.dart';
 import 'package:bitirme_mobile/features/home/sub_view/home_search_bar.dart';
-import 'package:bitirme_mobile/gen/colors.gen.dart';
 import 'package:bitirme_mobile/models/scan_record_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -38,29 +38,37 @@ class _HomeViewState extends ConsumerState<HomeView> {
   Widget build(BuildContext context) {
     final AuthState auth = ref.watch(authProvider);
     final List<ScanRecordModel> history = ref.watch(historyProvider);
-    final String name = auth.displayName ?? StringsEnum.homeGreeting.value;
+    final String name = auth.displayName ?? context.l10n.homeGreeting;
     final double pad = WidgetSizesEnum.cardRadius.value * 1.15;
     final List<ScanRecordModel> recent = history.take(8).toList();
 
     return Scaffold(
-      backgroundColor: ColorName.surface,
+      backgroundColor: context.palSurface,
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: <Widget>[
-          SliverToBoxAdapter(child: HomeDashboardHeader(displayName: name)),
           SliverToBoxAdapter(
-            child: Transform.translate(
-              offset: Offset(0, -WidgetSizesEnum.homeHeaderExtend.value * 0.55),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: pad),
-                child: HomeSearchBar(onTap: () => context.push(AppPaths.scan)),
-              ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                HomeDashboardHeader(displayName: name),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(
+                    pad,
+                    WidgetSizesEnum.cardRadius.value * 0.65,
+                    pad,
+                    0,
+                  ),
+                  child: HomeSearchBar(onTap: () => context.push(AppPaths.scan)),
+                ),
+              ],
             ),
           ),
           SliverPadding(
             padding: EdgeInsets.fromLTRB(
               pad,
-              WidgetSizesEnum.divider.value * 2,
+              WidgetSizesEnum.cardRadius.value * 0.85,
               pad,
               pad,
             ),
@@ -79,10 +87,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
                   HomeInsightBanner(),
                   SizedBox(height: WidgetSizesEnum.cardRadius.value * 1.5),
                   Text(
-                    StringsEnum.homeStatsTitle.value,
+                    context.l10n.homeStatsTitle,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w800,
-                          color: ColorName.onSurface,
+                          color: context.palOnSurface,
                         ),
                   ),
                   SizedBox(height: WidgetSizesEnum.cardRadius.value * 0.85),
@@ -91,18 +99,18 @@ class _HomeViewState extends ConsumerState<HomeView> {
                       Expanded(
                         child: _HomeStatTile(
                           icon: Icons.analytics_rounded,
-                          label: StringsEnum.homeStatScans.value,
+                          label: context.l10n.homeStatScans,
                           value: '${history.length}',
-                          accent: ColorName.primary,
+                          accent: context.palPrimary,
                         ),
                       ),
                       SizedBox(width: WidgetSizesEnum.cardRadius.value * 0.85),
                       Expanded(
                         child: _HomeStatTile(
                           icon: Icons.biotech_rounded,
-                          label: StringsEnum.homeStatSpecies.value,
+                          label: context.l10n.homeStatSpecies,
                           value: '${history.length}',
-                          accent: ColorName.accent,
+                          accent: context.palAccent,
                         ),
                       ),
                     ],
@@ -112,15 +120,15 @@ class _HomeViewState extends ConsumerState<HomeView> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        StringsEnum.homeRecent.value,
+                        context.l10n.homeRecent,
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.w800,
-                              color: ColorName.onSurface,
+                              color: context.palOnSurface,
                             ),
                       ),
                       TextButton(
                         onPressed: () => context.go(AppPaths.history),
-                        child: Text(StringsEnum.homeSeeAll.value),
+                        child: Text(context.l10n.homeSeeAll),
                       ),
                     ],
                   ),
@@ -178,7 +186,7 @@ class _HomeStatTile extends StatelessWidget {
                   value,
                   style: tt.headlineSmall?.copyWith(
                     fontWeight: FontWeight.w800,
-                    color: ColorName.onSurface,
+                    color: context.palOnSurface,
                     letterSpacing: -0.5,
                   ),
                 ),
@@ -186,7 +194,7 @@ class _HomeStatTile extends StatelessWidget {
                 Text(
                   label,
                   style: tt.labelMedium?.copyWith(
-                    color: ColorName.onSurfaceMuted,
+                    color: context.palMuted,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

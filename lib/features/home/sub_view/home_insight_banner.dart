@@ -1,6 +1,7 @@
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
-import 'package:bitirme_mobile/core/enums/strings_enum.dart';
+import 'package:bitirme_mobile/core/locale/l10n_context.dart';
 import 'package:bitirme_mobile/core/widgets/surface/soft_elevation_card.dart';
+import 'package:bitirme_mobile/core/theme/app_palette.dart';
 import 'package:bitirme_mobile/gen/colors.gen.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +26,7 @@ class HomeInsightBanner extends StatelessWidget {
             ),
             child: Icon(
               Icons.lightbulb_outline_rounded,
-              color: ColorName.primaryDark,
+              color: context.palOnSurface,
               size: IconSizesEnum.large.value,
             ),
           ),
@@ -35,17 +36,17 @@ class HomeInsightBanner extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  StringsEnum.homeTipTitle.value,
+                  context.l10n.homeTipTitle,
                   style: tt.titleSmall?.copyWith(
                     fontWeight: FontWeight.w800,
-                    color: ColorName.onSurface,
+                    color: context.palOnSurface,
                   ),
                 ),
                 SizedBox(height: WidgetSizesEnum.divider.value * 6),
                 Text(
-                  StringsEnum.homeTipBody.value,
+                  context.l10n.homeTipBody,
                   style: tt.bodySmall?.copyWith(
-                    color: ColorName.onSurfaceMuted,
+                    color: context.palMuted,
                     height: 1.45,
                   ),
                 ),

@@ -1,0 +1,468 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+import 'app_localizations.dart';
+
+// ignore_for_file: type=lint
+
+/// The translations for English (`en`).
+class AppLocalizationsEn extends AppLocalizations {
+  AppLocalizationsEn([String locale = 'en']) : super(locale);
+
+  @override
+  String get appName => 'PhytoGuard';
+
+  @override
+  String get appTagline => 'Plant species and disease analysis';
+
+  @override
+  String get splashLoading => 'Loading…';
+
+  @override
+  String get onboardingTitle1 => 'Smart plant analysis';
+
+  @override
+  String get onboardingBody1 =>
+      'Use AI to predict plant species first, then disease risk from your photo.';
+
+  @override
+  String get onboardingTitle2 => 'Multiple plants';
+
+  @override
+  String get onboardingBody2 =>
+      'If several plants appear in one frame, mark regions and choose which to analyze.';
+
+  @override
+  String get onboardingTitle3 => 'History and guide';
+
+  @override
+  String get onboardingBody3 =>
+      'Save scans, view summaries, and browse care tips.';
+
+  @override
+  String get onboardingNext => 'Next';
+
+  @override
+  String get onboardingSkip => 'Skip';
+
+  @override
+  String get onboardingStart => 'Get started';
+
+  @override
+  String get onboardingStep1 => '1 / 3';
+
+  @override
+  String get onboardingStep2 => '2 / 3';
+
+  @override
+  String get onboardingStep3 => '3 / 3';
+
+  @override
+  String get loginTitle => 'Welcome';
+
+  @override
+  String get loginSubtitle => 'Sign in to your account';
+
+  @override
+  String get registerTitle => 'Sign up';
+
+  @override
+  String get registerSubtitle => 'Create a new account';
+
+  @override
+  String get emailLabel => 'Email';
+
+  @override
+  String get passwordLabel => 'Password';
+
+  @override
+  String get nameLabel => 'Full name';
+
+  @override
+  String get loginCta => 'Sign in';
+
+  @override
+  String get registerCta => 'Sign up';
+
+  @override
+  String get goRegister => 'No account? Register';
+
+  @override
+  String get goLogin => 'Already have an account? Sign in';
+
+  @override
+  String get logout => 'Log out';
+
+  @override
+  String get authOrDivider => 'or';
+
+  @override
+  String get loginWithGoogle => 'Continue with Google';
+
+  @override
+  String get homeTitle => 'Home';
+
+  @override
+  String get homeGreeting => 'Hello';
+
+  @override
+  String get homeQuickScan => 'Quick scan';
+
+  @override
+  String get homeQuickScanDesc => 'Add a photo from camera or gallery';
+
+  @override
+  String get homeRecent => 'Recent scans';
+
+  @override
+  String get homeSeeAll => 'See all';
+
+  @override
+  String get homeStatsTitle => 'Summary';
+
+  @override
+  String get homeStatScans => 'Total scans';
+
+  @override
+  String get homeStatSpecies => 'Species ID';
+
+  @override
+  String get homeStatAlerts => 'Alerts';
+
+  @override
+  String get homeSearchHint => 'Search plants, disease, or guide…';
+
+  @override
+  String get homeQuickAccessTitle => 'Quick access';
+
+  @override
+  String get homeHeroBadge => 'AI';
+
+  @override
+  String get homeTipTitle => 'Tip of the day';
+
+  @override
+  String get homeTipBody =>
+      'Use soft light so leaf veins are clear; heavy shade lowers confidence scores.';
+
+  @override
+  String get homeEmptyTitle => 'No scans yet';
+
+  @override
+  String get homeEmptySubtitle =>
+      'Add your first photo to start tracking your plants.';
+
+  @override
+  String get homeStartScan => 'Start scan';
+
+  @override
+  String get moreScreenTitle => 'Explore and manage';
+
+  @override
+  String get moreScreenSubtitle => 'Guide, profile, and settings in one place.';
+
+  @override
+  String get moreTileGuideDesc => 'Photo and multi-plant tips';
+
+  @override
+  String get moreTileProfileDesc => 'Account and display name';
+
+  @override
+  String get moreTileSettingsDesc => 'Theme and app preferences';
+
+  @override
+  String get moreTileAboutDesc => 'Project and disclaimer';
+
+  @override
+  String get navHome => 'Home';
+
+  @override
+  String get navScan => 'Scan';
+
+  @override
+  String get navHistory => 'History';
+
+  @override
+  String get navMore => 'Menu';
+
+  @override
+  String get scanTitle => 'New scan';
+
+  @override
+  String get scanPickTitle => 'Image source';
+
+  @override
+  String get scanPickCamera => 'Camera';
+
+  @override
+  String get scanPickGallery => 'Gallery';
+
+  @override
+  String get scanRegionsTitle => 'Plant regions';
+
+  @override
+  String get scanRegionsHint =>
+      'If there are multiple plants, tap to add numbered regions; tap a region to select it for analysis.';
+
+  @override
+  String get scanRegionsAdd => 'Add region';
+
+  @override
+  String get scanRegionsClear => 'Clear';
+
+  @override
+  String get scanRegionsNext => 'Continue to species';
+
+  @override
+  String get scanRegionsSelectPrompt =>
+      'Please add or select at least one region.';
+
+  @override
+  String get scanSpeciesLoading => 'Predicting plant species…';
+
+  @override
+  String get scanSpeciesTitle => 'Species result';
+
+  @override
+  String get scanSpeciesConfidence => 'Confidence';
+
+  @override
+  String get scanDiseaseLoading => 'Analyzing disease / health…';
+
+  @override
+  String get scanDiseaseTitle => 'Disease / overall status';
+
+  @override
+  String get scanDiseaseNote =>
+      'The model performs a general classification independent of species; results are advisory only.';
+
+  @override
+  String get scanSummaryTitle => 'Summary';
+
+  @override
+  String get scanSaveHistory => 'Save to history';
+
+  @override
+  String get scanDone => 'Done';
+
+  @override
+  String get scanRetry => 'Try again';
+
+  @override
+  String get historyTitle => 'Scan history';
+
+  @override
+  String get historyEmpty => 'No saved scans yet.';
+
+  @override
+  String get historyOpen => 'Details';
+
+  @override
+  String get guideTitle => 'Guide';
+
+  @override
+  String get guideSectionPhoto => 'Good photos';
+
+  @override
+  String get guidePhotoTips =>
+      'Show leaves clearly, avoid deep shade, and frame a single plant when possible.';
+
+  @override
+  String get guideSectionMulti => 'Multiple plants';
+
+  @override
+  String get guideMultiTips =>
+      'Mark a separate region for each plant to reduce mismatches.';
+
+  @override
+  String get guideSectionDisease => 'Disease scan';
+
+  @override
+  String get guideDiseaseTips =>
+      'Symptoms should be visible on the upper leaf surface; blur lowers confidence.';
+
+  @override
+  String get settingsTitle => 'Settings';
+
+  @override
+  String get profileTitle => 'Profile';
+
+  @override
+  String get aboutTitle => 'About';
+
+  @override
+  String get aboutBody =>
+      'This app was developed for a graduation thesis. Predictions are not medical diagnoses; seek expert advice for severely damaged plants.';
+
+  @override
+  String get aboutThesis =>
+      'See project documentation for the thesis and TÜBİTAK report.';
+
+  @override
+  String get themeLabel => 'Theme';
+
+  @override
+  String get themeSystem => 'System';
+
+  @override
+  String get themeLight => 'Light';
+
+  @override
+  String get themeDark => 'Dark';
+
+  @override
+  String get languageLabel => 'Language';
+
+  @override
+  String get languageSystem => 'System';
+
+  @override
+  String get languageTurkish => 'Türkçe';
+
+  @override
+  String get languageEnglish => 'English';
+
+  @override
+  String get notificationsLabel => 'Notifications';
+
+  @override
+  String get dataLabel => 'Data and privacy';
+
+  @override
+  String get apiHint => 'Server URL is configured via .env.';
+
+  @override
+  String get inferenceDiseaseBacterial => 'Bacterial';
+
+  @override
+  String get inferenceDiseaseBlight => 'Blight';
+
+  @override
+  String get inferenceDiseaseHealthy => 'Healthy';
+
+  @override
+  String get inferenceDiseaseLeafSpot => 'Leaf spot';
+
+  @override
+  String get inferenceDiseaseMold => 'Mold';
+
+  @override
+  String get inferenceDiseasePestDamage => 'Pest / physical damage';
+
+  @override
+  String get inferenceDiseasePowderyMildew => 'Powdery mildew';
+
+  @override
+  String get inferenceDiseaseRot => 'Rot';
+
+  @override
+  String get inferenceDiseaseRust => 'Rust';
+
+  @override
+  String get inferenceDiseaseViral => 'Viral';
+
+  @override
+  String get validationRequired => 'This field is required.';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get continueCta => 'Continue';
+
+  @override
+  String get back => 'Back';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get yes => 'Yes';
+
+  @override
+  String get no => 'No';
+
+  @override
+  String get ok => 'OK';
+
+  @override
+  String get errorTitle => 'Error';
+
+  @override
+  String get successTitle => 'Success';
+
+  @override
+  String get loading => 'Loading…';
+
+  @override
+  String get emptyState => 'Nothing to show.';
+
+  @override
+  String get unknown => 'Unknown';
+
+  @override
+  String get placeholderDash => '—';
+
+  @override
+  String get errorGeneric => 'Something went wrong. Please try again.';
+
+  @override
+  String get errorNetwork => 'Could not connect. Check your internet.';
+
+  @override
+  String get errorImagePick => 'Could not pick an image.';
+
+  @override
+  String get errorImageDecode => 'Could not process the image.';
+
+  @override
+  String get errorCrop => 'Could not crop the selected region.';
+
+  @override
+  String get errorInference => 'Prediction service did not respond.';
+
+  @override
+  String get errorAuth => 'Could not verify session.';
+
+  @override
+  String get errorGoogleSignIn =>
+      'Google sign-in failed. Check network and configuration.';
+
+  @override
+  String get errorStorage => 'Could not read or write local storage.';
+
+  @override
+  String get errorAuthEmailInUse => 'This email is already registered.';
+
+  @override
+  String get errorAuthWeakPassword =>
+      'Password is too weak. Choose a stronger one.';
+
+  @override
+  String get errorAuthInvalidEmail => 'Invalid email address.';
+
+  @override
+  String get errorAuthUserNotFound => 'No user found with this email.';
+
+  @override
+  String get errorAuthWrongPassword => 'Incorrect password.';
+
+  @override
+  String get errorAuthInvalidCredential => 'Incorrect email or password.';
+
+  @override
+  String get errorAuthUserDisabled => 'This account has been disabled.';
+
+  @override
+  String get errorAuthTooManyRequests =>
+      'Too many attempts. Please try again later.';
+
+  @override
+  String get errorAuthOperationNotAllowed =>
+      'This sign-in method is disabled. Enable it in the Firebase console.';
+}

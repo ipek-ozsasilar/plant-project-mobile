@@ -1,6 +1,6 @@
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
-import 'package:bitirme_mobile/core/enums/strings_enum.dart';
-import 'package:bitirme_mobile/gen/colors.gen.dart';
+import 'package:bitirme_mobile/core/locale/l10n_context.dart';
+import 'package:bitirme_mobile/core/theme/app_palette.dart';
 import 'package:flutter/material.dart';
 
 /// Öne çıkan tarama kartı (hero CTA).
@@ -13,6 +13,7 @@ class HomeScanHeroCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextTheme tt = Theme.of(context).textTheme;
     final double r = WidgetSizesEnum.cardRadius.value * 1.15;
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -24,14 +25,13 @@ class HomeScanHeroCard extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
-              colors: <Color>[
-                ColorName.primary,
-                ColorName.accent,
-              ],
+              colors: context.palHeroCardGradient,
             ),
             boxShadow: <BoxShadow>[
               BoxShadow(
-                color: ColorName.primary.withValues(alpha: 0.35),
+                color: isDark
+                    ? Colors.black.withValues(alpha: 0.45)
+                    : context.palPrimary.withValues(alpha: 0.35),
                 blurRadius: WidgetSizesEnum.cardShadowBlur.value * 1.1,
                 offset: Offset(0, WidgetSizesEnum.cardShadowOffsetY.value),
               ),
@@ -55,7 +55,7 @@ class HomeScanHeroCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(WidgetSizesEnum.chipRadius.value),
                         ),
                         child: Text(
-                          StringsEnum.homeHeroBadge.value,
+                          context.l10n.homeHeroBadge,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: TextSizesEnum.caption.value,
@@ -65,7 +65,7 @@ class HomeScanHeroCard extends StatelessWidget {
                       ),
                       SizedBox(height: WidgetSizesEnum.cardRadius.value * 0.85),
                       Text(
-                        StringsEnum.homeQuickScan.value,
+                        context.l10n.homeQuickScan,
                         style: tt.titleLarge?.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.w800,
@@ -74,7 +74,7 @@ class HomeScanHeroCard extends StatelessWidget {
                       ),
                       SizedBox(height: WidgetSizesEnum.divider.value * 6),
                       Text(
-                        StringsEnum.homeQuickScanDesc.value,
+                        context.l10n.homeQuickScanDesc,
                         style: tt.bodyMedium?.copyWith(
                           color: Colors.white.withValues(alpha: 0.92),
                           height: 1.35,

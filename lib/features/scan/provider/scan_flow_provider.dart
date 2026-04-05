@@ -1,7 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:bitirme_mobile/core/enums/error_strings_enum.dart';
-import 'package:bitirme_mobile/core/enums/strings_enum.dart';
 import 'package:bitirme_mobile/core/services/app_logger.dart';
 import 'package:bitirme_mobile/core/services/image_crop_service.dart';
 import 'package:bitirme_mobile/core/services/inference_api_service.dart';
@@ -129,7 +127,7 @@ class ScanFlowNotifier extends Notifier<ScanFlowState> {
     final List<PlantRegionModel> regions = state.regions;
     final Uint8List? imageBytes = state.imageBytes;
     if (imageBytes == null || regions.isEmpty) {
-      state = state.copyWith(errorMessage: StringsEnum.scanRegionsSelectPrompt.value);
+      state = state.copyWith(errorMessage: '@@scanRegionsSelectPrompt');
       return;
     }
     final int idx = state.selectedRegionIndex.clamp(0, regions.length - 1);
@@ -153,7 +151,7 @@ class ScanFlowNotifier extends Notifier<ScanFlowState> {
           imageBytes: imageBytes,
           regions: regions,
           selectedRegionIndex: idx,
-          errorMessage: ErrorStringsEnum.crop.value,
+          errorMessage: '@@errorCrop',
         );
         return;
       }
@@ -167,13 +165,13 @@ class ScanFlowNotifier extends Notifier<ScanFlowState> {
         disease: state.disease,
       );
     } catch (e, st) {
-      sl<AppLogger>().e(ErrorStringsEnum.inference.value, e, st);
+      sl<AppLogger>().e('inference_species', e, st);
       state = ScanFlowState(
         step: ScanStep.selectRegions,
         imageBytes: imageBytes,
         regions: regions,
         selectedRegionIndex: idx,
-        errorMessage: ErrorStringsEnum.inference.value,
+        errorMessage: '@@errorInference',
       );
     }
   }
@@ -206,7 +204,7 @@ class ScanFlowNotifier extends Notifier<ScanFlowState> {
           regions: regions,
           selectedRegionIndex: idx,
           species: state.species,
-          errorMessage: ErrorStringsEnum.crop.value,
+          errorMessage: '@@errorCrop',
         );
         return;
       }
@@ -220,14 +218,14 @@ class ScanFlowNotifier extends Notifier<ScanFlowState> {
         disease: result,
       );
     } catch (e, st) {
-      sl<AppLogger>().e(ErrorStringsEnum.inference.value, e, st);
+      sl<AppLogger>().e('inference_disease', e, st);
       state = ScanFlowState(
         step: ScanStep.speciesDone,
         imageBytes: imageBytes,
         regions: regions,
         selectedRegionIndex: idx,
         species: state.species,
-        errorMessage: ErrorStringsEnum.inference.value,
+        errorMessage: '@@errorInference',
       );
     }
   }

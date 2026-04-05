@@ -1,28 +1,28 @@
-import 'package:bitirme_mobile/core/enums/error_strings_enum.dart';
+import 'package:bitirme_mobile/l10n/app_localizations.dart';
 
 /// [FirebaseAuthException.code] için kullanıcıya gösterilecek mesaj.
-String firebaseAuthCodeToMessage(String code) {
+String firebaseAuthCodeToMessage(String code, AppLocalizations l10n) {
   switch (code) {
     case 'email-already-in-use':
-      return ErrorStringsEnum.authEmailInUse.value;
+      return l10n.errorAuthEmailInUse;
     case 'weak-password':
-      return ErrorStringsEnum.authWeakPassword.value;
+      return l10n.errorAuthWeakPassword;
     case 'invalid-email':
-      return ErrorStringsEnum.authInvalidEmail.value;
+      return l10n.errorAuthInvalidEmail;
     case 'user-not-found':
-      return ErrorStringsEnum.authUserNotFound.value;
+      return l10n.errorAuthUserNotFound;
     case 'wrong-password':
-      return ErrorStringsEnum.authWrongPassword.value;
+      return l10n.errorAuthWrongPassword;
     case 'invalid-credential':
     case 'invalid-login-credentials':
-      return ErrorStringsEnum.authInvalidCredential.value;
+      return l10n.errorAuthInvalidCredential;
     case 'user-disabled':
-      return ErrorStringsEnum.authUserDisabled.value;
+      return l10n.errorAuthUserDisabled;
     case 'too-many-requests':
-      return ErrorStringsEnum.authTooManyRequests.value;
+      return l10n.errorAuthTooManyRequests;
     case 'operation-not-allowed':
-      return ErrorStringsEnum.authOperationNotAllowed.value;
+      return l10n.errorAuthOperationNotAllowed;
     default:
-      return ErrorStringsEnum.auth.value;
+      return l10n.errorAuth;
   }
 }

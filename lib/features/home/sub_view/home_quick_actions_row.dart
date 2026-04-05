@@ -1,6 +1,6 @@
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
-import 'package:bitirme_mobile/core/enums/strings_enum.dart';
-import 'package:bitirme_mobile/gen/colors.gen.dart';
+import 'package:bitirme_mobile/core/locale/l10n_context.dart';
+import 'package:bitirme_mobile/core/theme/app_palette.dart';
 import 'package:flutter/material.dart';
 
 /// Yatay hızlı erişim: tarama, geçmiş, rehber, ayarlar.
@@ -24,10 +24,10 @@ class HomeQuickActionsRow extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          StringsEnum.homeQuickAccessTitle.value,
+          context.l10n.homeQuickAccessTitle,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w700,
-                color: ColorName.onSurface,
+                color: context.palOnSurface,
               ),
         ),
         SizedBox(height: WidgetSizesEnum.cardRadius.value * 0.85),
@@ -36,7 +36,7 @@ class HomeQuickActionsRow extends StatelessWidget {
             Expanded(
               child: _QuickChip(
                 icon: Icons.photo_camera_rounded,
-                label: StringsEnum.navScan.value,
+                label: context.l10n.navScan,
                 highlight: true,
                 onTap: onScan,
               ),
@@ -45,7 +45,7 @@ class HomeQuickActionsRow extends StatelessWidget {
             Expanded(
               child: _QuickChip(
                 icon: Icons.history_rounded,
-                label: StringsEnum.navHistory.value,
+                label: context.l10n.navHistory,
                 onTap: onHistory,
               ),
             ),
@@ -53,7 +53,7 @@ class HomeQuickActionsRow extends StatelessWidget {
             Expanded(
               child: _QuickChip(
                 icon: Icons.menu_book_rounded,
-                label: StringsEnum.guideTitle.value,
+                label: context.l10n.guideTitle,
                 onTap: onGuide,
               ),
             ),
@@ -61,7 +61,7 @@ class HomeQuickActionsRow extends StatelessWidget {
             Expanded(
               child: _QuickChip(
                 icon: Icons.tune_rounded,
-                label: StringsEnum.settingsTitle.value,
+                label: context.l10n.settingsTitle,
                 onTap: onSettings,
               ),
             ),
@@ -88,9 +88,9 @@ class _QuickChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color bg = highlight
-        ? ColorName.primary.withValues(alpha: 0.12)
-        : ColorName.surfaceCard;
-    final Color fg = highlight ? ColorName.primary : ColorName.onSurfaceMuted;
+        ? context.palPrimary.withValues(alpha: 0.12)
+        : context.palSurfaceCard;
+    final Color fg = highlight ? context.palPrimary : context.palMuted;
     final double r = WidgetSizesEnum.chipRadius.value * 1.1;
     return Material(
       color: Colors.transparent,
@@ -107,13 +107,13 @@ class _QuickChip extends StatelessWidget {
             borderRadius: BorderRadius.circular(r),
             border: Border.all(
               color: highlight
-                  ? ColorName.primary.withValues(alpha: 0.25)
-                  : ColorName.outline.withValues(alpha: 0.5),
+                  ? context.palPrimary.withValues(alpha: 0.25)
+                  : context.palOutline.withValues(alpha: 0.5),
             ),
             boxShadow: highlight
                 ? <BoxShadow>[
                     BoxShadow(
-                      color: ColorName.primary.withValues(alpha: 0.12),
+                      color: context.palPrimary.withValues(alpha: 0.12),
                       blurRadius: WidgetSizesEnum.cardShadowBlur.value * 0.45,
                       offset: Offset(0, WidgetSizesEnum.divider.value * 4),
                     ),
@@ -133,7 +133,7 @@ class _QuickChip extends StatelessWidget {
                 style: TextStyle(
                   fontSize: TextSizesEnum.caption.value,
                   fontWeight: FontWeight.w600,
-                  color: highlight ? ColorName.primaryDark : ColorName.onSurface,
+                  color: highlight ? context.palPrimary : context.palOnSurface,
                   height: 1.15,
                 ),
               ),

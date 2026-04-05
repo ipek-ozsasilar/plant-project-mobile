@@ -1,15 +1,15 @@
-import 'package:bitirme_mobile/core/enums/error_strings_enum.dart';
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
-import 'package:bitirme_mobile/core/enums/strings_enum.dart';
+import 'package:bitirme_mobile/core/locale/l10n_context.dart';
 import 'package:bitirme_mobile/core/mixins/scaffold_message_mixin.dart';
 import 'package:bitirme_mobile/core/navigation/app_paths.dart';
+import 'package:bitirme_mobile/core/theme/app_palette.dart';
 import 'package:bitirme_mobile/core/widgets/button/app_primary_button.dart';
 import 'package:bitirme_mobile/core/widgets/button/google_sign_in_outline_button.dart';
 import 'package:bitirme_mobile/core/widgets/input/app_text_field.dart';
 import 'package:bitirme_mobile/features/auth/provider/auth_provider.dart';
 import 'package:bitirme_mobile/features/auth/register/view_model/register_view_model.dart';
 import 'package:bitirme_mobile/features/auth/sub_view/auth_gradient_hero.dart';
-import 'package:bitirme_mobile/gen/colors.gen.dart';
+import 'package:bitirme_mobile/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -49,6 +49,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> with ScaffoldMessag
       name: _name.text,
       email: _email.text,
       password: _password.text,
+      l10n: context.l10n,
     );
     if (!mounted) {
       return;
@@ -77,7 +78,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> with ScaffoldMessag
     } else {
       showAppSnackBar(
         context,
-        message: ErrorStringsEnum.googleSignIn.value,
+        message: context.l10n.errorGoogleSignIn,
         isError: true,
       );
     }
@@ -88,11 +89,12 @@ class _RegisterViewState extends ConsumerState<RegisterView> with ScaffoldMessag
     final double topRadius = WidgetSizesEnum.cardRadius.value * 1.45;
     final double hPad = WidgetSizesEnum.cardRadius.value * 1.35;
     final TextTheme tt = Theme.of(context).textTheme;
+    final AppLocalizations l10n = context.l10n;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
-        backgroundColor: ColorName.primaryDark,
+        backgroundColor: context.palSurface,
         body: Column(
           children: <Widget>[
             Expanded(
@@ -106,7 +108,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> with ScaffoldMessag
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: ColorName.surface,
+                    color: context.palSurfaceCard,
                     borderRadius: BorderRadius.vertical(
                       top: Radius.circular(topRadius),
                     ),
@@ -141,9 +143,8 @@ class _RegisterViewState extends ConsumerState<RegisterView> with ScaffoldMessag
                                   IconButton(
                                     onPressed: () => context.pop(),
                                     style: IconButton.styleFrom(
-                                      backgroundColor:
-                                          ColorName.primaryLight.withValues(alpha: 0.55),
-                                      foregroundColor: ColorName.primaryDark,
+                                      backgroundColor: context.palPrimarySoftBg,
+                                      foregroundColor: context.palPrimary,
                                     ),
                                     icon: Icon(
                                       Icons.arrow_back_rounded,
@@ -153,10 +154,10 @@ class _RegisterViewState extends ConsumerState<RegisterView> with ScaffoldMessag
                                   SizedBox(width: WidgetSizesEnum.cardRadius.value * 0.65),
                                   Expanded(
                                     child: Text(
-                                      StringsEnum.registerTitle.value,
+                                      l10n.registerTitle,
                                       style: tt.headlineSmall?.copyWith(
                                         fontWeight: FontWeight.w800,
-                                        color: ColorName.onSurface,
+                                        color: context.palOnSurface,
                                         letterSpacing: -0.4,
                                       ),
                                     ),
@@ -165,41 +166,38 @@ class _RegisterViewState extends ConsumerState<RegisterView> with ScaffoldMessag
                               ),
                               SizedBox(height: WidgetSizesEnum.cardRadius.value * 0.85),
                               Text(
-                                StringsEnum.registerSubtitle.value,
+                                l10n.registerSubtitle,
                                 style: tt.bodyLarge?.copyWith(
-                                  color: ColorName.onSurfaceMuted,
+                                  color: context.palMuted,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
                               SizedBox(height: WidgetSizesEnum.cardRadius.value * 1.2),
                               AppTextField(
-                                label: StringsEnum.nameLabel.value,
+                                label: l10n.nameLabel,
                                 controller: _name,
-                                validator: (String? v) => (v == null || v.trim().isEmpty)
-                                    ? StringsEnum.validationRequired.value
-                                    : null,
+                                validator: (String? v) =>
+                                    (v == null || v.trim().isEmpty) ? l10n.validationRequired : null,
                               ),
                               SizedBox(height: WidgetSizesEnum.cardRadius.value),
                               AppTextField(
-                                label: StringsEnum.emailLabel.value,
+                                label: l10n.emailLabel,
                                 controller: _email,
                                 keyboardType: TextInputType.emailAddress,
-                                validator: (String? v) => (v == null || v.trim().isEmpty)
-                                    ? StringsEnum.validationRequired.value
-                                    : null,
+                                validator: (String? v) =>
+                                    (v == null || v.trim().isEmpty) ? l10n.validationRequired : null,
                               ),
                               SizedBox(height: WidgetSizesEnum.cardRadius.value),
                               AppTextField(
-                                label: StringsEnum.passwordLabel.value,
+                                label: l10n.passwordLabel,
                                 controller: _password,
                                 obscureText: true,
-                                validator: (String? v) => (v == null || v.isEmpty)
-                                    ? StringsEnum.validationRequired.value
-                                    : null,
+                                validator: (String? v) =>
+                                    (v == null || v.isEmpty) ? l10n.validationRequired : null,
                               ),
                               SizedBox(height: WidgetSizesEnum.cardRadius.value * 1.35),
                               AppPrimaryButton(
-                                label: StringsEnum.registerCta.value,
+                                label: l10n.registerCta,
                                 isLoading: _loading,
                                 onPressed: _onSubmit,
                               ),
@@ -208,7 +206,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> with ScaffoldMessag
                                 children: <Widget>[
                                   Expanded(
                                     child: Divider(
-                                      color: ColorName.outline.withValues(alpha: 0.85),
+                                      color: context.palOutline.withValues(alpha: 0.85),
                                     ),
                                   ),
                                   Padding(
@@ -216,17 +214,17 @@ class _RegisterViewState extends ConsumerState<RegisterView> with ScaffoldMessag
                                       horizontal: WidgetSizesEnum.cardRadius.value,
                                     ),
                                     child: Text(
-                                      StringsEnum.authOrDivider.value,
+                                      l10n.authOrDivider,
                                       style: TextStyle(
                                         fontSize: TextSizesEnum.caption.value,
-                                        color: ColorName.onSurfaceMuted,
+                                        color: context.palMuted,
                                         fontWeight: FontWeight.w700,
                                       ),
                                     ),
                                   ),
                                   Expanded(
                                     child: Divider(
-                                      color: ColorName.outline.withValues(alpha: 0.85),
+                                      color: context.palOutline.withValues(alpha: 0.85),
                                     ),
                                   ),
                                 ],
@@ -239,7 +237,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> with ScaffoldMessag
                               SizedBox(height: WidgetSizesEnum.cardRadius.value * 0.65),
                               TextButton(
                                 onPressed: () => context.pop(),
-                                child: Text(StringsEnum.goLogin.value),
+                                child: Text(l10n.goLogin),
                               ),
                             ],
                           ),

@@ -1,5 +1,7 @@
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
-import 'package:bitirme_mobile/gen/colors.gen.dart';
+import 'package:bitirme_mobile/core/locale/l10n_context.dart';
+import 'package:bitirme_mobile/core/services/disease_label_display.dart';
+import 'package:bitirme_mobile/core/theme/app_palette.dart';
 import 'package:bitirme_mobile/models/scan_record_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -16,7 +18,8 @@ class HomeRecentStrip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextTheme tt = Theme.of(context).textTheme;
-    final DateFormat fmt = DateFormat.yMMMd('tr');
+    final String lang = Localizations.localeOf(context).languageCode;
+    final DateFormat fmt = DateFormat.yMMMd(lang);
     return SizedBox(
       height: WidgetSizesEnum.recentCardHeight.value,
       child: ListView.separated(
@@ -29,12 +32,12 @@ class HomeRecentStrip extends StatelessWidget {
           return Container(
             width: WidgetSizesEnum.maxContentWidth.value * 0.52,
             decoration: BoxDecoration(
-              color: ColorName.surfaceCard,
+              color: context.palSurfaceCard,
               borderRadius: BorderRadius.circular(WidgetSizesEnum.cardRadius.value),
-              border: Border.all(color: ColorName.outline.withValues(alpha: 0.45)),
+              border: Border.all(color: context.palOutline.withValues(alpha: 0.45)),
               boxShadow: <BoxShadow>[
                 BoxShadow(
-                  color: ColorName.primary.withValues(alpha: 0.06),
+                  color: context.palPrimary.withValues(alpha: 0.06),
                   blurRadius: WidgetSizesEnum.cardShadowBlur.value * 0.7,
                   offset: Offset(0, WidgetSizesEnum.cardShadowOffsetY.value * 0.65),
                 ),
@@ -46,7 +49,7 @@ class HomeRecentStrip extends StatelessWidget {
                 children: <Widget>[
                   Container(
                     width: WidgetSizesEnum.divider.value * 5,
-                    color: ColorName.accent,
+                    color: context.palAccent,
                   ),
                   Expanded(
                     child: Padding(
@@ -60,7 +63,7 @@ class HomeRecentStrip extends StatelessWidget {
                               Icon(
                                 Icons.eco_rounded,
                                 size: IconSizesEnum.small.value,
-                                color: ColorName.primary,
+                                color: context.palPrimary,
                               ),
                               SizedBox(width: WidgetSizesEnum.divider.value * 4),
                               Expanded(
@@ -70,7 +73,7 @@ class HomeRecentStrip extends StatelessWidget {
                                   overflow: TextOverflow.ellipsis,
                                   style: tt.titleSmall?.copyWith(
                                     fontWeight: FontWeight.w800,
-                                    color: ColorName.onSurface,
+                                    color: context.palOnSurface,
                                   ),
                                 ),
                               ),
@@ -78,11 +81,11 @@ class HomeRecentStrip extends StatelessWidget {
                           ),
                           SizedBox(height: WidgetSizesEnum.divider.value * 6),
                           Text(
-                            e.diseaseLabel,
+                            displayStoredDiseaseLabel(e.diseaseLabel, context.l10n),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: tt.bodySmall?.copyWith(
-                              color: ColorName.onSurfaceMuted,
+                              color: context.palMuted,
                               height: 1.25,
                             ),
                           ),
@@ -90,7 +93,7 @@ class HomeRecentStrip extends StatelessWidget {
                           Text(
                             dateStr,
                             style: tt.labelSmall?.copyWith(
-                              color: ColorName.onSurfaceMuted,
+                              color: context.palMuted,
                               fontWeight: FontWeight.w600,
                             ),
                           ),

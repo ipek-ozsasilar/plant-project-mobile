@@ -1,7 +1,7 @@
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
-import 'package:bitirme_mobile/core/enums/strings_enum.dart';
+import 'package:bitirme_mobile/core/locale/l10n_context.dart';
 import 'package:bitirme_mobile/core/navigation/app_paths.dart';
-import 'package:bitirme_mobile/gen/colors.gen.dart';
+import 'package:bitirme_mobile/core/theme/app_palette.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -24,20 +24,21 @@ class MainShellView extends StatelessWidget {
           shape: BoxShape.circle,
           boxShadow: <BoxShadow>[
             BoxShadow(
-              color: ColorName.primary.withValues(alpha: 0.4),
+              color: context.palPrimary.withValues(alpha: 0.4),
               blurRadius: WidgetSizesEnum.fabBlurRadius.value,
               offset: Offset(0, WidgetSizesEnum.fabYOffset.value),
             ),
           ],
         ),
-        child: FloatingActionButton.large(
-          backgroundColor: ColorName.primary,
-          foregroundColor: Colors.white,
-          elevation: 0,
+        child: FloatingActionButton(
+          backgroundColor: context.palPrimary,
+          foregroundColor: context.palOnPrimary,
+          elevation: WidgetSizesEnum.divider.value * 2,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(WidgetSizesEnum.cardRadius.value * 1.5),
+            borderRadius: BorderRadius.circular(WidgetSizesEnum.cardRadius.value * 1.35),
           ),
           onPressed: () => context.push(AppPaths.scan),
+          tooltip: context.l10n.navScan,
           child: Icon(Icons.photo_camera_rounded, size: IconSizesEnum.large.value),
         ),
       ),
@@ -46,48 +47,50 @@ class MainShellView extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(hPad, 0, hPad, bPad),
         child: Material(
           elevation: 12,
-          shadowColor: ColorName.primary.withValues(alpha: 0.22),
-          surfaceTintColor: ColorName.primaryLight.withValues(alpha: 0.35),
-          color: ColorName.surfaceCard,
+          shadowColor: context.palPrimary.withValues(alpha: 0.22),
+          surfaceTintColor: context.palPrimarySoftBg,
+          color: context.palSurfaceCard,
           borderRadius: BorderRadius.circular(WidgetSizesEnum.cardRadius.value * 1.35),
           clipBehavior: Clip.antiAlias,
-          child: SizedBox(
+          child: BottomAppBar(
             height: WidgetSizesEnum.bottomNavHeight.value,
-            child: BottomAppBar(
-              elevation: 0,
-              color: Colors.transparent,
-              padding: EdgeInsets.zero,
-              shape: const CircularNotchedRectangle(),
-              notchMargin: 8,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: _NavIcon(
-                      icon: Icons.home_rounded,
-                      selected: navigationShell.currentIndex == 0,
-                      label: StringsEnum.navHome.value,
-                      onTap: () => navigationShell.goBranch(0),
-                    ),
+            elevation: 0,
+            color: Colors.transparent,
+            padding: EdgeInsets.symmetric(
+              horizontal: WidgetSizesEnum.divider.value * 4,
+              vertical: WidgetSizesEnum.divider.value * 6,
+            ),
+            shape: const CircularNotchedRectangle(),
+            notchMargin: WidgetSizesEnum.divider.value * 6,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Expanded(
+                  child: _NavIcon(
+                    icon: Icons.home_rounded,
+                    selected: navigationShell.currentIndex == 0,
+                    label: context.l10n.navHome,
+                    onTap: () => navigationShell.goBranch(0),
                   ),
-                  Expanded(
-                    child: _NavIcon(
-                      icon: Icons.history_rounded,
-                      selected: navigationShell.currentIndex == 1,
-                      label: StringsEnum.navHistory.value,
-                      onTap: () => navigationShell.goBranch(1),
-                    ),
+                ),
+                Expanded(
+                  child: _NavIcon(
+                    icon: Icons.history_rounded,
+                    selected: navigationShell.currentIndex == 1,
+                    label: context.l10n.navHistory,
+                    onTap: () => navigationShell.goBranch(1),
                   ),
-                  const SizedBox(width: 56),
-                  Expanded(
-                    child: _NavIcon(
-                      icon: Icons.menu_rounded,
-                      selected: navigationShell.currentIndex == 2,
-                      label: StringsEnum.navMore.value,
-                      onTap: () => navigationShell.goBranch(2),
-                    ),
+                ),
+                SizedBox(width: WidgetSizesEnum.bottomNavFabCutoutWidth.value),
+                Expanded(
+                  child: _NavIcon(
+                    icon: Icons.menu_rounded,
+                    selected: navigationShell.currentIndex == 2,
+                    label: context.l10n.navMore,
+                    onTap: () => navigationShell.goBranch(2),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -111,43 +114,36 @@ class _NavIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color active = ColorName.primary;
-    final Color idle = ColorName.onSurfaceMuted;
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(WidgetSizesEnum.chipRadius.value),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              padding: EdgeInsets.all(WidgetSizesEnum.divider.value * 2),
-              decoration: BoxDecoration(
-                color: selected ? ColorName.primaryLight.withValues(alpha: 0.55) : Colors.transparent,
-                borderRadius: BorderRadius.circular(WidgetSizesEnum.chipRadius.value),
-              ),
-              child: Icon(
-                icon,
-                color: selected ? active : idle,
-                size: IconSizesEnum.medium.value + 2,
-              ),
-            ),
-            SizedBox(height: WidgetSizesEnum.divider.value),
-            Text(
-              label,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: TextSizesEnum.caption.value,
-                height: 1.15,
-                fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-                color: selected ? active : idle,
+    final Color active = context.palPrimary;
+    final Color idle = context.palMuted;
+    return Tooltip(
+      message: label,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(WidgetSizesEnum.chipRadius.value),
+          customBorder: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(WidgetSizesEnum.chipRadius.value),
+          ),
+          child: Center(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                padding: EdgeInsets.all(WidgetSizesEnum.divider.value * 8),
+                decoration: BoxDecoration(
+                  color: selected ? context.palPrimarySoftBg : Colors.transparent,
+                  borderRadius: BorderRadius.circular(WidgetSizesEnum.chipRadius.value),
+                ),
+                child: Icon(
+                  icon,
+                  color: selected ? active : idle,
+                  size: IconSizesEnum.large.value,
+                ),
               ),
             ),
-          ],
+          ),
         ),
       ),
     );

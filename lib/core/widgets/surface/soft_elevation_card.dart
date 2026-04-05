@@ -1,5 +1,5 @@
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
-import 'package:bitirme_mobile/gen/colors.gen.dart';
+import 'package:bitirme_mobile/core/theme/app_palette.dart';
 import 'package:flutter/material.dart';
 
 /// Yuvarlatılmış köşe, hafif gölge ve ince çerçeve ile modern kart.
@@ -22,7 +22,7 @@ class SoftElevationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double r = borderRadius ?? WidgetSizesEnum.cardRadius.value;
-    final Color bg = backgroundColor ?? ColorName.surfaceCard;
+    final Color bg = backgroundColor ?? context.palSurfaceCard;
     final Widget inner = Padding(
       padding: padding ?? EdgeInsets.all(WidgetSizesEnum.cardRadius.value),
       child: child,
@@ -38,10 +38,10 @@ class SoftElevationCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: bg,
         borderRadius: BorderRadius.circular(r),
-        border: Border.all(color: ColorName.outline.withValues(alpha: 0.45)),
+        border: Border.all(color: context.palOutline.withValues(alpha: 0.45)),
         boxShadow: <BoxShadow>[
           BoxShadow(
-            color: ColorName.primary.withValues(alpha: 0.07),
+            color: context.palPrimary.withValues(alpha: 0.07),
             blurRadius: WidgetSizesEnum.cardShadowBlur.value,
             offset: Offset(0, WidgetSizesEnum.cardShadowOffsetY.value),
           ),

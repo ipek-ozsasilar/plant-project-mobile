@@ -1,9 +1,9 @@
-import 'package:bitirme_mobile/core/enums/error_strings_enum.dart';
 import 'package:bitirme_mobile/core/services/app_logger.dart';
 import 'package:bitirme_mobile/core/services/auth_storage_service.dart';
 import 'package:bitirme_mobile/core/services/firebase_auth_error_mapper.dart';
 import 'package:bitirme_mobile/core/services/google_sign_in_service.dart';
 import 'package:bitirme_mobile/core/services/user_profile_firestore_service.dart';
+import 'package:bitirme_mobile/l10n/app_localizations.dart';
 import 'package:bitirme_mobile/service_locator/service_locator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -49,7 +49,11 @@ class AuthNotifier extends Notifier<AuthState> {
   }
 
   /// E-posta/şifre girişi. Başarıda `null`, aksi halde gösterilecek mesaj.
-  Future<String?> signInWithEmailPassword(String email, String password) async {
+  Future<String?> signInWithEmailPassword(
+    String email,
+    String password,
+    AppLocalizations l10n,
+  ) async {
     try {
       final UserCredential cred = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
@@ -57,7 +61,7 @@ class AuthNotifier extends Notifier<AuthState> {
       );
       final User? u = cred.user;
       if (u == null) {
-        return ErrorStringsEnum.auth.value;
+        return l10n.errorAuth;
       }
       final String e = u.email ?? email;
       final String name =
@@ -70,10 +74,10 @@ class AuthNotifier extends Notifier<AuthState> {
       return null;
     } on FirebaseAuthException catch (e) {
       sl<AppLogger>().w('signInWithEmailPassword', e);
-      return firebaseAuthCodeToMessage(e.code);
+      return firebaseAuthCodeToMessage(e.code, l10n);
     } catch (e, st) {
       sl<AppLogger>().e('signInWithEmailPassword', e, st);
-      return ErrorStringsEnum.generic.value;
+      return l10n.errorGeneric;
     }
   }
 
@@ -82,6 +86,7 @@ class AuthNotifier extends Notifier<AuthState> {
     required String name,
     required String email,
     required String password,
+    required AppLocalizations l10n,
   }) async {
     try {
       final UserCredential cred =
@@ -91,13 +96,13 @@ class AuthNotifier extends Notifier<AuthState> {
       );
       final User? u0 = cred.user;
       if (u0 == null) {
-        return ErrorStringsEnum.auth.value;
+        return l10n.errorAuth;
       }
       await u0.updateDisplayName(name);
       await u0.reload();
       final User? u = FirebaseAuth.instance.currentUser;
       if (u == null) {
-        return ErrorStringsEnum.auth.value;
+        return l10n.errorAuth;
       }
       final String e = u.email ?? email;
       await saveSession(email: e, name: name);
@@ -108,10 +113,10 @@ class AuthNotifier extends Notifier<AuthState> {
       return null;
     } on FirebaseAuthException catch (e) {
       sl<AppLogger>().w('registerWithEmailPassword', e);
-      return firebaseAuthCodeToMessage(e.code);
+      return firebaseAuthCodeToMessage(e.code, l10n);
     } catch (e, st) {
       sl<AppLogger>().e('registerWithEmailPassword', e, st);
-      return ErrorStringsEnum.generic.value;
+      return l10n.errorGeneric;
     }
   }
 

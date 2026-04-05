@@ -146,17 +146,18 @@ abstract final class AppTheme {
 
   static ThemeData dark() {
     final ColorScheme scheme = ColorScheme.dark(
-      primary: ColorName.primaryLight,
-      onPrimary: ColorName.primaryDark,
-      primaryContainer: ColorName.primary.withValues(alpha: 0.35),
+      primary: ColorName.themeDarkPrimary,
+      onPrimary: ColorName.themeDarkOnPrimary,
+      primaryContainer: ColorName.themeDarkHeader2,
       onPrimaryContainer: ColorName.onSurfaceDark,
-      secondary: ColorName.accent,
-      onSecondary: ColorName.surfaceDark,
+      secondary: ColorName.themeDarkAccent,
+      onSecondary: ColorName.themeDarkOnPrimary,
       surface: ColorName.surfaceDark,
       onSurface: ColorName.onSurfaceDark,
+      onSurfaceVariant: ColorName.onSurfaceDarkMuted,
       error: ColorName.error,
       onError: Colors.white,
-      outline: ColorName.outline.withValues(alpha: 0.4),
+      outline: ColorName.outlineDark,
       surfaceContainerHighest: ColorName.surfaceCardDark,
     );
 
@@ -181,29 +182,107 @@ abstract final class AppTheme {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.transparent,
         foregroundColor: ColorName.onSurfaceDark,
-        titleTextStyle: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
+        titleTextStyle: textTheme.titleLarge?.copyWith(
+          fontWeight: FontWeight.w700,
+          letterSpacing: -0.3,
+        ),
       ),
       cardTheme: CardThemeData(
         color: ColorName.surfaceCardDark,
-        elevation: 0,
+        elevation: WidgetSizesEnum.divider.value * 2,
+        shadowColor: Colors.black.withValues(alpha: 0.45),
+        surfaceTintColor: ColorName.themeDarkPrimary.withValues(alpha: 0.06),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(WidgetSizesEnum.cardRadius.value),
-          side: BorderSide(color: ColorName.outline.withValues(alpha: 0.25)),
+          side: BorderSide(color: ColorName.outlineDark.withValues(alpha: 0.65)),
         ),
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
+          elevation: 0,
+          padding: EdgeInsets.symmetric(
+            horizontal: WidgetSizesEnum.cardRadius.value * 1.25,
+            vertical: WidgetSizesEnum.divider.value * 6,
+          ),
           shape: const StadiumBorder(),
           textStyle: textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
         ),
       ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          padding: EdgeInsets.symmetric(
+            horizontal: WidgetSizesEnum.cardRadius.value * 1.25,
+            vertical: WidgetSizesEnum.divider.value * 6,
+          ),
+          shape: const StadiumBorder(),
+          side: BorderSide(color: ColorName.outlineDark, width: 1.5),
+          foregroundColor: ColorName.themeDarkPrimary,
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: ColorName.themeDarkAccent,
+          textStyle: textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
+        ),
+      ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: ColorName.themeDarkPrimary,
+        foregroundColor: ColorName.themeDarkOnPrimary,
+        elevation: WidgetSizesEnum.fabYOffset.value,
+        highlightElevation: WidgetSizesEnum.fabYOffset.value + 2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(WidgetSizesEnum.cardRadius.value * 1.5),
+        ),
+      ),
+      navigationBarTheme: NavigationBarThemeData(
+        backgroundColor: ColorName.surfaceCardDark,
+        indicatorColor: ColorName.themeDarkPrimary.withValues(alpha: 0.22),
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+      ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: ColorName.surfaceCardDark,
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: WidgetSizesEnum.cardRadius.value * 1.1,
+          vertical: WidgetSizesEnum.divider.value * 10,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(WidgetSizesEnum.inputFieldRadius.value),
+          borderSide: BorderSide(color: ColorName.outlineDark.withValues(alpha: 0.9)),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(WidgetSizesEnum.inputFieldRadius.value),
+          borderSide: BorderSide(color: ColorName.outlineDark.withValues(alpha: 0.9)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(WidgetSizesEnum.inputFieldRadius.value),
+          borderSide: BorderSide(color: ColorName.themeDarkAccent, width: 2),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(WidgetSizesEnum.inputFieldRadius.value),
+          borderSide: BorderSide(color: ColorName.error.withValues(alpha: 0.85)),
+        ),
+        labelStyle: TextStyle(color: ColorName.onSurfaceDarkMuted, fontSize: TextSizesEnum.body.value),
+        floatingLabelStyle: WidgetStateTextStyle.resolveWith((Set<WidgetState> states) {
+          return TextStyle(
+            color: states.contains(WidgetState.focused)
+                ? ColorName.themeDarkAccent
+                : ColorName.onSurfaceDarkMuted,
+            fontWeight: FontWeight.w600,
+          );
+        }),
+      ),
+      segmentedButtonTheme: SegmentedButtonThemeData(
+        style: ButtonStyle(
+          side: WidgetStateProperty.all(BorderSide(color: ColorName.outlineDark)),
+          shape: WidgetStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(WidgetSizesEnum.inputFieldRadius.value),
+            ),
+          ),
         ),
       ),
+      dividerTheme: DividerThemeData(color: ColorName.outlineDark.withValues(alpha: 0.55), thickness: 1),
     );
   }
 }

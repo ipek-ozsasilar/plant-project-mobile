@@ -1,10 +1,12 @@
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
-import 'package:bitirme_mobile/core/enums/strings_enum.dart';
+import 'package:bitirme_mobile/core/locale/l10n_context.dart';
 import 'package:bitirme_mobile/core/navigation/app_paths.dart';
 import 'package:bitirme_mobile/core/services/auth_storage_service.dart';
 import 'package:bitirme_mobile/core/widgets/button/app_primary_button.dart';
+import 'package:bitirme_mobile/core/theme/app_palette.dart';
 import 'package:bitirme_mobile/core/widgets/surface/soft_elevation_card.dart';
 import 'package:bitirme_mobile/gen/colors.gen.dart';
+import 'package:bitirme_mobile/l10n/app_localizations.dart';
 import 'package:bitirme_mobile/service_locator/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -50,10 +52,12 @@ class _OnboardingViewState extends State<OnboardingView> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final AppLocalizations l10n = context.l10n;
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.dark,
+      value: isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
       child: Scaffold(
-        backgroundColor: ColorName.surface,
+        backgroundColor: context.palSurface,
         body: Container(
           width: double.infinity,
           height: double.infinity,
@@ -61,11 +65,17 @@ class _OnboardingViewState extends State<OnboardingView> {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: <Color>[
-                ColorName.surface,
-                ColorName.primaryLight.withValues(alpha: 0.55),
-                ColorName.gradientEnd.withValues(alpha: 0.25),
-              ],
+              colors: isDark
+                  ? <Color>[
+                      ColorName.surfaceDark,
+                      ColorName.themeDarkHeader1,
+                      ColorName.themeDarkHeader2,
+                    ]
+                  : <Color>[
+                      ColorName.surface,
+                      ColorName.primaryLight.withValues(alpha: 0.55),
+                      ColorName.gradientEnd.withValues(alpha: 0.25),
+                    ],
             ),
           ),
           child: SafeArea(
@@ -79,10 +89,10 @@ class _OnboardingViewState extends State<OnboardingView> {
                       TextButton(
                         onPressed: _finish,
                         child: Text(
-                          StringsEnum.onboardingSkip.value,
+                          l10n.onboardingSkip,
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
-                            color: ColorName.primary,
+                            color: context.palPrimary,
                             fontSize: TextSizesEnum.subtitle.value,
                           ),
                         ),
@@ -97,24 +107,24 @@ class _OnboardingViewState extends State<OnboardingView> {
                     children: <Widget>[
                       _OnboardingSlide(
                         icon: Icons.auto_awesome_rounded,
-                        iconColor: ColorName.primary,
-                        title: StringsEnum.onboardingTitle1.value,
-                        body: StringsEnum.onboardingBody1.value,
-                        chipLabel: StringsEnum.onboardingStep1.value,
+                        iconColor: context.palPrimary,
+                        title: l10n.onboardingTitle1,
+                        body: l10n.onboardingBody1,
+                        chipLabel: l10n.onboardingStep1,
                       ),
                       _OnboardingSlide(
                         icon: Icons.grid_view_rounded,
-                        iconColor: ColorName.accent,
-                        title: StringsEnum.onboardingTitle2.value,
-                        body: StringsEnum.onboardingBody2.value,
-                        chipLabel: StringsEnum.onboardingStep2.value,
+                        iconColor: context.palAccent,
+                        title: l10n.onboardingTitle2,
+                        body: l10n.onboardingBody2,
+                        chipLabel: l10n.onboardingStep2,
                       ),
                       _OnboardingSlide(
                         icon: Icons.insights_rounded,
                         iconColor: ColorName.info,
-                        title: StringsEnum.onboardingTitle3.value,
-                        body: StringsEnum.onboardingBody3.value,
-                        chipLabel: StringsEnum.onboardingStep3.value,
+                        title: l10n.onboardingTitle3,
+                        body: l10n.onboardingBody3,
+                        chipLabel: l10n.onboardingStep3,
                       ),
                     ],
                   ),
@@ -135,7 +145,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                             height: WidgetSizesEnum.divider.value * 3,
                             width: active ? WidgetSizesEnum.cardRadius.value : WidgetSizesEnum.divider.value * 3,
                             decoration: BoxDecoration(
-                              color: active ? ColorName.primary : ColorName.outline.withValues(alpha: 0.8),
+                              color: active ? context.palPrimary : context.palOutline.withValues(alpha: 0.8),
                               borderRadius: BorderRadius.circular(WidgetSizesEnum.chipRadius.value),
                             ),
                           );
@@ -143,9 +153,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                       ),
                       SizedBox(height: WidgetSizesEnum.cardRadius.value * 1.1),
                       AppPrimaryButton(
-                        label: _index < 2
-                            ? StringsEnum.onboardingNext.value
-                            : StringsEnum.onboardingStart.value,
+                        label: _index < 2 ? l10n.onboardingNext : l10n.onboardingStart,
                         onPressed: _next,
                       ),
                     ],
@@ -188,7 +196,7 @@ class _OnboardingSlide extends StatelessWidget {
             height: WidgetSizesEnum.decorativeBlob.value * 0.75,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: ColorName.primary.withValues(alpha: 0.06),
+              color: context.palPrimary.withValues(alpha: 0.06),
             ),
           ),
         ),
@@ -200,7 +208,7 @@ class _OnboardingSlide extends StatelessWidget {
             height: WidgetSizesEnum.decorativeBlob.value * 0.45,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: ColorName.accent.withValues(alpha: 0.12),
+              color: context.palAccent.withValues(alpha: 0.12),
             ),
           ),
         ),
@@ -223,14 +231,14 @@ class _OnboardingSlide extends StatelessWidget {
                       vertical: WidgetSizesEnum.divider.value * 5,
                     ),
                     decoration: BoxDecoration(
-                      color: ColorName.primaryLight.withValues(alpha: 0.85),
+                      color: context.palPrimarySoftBg,
                       borderRadius: BorderRadius.circular(WidgetSizesEnum.chipRadius.value),
                     ),
                     child: Text(
                       chipLabel,
                       style: TextStyle(
                         fontWeight: FontWeight.w800,
-                        color: ColorName.primaryDark,
+                        color: context.palOnSurface,
                         fontSize: TextSizesEnum.caption.value,
                       ),
                     ),
@@ -246,7 +254,7 @@ class _OnboardingSlide extends StatelessWidget {
                       end: Alignment.bottomRight,
                       colors: <Color>[
                         iconColor.withValues(alpha: 0.2),
-                        ColorName.gradientEnd.withValues(alpha: 0.35),
+                        context.palAccent.withValues(alpha: 0.35),
                       ],
                     ),
                   ),
@@ -262,7 +270,7 @@ class _OnboardingSlide extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: tt.titleLarge?.copyWith(
                     fontWeight: FontWeight.w800,
-                    color: ColorName.onSurface,
+                    color: context.palOnSurface,
                     letterSpacing: -0.3,
                   ),
                 ),
@@ -271,7 +279,7 @@ class _OnboardingSlide extends StatelessWidget {
                   body,
                   textAlign: TextAlign.center,
                   style: tt.bodyLarge?.copyWith(
-                    color: ColorName.onSurfaceMuted,
+                    color: context.palMuted,
                     height: 1.45,
                     fontWeight: FontWeight.w500,
                   ),

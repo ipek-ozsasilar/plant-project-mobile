@@ -3,16 +3,22 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:bitirme_mobile/core/env/env.dart';
-import 'package:bitirme_mobile/core/enums/error_strings_enum.dart';
 import 'package:bitirme_mobile/core/services/app_logger.dart';
+import 'package:bitirme_mobile/core/utils/confidence_format.dart';
+import 'package:bitirme_mobile/core/services/tflite_plant_inference_service.dart';
 import 'package:bitirme_mobile/models/inference_result_model.dart';
 import 'package:http/http.dart' as http;
 
-/// Bitki türü ve hastalık tahmini için API veya mock uygulaması.
+/// Bitki türü ve hastalık tahmini: mock, yerel TFLite veya HTTP API.
 class InferenceApiService {
-  InferenceApiService({required AppLogger logger}) : _logger = logger;
+  InferenceApiService({
+    required AppLogger logger,
+    required TflitePlantInferenceService tflite,
+  })  : _logger = logger,
+        _tflite = tflite;
 
   final AppLogger _logger;
+  final TflitePlantInferenceService _tflite;
   final Random _random = Random();
 
   static const List<String> _mockSpecies = <String>[
@@ -26,18 +32,26 @@ class InferenceApiService {
     'Lavanta',
   ];
 
-  static const List<String> _mockDiseases = <String>[
-    'Sağlıklı / belirsiz',
-    'Yaprak lekesi',
-    'Külleme',
-    'Pas hastalığı',
-    'Kurumaya bağlı stres',
-    'Mosaic virüs belirtileri',
+  static const List<String> _mockDiseaseKeys = <String>[
+    'healthy',
+    'leaf_spot',
+    'powdery_mildew',
+    'rust',
+    'bacterial',
+    'viral',
   ];
 
   Future<InferenceResultModel> predictSpecies(Uint8List imageBytes) async {
     if (Env.useMockInference) {
       return _mockResult(_mockSpecies);
+    }
+    if (Env.useLocalTflite) {
+      try {
+        return await _tflite.predictSpecies(imageBytes);
+      } catch (e, st) {
+        _logger.e('inference_tflite_species', e, st);
+        rethrow;
+      }
     }
     try {
       final Uri uri = Uri.parse('${Env.apiBaseUrl}/predict/species');
@@ -56,14 +70,22 @@ class InferenceApiService {
       }
       throw Exception('HTTP ${streamed.statusCode}');
     } catch (e, st) {
-      _logger.e(ErrorStringsEnum.inference.value, e, st);
+      _logger.e('inference_http_species', e, st);
       rethrow;
     }
   }
 
   Future<InferenceResultModel> predictDisease(Uint8List imageBytes) async {
     if (Env.useMockInference) {
-      return _mockResult(_mockDiseases);
+      return _mockResult(_mockDiseaseKeys);
+    }
+    if (Env.useLocalTflite) {
+      try {
+        return await _tflite.predictDisease(imageBytes);
+      } catch (e, st) {
+        _logger.e('inference_tflite_disease', e, st);
+        rethrow;
+      }
     }
     try {
       final Uri uri = Uri.parse('${Env.apiBaseUrl}/predict/disease');
@@ -82,7 +104,7 @@ class InferenceApiService {
       }
       throw Exception('HTTP ${streamed.statusCode}');
     } catch (e, st) {
-      _logger.e(ErrorStringsEnum.inference.value, e, st);
+      _logger.e('inference_http_disease', e, st);
       rethrow;
     }
   }
@@ -122,7 +144,7 @@ class InferenceApiService {
     return InferenceResultModel(
       top: InferenceClassScoreModel(
         label: topLabel,
-        confidence: topConf.toDouble(),
+        confidence: confidenceToUnit(topConf),
       ),
     );
   }

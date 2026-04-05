@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:bitirme_mobile/core/enums/error_strings_enum.dart';
 import 'package:bitirme_mobile/core/services/app_logger.dart';
 import 'package:bitirme_mobile/models/scan_record_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,7 +34,7 @@ class ScanHistoryService {
       out.sort((ScanRecordModel a, ScanRecordModel b) => b.createdAt.compareTo(a.createdAt));
       return out;
     } catch (e, st) {
-      _logger.e(ErrorStringsEnum.storage.value, e, st);
+      _logger.e('scan_history_storage', e, st);
       return <ScanRecordModel>[];
     }
   }
@@ -49,7 +48,7 @@ class ScanHistoryService {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString(_keyRecords, json.encode(encoded));
     } catch (e, st) {
-      _logger.e(ErrorStringsEnum.storage.value, e, st);
+      _logger.e('scan_history_storage', e, st);
     }
   }
 
@@ -58,7 +57,7 @@ class ScanHistoryService {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.remove(_keyRecords);
     } catch (e, st) {
-      _logger.e(ErrorStringsEnum.storage.value, e, st);
+      _logger.e('scan_history_storage', e, st);
     }
   }
 }

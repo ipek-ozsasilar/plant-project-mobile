@@ -19,8 +19,28 @@ class $AssetsColorsGen {
   List<String> get values => [colors];
 }
 
+class $AssetsMlGen {
+  const $AssetsMlGen();
+
+  /// File path: assets/ml/class_names.json
+  String get classNames => 'assets/ml/class_names.json';
+
+  /// File path: assets/ml/disease_class_names.json
+  String get diseaseClassNames => 'assets/ml/disease_class_names.json';
+
+  /// File path: assets/ml/plant_disease_model.tflite
+  String get plantDiseaseModel => 'assets/ml/plant_disease_model.tflite';
+
+  /// File path: assets/ml/plant_species_model.tflite
+  String get plantSpeciesModel => 'assets/ml/plant_species_model.tflite';
+
+  /// List of all assets
+  List<String> get values => [classNames, diseaseClassNames, plantDiseaseModel, plantSpeciesModel];
+}
+
 class Assets {
   const Assets._();
 
   static const $AssetsColorsGen colors = $AssetsColorsGen();
+  static const $AssetsMlGen ml = $AssetsMlGen();
 }

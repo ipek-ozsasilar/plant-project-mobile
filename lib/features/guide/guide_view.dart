@@ -1,6 +1,6 @@
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
-import 'package:bitirme_mobile/core/enums/strings_enum.dart';
-import 'package:bitirme_mobile/gen/colors.gen.dart';
+import 'package:bitirme_mobile/core/locale/l10n_context.dart';
+import 'package:bitirme_mobile/core/theme/app_palette.dart';
 import 'package:flutter/material.dart';
 
 /// Bakım ve fotoğraf ipuçları rehberi.
@@ -10,25 +10,25 @@ class GuideView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(StringsEnum.guideTitle.value)),
+      appBar: AppBar(title: Text(context.l10n.guideTitle)),
       body: ListView(
         padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 1.25),
         children: <Widget>[
           _Section(
-            title: StringsEnum.guideSectionPhoto.value,
-            body: StringsEnum.guidePhotoTips.value,
+            title: context.l10n.guideSectionPhoto,
+            body: context.l10n.guidePhotoTips,
             icon: Icons.photo_camera_outlined,
           ),
           SizedBox(height: WidgetSizesEnum.cardRadius.value),
           _Section(
-            title: StringsEnum.guideSectionMulti.value,
-            body: StringsEnum.guideMultiTips.value,
+            title: context.l10n.guideSectionMulti,
+            body: context.l10n.guideMultiTips,
             icon: Icons.grid_on_outlined,
           ),
           SizedBox(height: WidgetSizesEnum.cardRadius.value),
           _Section(
-            title: StringsEnum.guideSectionDisease.value,
-            body: StringsEnum.guideDiseaseTips.value,
+            title: context.l10n.guideSectionDisease,
+            body: context.l10n.guideDiseaseTips,
             icon: Icons.biotech_outlined,
           ),
         ],
@@ -56,7 +56,7 @@ class _Section extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Icon(icon, color: ColorName.primary, size: IconSizesEnum.large.value),
+            Icon(icon, color: context.palPrimary, size: IconSizesEnum.large.value),
             SizedBox(width: WidgetSizesEnum.cardRadius.value),
             Expanded(
               child: Column(
@@ -74,7 +74,7 @@ class _Section extends StatelessWidget {
                     body,
                     style: TextStyle(
                       fontSize: TextSizesEnum.body.value,
-                      color: ColorName.onSurfaceMuted,
+                      color: context.palMuted,
                       height: 1.4,
                     ),
                   ),

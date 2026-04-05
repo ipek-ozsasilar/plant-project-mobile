@@ -1,6 +1,6 @@
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
-import 'package:bitirme_mobile/core/enums/strings_enum.dart';
-import 'package:bitirme_mobile/gen/colors.gen.dart';
+import 'package:bitirme_mobile/core/locale/l10n_context.dart';
+import 'package:bitirme_mobile/core/theme/app_palette.dart';
 import 'package:flutter/material.dart';
 
 /// Giriş / kayıt üst bölümü: degrade arka plan ve marka alanı.
@@ -19,11 +19,7 @@ class AuthGradientHero extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: <Color>[
-                ColorName.primary,
-                ColorName.accent,
-                ColorName.gradientEnd,
-              ],
+              colors: context.palAuthHeroGradient,
             ),
           ),
         ),
@@ -80,7 +76,7 @@ class AuthGradientHero extends StatelessWidget {
                   ),
                   SizedBox(height: WidgetSizesEnum.cardRadius.value * 1.25),
                   Text(
-                    StringsEnum.appName.value,
+                    context.l10n.appName,
                     textAlign: TextAlign.center,
                     style: tt.headlineMedium?.copyWith(
                       color: Colors.white,
@@ -90,7 +86,7 @@ class AuthGradientHero extends StatelessWidget {
                   ),
                   SizedBox(height: WidgetSizesEnum.divider.value * 6),
                   Text(
-                    StringsEnum.appTagline.value,
+                    context.l10n.appTagline,
                     textAlign: TextAlign.center,
                     style: tt.bodyLarge?.copyWith(
                       color: Colors.white.withValues(alpha: 0.92),

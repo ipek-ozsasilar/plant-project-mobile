@@ -32,14 +32,20 @@ class ColorName {
   /// Color: #102A27
   static const Color onSurface = Color(0xFF102A27);
 
-  /// Color: #E8F0EC
-  static const Color onSurfaceDark = Color(0xFFE8F0EC);
+  /// Color: #FAFAFA
+  static const Color onSurfaceDark = Color(0xFFFAFAFA);
+
+  /// Color: #A1A1AA
+  static const Color onSurfaceDarkMuted = Color(0xFFA1A1AA);
 
   /// Color: #5C7068
   static const Color onSurfaceMuted = Color(0xFF5C7068);
 
   /// Color: #C5D4CC
   static const Color outline = Color(0xFFC5D4CC);
+
+  /// Color: #3F3F46
+  static const Color outlineDark = Color(0xFF3F3F46);
 
   /// Color: #1B4332
   static const Color primary = Color(0xFF1B4332);
@@ -59,11 +65,29 @@ class ColorName {
   /// Color: #FFFFFF
   static const Color surfaceCard = Color(0xFFFFFFFF);
 
-  /// Color: #1A2E26
-  static const Color surfaceCardDark = Color(0xFF1A2E26);
+  /// Color: #18181B
+  static const Color surfaceCardDark = Color(0xFF18181B);
 
-  /// Color: #0D1F18
-  static const Color surfaceDark = Color(0xFF0D1F18);
+  /// Color: #09090B
+  static const Color surfaceDark = Color(0xFF09090B);
+
+  /// Color: #22D3EE
+  static const Color themeDarkAccent = Color(0xFF22D3EE);
+
+  /// Color: #27272A
+  static const Color themeDarkHeader1 = Color(0xFF27272A);
+
+  /// Color: #3F3F46
+  static const Color themeDarkHeader2 = Color(0xFF3F3F46);
+
+  /// Color: #52525B
+  static const Color themeDarkHeader3 = Color(0xFF52525B);
+
+  /// Color: #09090B
+  static const Color themeDarkOnPrimary = Color(0xFF09090B);
+
+  /// Color: #E4E4E7
+  static const Color themeDarkPrimary = Color(0xFFE4E4E7);
 
   /// Color: #E9C46A
   static const Color warning = Color(0xFFE9C46A);

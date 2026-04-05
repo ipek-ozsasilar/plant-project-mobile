@@ -3,6 +3,7 @@ import 'package:bitirme_mobile/features/about/about_view.dart';
 import 'package:bitirme_mobile/features/auth/login/login_view.dart';
 import 'package:bitirme_mobile/features/auth/register/register_view.dart';
 import 'package:bitirme_mobile/features/guide/guide_view.dart';
+import 'package:bitirme_mobile/features/language/language_select_view.dart';
 import 'package:bitirme_mobile/features/history/history_view.dart';
 import 'package:bitirme_mobile/features/home/home_view.dart';
 import 'package:bitirme_mobile/features/more/more_view.dart';
@@ -21,6 +22,10 @@ final Provider<GoRouter> appRouterProvider = Provider<GoRouter>((Ref ref) {
   return GoRouter(
     initialLocation: AppPaths.splash,
     routes: <RouteBase>[
+      GoRoute(
+        path: AppPaths.language,
+        builder: (BuildContext context, GoRouterState state) => const LanguageSelectView(),
+      ),
       GoRoute(
         path: AppPaths.splash,
         builder: (BuildContext context, GoRouterState state) => const SplashView(),

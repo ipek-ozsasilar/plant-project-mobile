@@ -2,7 +2,7 @@ import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
-import 'package:bitirme_mobile/gen/colors.gen.dart';
+import 'package:bitirme_mobile/core/theme/app_palette.dart';
 import 'package:bitirme_mobile/models/plant_region_model.dart';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
@@ -52,6 +52,7 @@ class _PlantRegionPickerWidgetState extends State<PlantRegionPickerWidget> {
         final double scale = math.min(maxW / iw, maxH / ih);
         final double dw = iw * scale;
         final double dh = ih * scale;
+        final Color accent = context.palPrimary;
         return Center(
           child: SizedBox(
             width: dw,
@@ -89,15 +90,15 @@ class _PlantRegionPickerWidgetState extends State<PlantRegionPickerWidget> {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: sel ? ColorName.primary : Colors.white70,
+                            color: sel ? accent : Colors.white70,
                             width: 2,
                           ),
-                          color: (sel ? ColorName.primary : Colors.white54).withValues(alpha: 0.15),
+                          color: (sel ? accent : Colors.white54).withValues(alpha: 0.15),
                         ),
                         child: Text(
                           '${idx + 1}',
                           style: TextStyle(
-                            color: sel ? ColorName.primary : ColorName.onSurface,
+                            color: sel ? accent : Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: TextSizesEnum.caption.value,
                           ),

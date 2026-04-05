@@ -71,3 +71,10 @@ coverage/
 
 # Cursor / IDE (isteğe bağlı; paylaşılacaksa yorum satırını kaldırın)
 #.vscode/
+
+# Büyük TFLite / ML ağırlıkları (repoda tutulmayacaksa kullanın; zaten izlenen dosyalar için: git rm --cached <dosya>)
+# *.tflite
+# assets/ml/*.tflite
+
+# Android NDK / CMake önbelleği
+**/.cxx/

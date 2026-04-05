@@ -1,4 +1,4 @@
-import 'package:bitirme_mobile/core/enums/error_strings_enum.dart';
+import 'package:bitirme_mobile/core/constants/preference_keys.dart';
 import 'package:bitirme_mobile/core/services/app_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -7,6 +7,16 @@ class AuthStorageService {
   AuthStorageService({required AppLogger logger}) : _logger = logger;
 
   final AppLogger _logger;
+
+  Future<bool> isLanguageSelectionComplete() async {
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      return prefs.getBool(PreferenceKeys.languageSelectionDone) ?? false;
+    } catch (e, st) {
+      _logger.e('storage_language_flag', e, st);
+      return false;
+    }
+  }
 
   static const String _keyOnboarding = 'onboarding_done';
   static const String _keyEmail = 'user_email';
@@ -17,7 +27,7 @@ class AuthStorageService {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       return prefs.getBool(_keyOnboarding) ?? false;
     } catch (e, st) {
-      _logger.e(ErrorStringsEnum.storage.value, e, st);
+      _logger.e('storage', e, st);
       return false;
     }
   }
@@ -27,7 +37,7 @@ class AuthStorageService {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool(_keyOnboarding, true);
     } catch (e, st) {
-      _logger.e(ErrorStringsEnum.storage.value, e, st);
+      _logger.e('storage', e, st);
     }
   }
 
@@ -36,7 +46,7 @@ class AuthStorageService {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       return prefs.getString(_keyEmail);
     } catch (e, st) {
-      _logger.e(ErrorStringsEnum.storage.value, e, st);
+      _logger.e('storage', e, st);
       return null;
     }
   }
@@ -46,7 +56,7 @@ class AuthStorageService {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       return prefs.getString(_keyName);
     } catch (e, st) {
-      _logger.e(ErrorStringsEnum.storage.value, e, st);
+      _logger.e('storage', e, st);
       return null;
     }
   }
@@ -57,7 +67,7 @@ class AuthStorageService {
       await prefs.setString(_keyEmail, email);
       await prefs.setString(_keyName, name);
     } catch (e, st) {
-      _logger.e(ErrorStringsEnum.storage.value, e, st);
+      _logger.e('storage', e, st);
     }
   }
 
@@ -67,7 +77,7 @@ class AuthStorageService {
       await prefs.remove(_keyEmail);
       await prefs.remove(_keyName);
     } catch (e, st) {
-      _logger.e(ErrorStringsEnum.storage.value, e, st);
+      _logger.e('storage', e, st);
     }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
-import 'package:bitirme_mobile/core/enums/strings_enum.dart';
+import 'package:bitirme_mobile/core/locale/l10n_context.dart';
+import 'package:bitirme_mobile/core/theme/app_palette.dart';
 import 'package:bitirme_mobile/gen/colors.gen.dart';
 import 'package:flutter/material.dart';
 
@@ -22,9 +23,9 @@ class GoogleSignInOutlineButton extends StatelessWidget {
       child: OutlinedButton(
         onPressed: isLoading ? null : onPressed,
         style: OutlinedButton.styleFrom(
-          backgroundColor: ColorName.surfaceCard,
-          foregroundColor: ColorName.onSurface,
-          side: BorderSide(color: ColorName.outline.withValues(alpha: 0.9), width: 1.5),
+          backgroundColor: context.palSurfaceCard,
+          foregroundColor: context.palOnSurface,
+          side: BorderSide(color: context.palOutline.withValues(alpha: 0.9), width: 1.5),
           shape: const StadiumBorder(),
         ),
         child: isLoading
@@ -33,7 +34,7 @@ class GoogleSignInOutlineButton extends StatelessWidget {
                 width: 22,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  color: ColorName.primary,
+                  color: context.palPrimary,
                 ),
               )
             : Row(
@@ -42,7 +43,7 @@ class GoogleSignInOutlineButton extends StatelessWidget {
                   _GoogleGMark(size: IconSizesEnum.medium.value),
                   SizedBox(width: WidgetSizesEnum.cardRadius.value * 0.75),
                   Text(
-                    StringsEnum.loginWithGoogle.value,
+                    context.l10n.loginWithGoogle,
                     style: TextStyle(
                       fontSize: TextSizesEnum.subtitle.value,
                       fontWeight: FontWeight.w600,
@@ -69,7 +70,7 @@ class _GoogleGMark extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(size * 0.2),
           color: Colors.white,
-          border: Border.all(color: ColorName.outline.withValues(alpha: 0.5)),
+          border: Border.all(color: context.palOutline.withValues(alpha: 0.5)),
         ),
         child: Center(
           child: Text(

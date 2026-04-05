@@ -1,6 +1,7 @@
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
-import 'package:bitirme_mobile/core/enums/strings_enum.dart';
+import 'package:bitirme_mobile/core/locale/l10n_context.dart';
 import 'package:bitirme_mobile/core/navigation/app_paths.dart';
+import 'package:bitirme_mobile/core/theme/app_palette.dart';
 import 'package:bitirme_mobile/core/widgets/surface/soft_elevation_card.dart';
 import 'package:bitirme_mobile/gen/colors.gen.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class MoreView extends StatelessWidget {
     final double pad = WidgetSizesEnum.cardRadius.value * 1.15;
 
     return Scaffold(
-      backgroundColor: ColorName.surface,
+      backgroundColor: context.palSurface,
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: <Widget>[
@@ -32,18 +33,18 @@ class MoreView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    StringsEnum.moreScreenTitle.value,
+                    context.l10n.moreScreenTitle,
                     style: tt.headlineSmall?.copyWith(
                       fontWeight: FontWeight.w800,
-                      color: ColorName.onSurface,
+                      color: context.palOnSurface,
                       letterSpacing: -0.4,
                     ),
                   ),
                   SizedBox(height: WidgetSizesEnum.divider.value * 8),
                   Text(
-                    StringsEnum.moreScreenSubtitle.value,
+                    context.l10n.moreScreenSubtitle,
                     style: tt.bodyLarge?.copyWith(
-                      color: ColorName.onSurfaceMuted,
+                      color: context.palMuted,
                       height: 1.4,
                       fontWeight: FontWeight.w500,
                     ),
@@ -65,34 +66,34 @@ class MoreView extends StatelessWidget {
                 <Widget>[
                   _MoreTileCard(
                     icon: Icons.menu_book_rounded,
-                    iconBg: ColorName.primary.withValues(alpha: 0.12),
-                    iconColor: ColorName.primary,
-                    title: StringsEnum.guideTitle.value,
-                    subtitle: StringsEnum.moreTileGuideDesc.value,
+                    iconBg: context.palPrimary.withValues(alpha: 0.12),
+                    iconColor: context.palPrimary,
+                    title: context.l10n.guideTitle,
+                    subtitle: context.l10n.moreTileGuideDesc,
                     onTap: () => context.push(AppPaths.guide),
                   ),
                   _MoreTileCard(
                     icon: Icons.person_rounded,
-                    iconBg: ColorName.accent.withValues(alpha: 0.14),
-                    iconColor: ColorName.accent,
-                    title: StringsEnum.profileTitle.value,
-                    subtitle: StringsEnum.moreTileProfileDesc.value,
+                    iconBg: context.palAccent.withValues(alpha: 0.14),
+                    iconColor: context.palAccent,
+                    title: context.l10n.profileTitle,
+                    subtitle: context.l10n.moreTileProfileDesc,
                     onTap: () => context.push(AppPaths.profile),
                   ),
                   _MoreTileCard(
                     icon: Icons.settings_rounded,
                     iconBg: ColorName.info.withValues(alpha: 0.14),
                     iconColor: ColorName.info,
-                    title: StringsEnum.settingsTitle.value,
-                    subtitle: StringsEnum.moreTileSettingsDesc.value,
+                    title: context.l10n.settingsTitle,
+                    subtitle: context.l10n.moreTileSettingsDesc,
                     onTap: () => context.push(AppPaths.settings),
                   ),
                   _MoreTileCard(
                     icon: Icons.info_outline_rounded,
                     iconBg: ColorName.warning.withValues(alpha: 0.35),
-                    iconColor: ColorName.primaryDark,
-                    title: StringsEnum.aboutTitle.value,
-                    subtitle: StringsEnum.moreTileAboutDesc.value,
+                    iconColor: context.palOnSurface,
+                    title: context.l10n.aboutTitle,
+                    subtitle: context.l10n.moreTileAboutDesc,
                     onTap: () => context.push(AppPaths.about),
                   ),
                 ],
@@ -145,7 +146,7 @@ class _MoreTileCard extends StatelessWidget {
               Icon(
                 Icons.north_east_rounded,
                 size: IconSizesEnum.small.value,
-                color: ColorName.onSurfaceMuted,
+                color: context.palMuted,
               ),
             ],
           ),
@@ -156,7 +157,7 @@ class _MoreTileCard extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: tt.titleSmall?.copyWith(
               fontWeight: FontWeight.w800,
-              color: ColorName.onSurface,
+              color: context.palOnSurface,
             ),
           ),
           SizedBox(height: WidgetSizesEnum.divider.value * 6),
@@ -165,7 +166,7 @@ class _MoreTileCard extends StatelessWidget {
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
             style: tt.bodySmall?.copyWith(
-              color: ColorName.onSurfaceMuted,
+              color: context.palMuted,
               height: 1.35,
             ),
           ),

@@ -1,6 +1,6 @@
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
-import 'package:bitirme_mobile/core/enums/strings_enum.dart';
-import 'package:bitirme_mobile/gen/colors.gen.dart';
+import 'package:bitirme_mobile/core/locale/l10n_context.dart';
+import 'package:bitirme_mobile/core/theme/app_palette.dart';
 import 'package:flutter/material.dart';
 
 /// Tarama geçmişi boşken gösterilen zengin boş durum.
@@ -16,12 +16,12 @@ class HomeEmptyState extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 1.35),
       decoration: BoxDecoration(
-        color: ColorName.surfaceCard,
+        color: context.palSurfaceCard,
         borderRadius: BorderRadius.circular(WidgetSizesEnum.cardRadius.value * 1.1),
-        border: Border.all(color: ColorName.outline.withValues(alpha: 0.5)),
+        border: Border.all(color: context.palOutline.withValues(alpha: 0.5)),
         boxShadow: <BoxShadow>[
           BoxShadow(
-            color: ColorName.onSurface.withValues(alpha: 0.05),
+            color: context.palOnSurface.withValues(alpha: 0.05),
             blurRadius: WidgetSizesEnum.cardShadowBlur.value * 0.8,
             offset: Offset(0, WidgetSizesEnum.cardShadowOffsetY.value * 0.5),
           ),
@@ -34,33 +34,30 @@ class HomeEmptyState extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: LinearGradient(
-                colors: <Color>[
-                  ColorName.primaryLight.withValues(alpha: 0.85),
-                  ColorName.gradientEnd.withValues(alpha: 0.5),
-                ],
+                colors: context.palHeroCardGradient,
               ),
             ),
             child: Icon(
               Icons.park_rounded,
               size: ImageSizesEnum.preview.value * 0.55,
-              color: ColorName.primary,
+              color: context.palOnSurface,
             ),
           ),
           SizedBox(height: WidgetSizesEnum.cardRadius.value * 1.25),
           Text(
-            StringsEnum.homeEmptyTitle.value,
+            context.l10n.homeEmptyTitle,
             textAlign: TextAlign.center,
             style: tt.titleMedium?.copyWith(
               fontWeight: FontWeight.w800,
-              color: ColorName.onSurface,
+              color: context.palOnSurface,
             ),
           ),
           SizedBox(height: WidgetSizesEnum.divider.value * 8),
           Text(
-            StringsEnum.homeEmptySubtitle.value,
+            context.l10n.homeEmptySubtitle,
             textAlign: TextAlign.center,
             style: tt.bodyMedium?.copyWith(
-              color: ColorName.onSurfaceMuted,
+              color: context.palMuted,
               height: 1.45,
             ),
           ),
@@ -68,7 +65,7 @@ class HomeEmptyState extends StatelessWidget {
           FilledButton.icon(
             onPressed: onStartScan,
             icon: Icon(Icons.photo_camera_rounded, size: IconSizesEnum.medium.value),
-            label: Text(StringsEnum.homeStartScan.value),
+            label: Text(context.l10n.homeStartScan),
             style: FilledButton.styleFrom(
               padding: EdgeInsets.symmetric(
                 horizontal: WidgetSizesEnum.cardRadius.value * 1.5,

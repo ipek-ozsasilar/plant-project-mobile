@@ -1,15 +1,18 @@
 import 'dart:typed_data';
 
-import 'package:bitirme_mobile/core/enums/error_strings_enum.dart';
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
-import 'package:bitirme_mobile/core/enums/strings_enum.dart';
+import 'package:bitirme_mobile/core/locale/l10n_context.dart';
+import 'package:bitirme_mobile/core/locale/scan_flow_localized_error.dart';
 import 'package:bitirme_mobile/core/mixins/scaffold_message_mixin.dart';
 import 'package:bitirme_mobile/core/services/app_logger.dart';
+import 'package:bitirme_mobile/core/services/disease_label_display.dart';
+import 'package:bitirme_mobile/core/theme/app_palette.dart';
+import 'package:bitirme_mobile/core/utils/confidence_format.dart';
 import 'package:bitirme_mobile/core/widgets/button/app_primary_button.dart';
 import 'package:bitirme_mobile/features/history/provider/history_provider.dart';
 import 'package:bitirme_mobile/features/scan/provider/scan_flow_provider.dart';
 import 'package:bitirme_mobile/features/scan/sub_view/plant_region_picker_widget.dart';
-import 'package:bitirme_mobile/gen/colors.gen.dart';
+import 'package:bitirme_mobile/l10n/app_localizations.dart';
 import 'package:bitirme_mobile/models/inference_result_model.dart';
 import 'package:bitirme_mobile/models/scan_record_model.dart';
 import 'package:bitirme_mobile/service_locator/service_locator.dart';
@@ -47,9 +50,9 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
       final Uint8List bytes = await file.readAsBytes();
       ref.read(scanFlowProvider.notifier).setImage(bytes);
     } catch (e, st) {
-      sl<AppLogger>().e(ErrorStringsEnum.imagePick.value, e, st);
+      sl<AppLogger>().e('image_pick', e, st);
       if (mounted) {
-        showAppSnackBar(context, message: ErrorStringsEnum.imagePick.value, isError: true);
+        showAppSnackBar(context, message: context.l10n.errorImagePick, isError: true);
       }
     }
   }
@@ -65,23 +68,28 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
       id: Uuid().v4(),
       createdAt: DateTime.now(),
       speciesLabel: sp.top.label,
-      speciesConfidence: sp.top.confidence,
+      speciesConfidence: confidenceToUnit(sp.top.confidence),
       diseaseLabel: dis.top.label,
-      diseaseConfidence: dis.top.confidence,
+      diseaseConfidence: confidenceToUnit(dis.top.confidence),
     );
     await ref.read(historyProvider.notifier).addRecord(record);
     if (mounted) {
-      showAppSnackBar(context, message: StringsEnum.successTitle.value, isError: false);
+      showAppSnackBar(context, message: context.l10n.successTitle, isError: false);
       context.pop();
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations l10n = context.l10n;
     ref.listen<ScanFlowState>(scanFlowProvider, (ScanFlowState? previous, ScanFlowState next) {
       final String? msg = next.errorMessage;
       if (msg != null && msg.isNotEmpty) {
-        showAppSnackBar(context, message: msg, isError: true);
+        showAppSnackBar(
+          context,
+          message: localizedScanFlowError(msg, l10n),
+          isError: true,
+        );
         ref.read(scanFlowProvider.notifier).clearError();
       }
     });
@@ -91,7 +99,7 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(StringsEnum.scanTitle.value),
+        title: Text(l10n.scanTitle),
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () => context.pop(),
@@ -100,7 +108,7 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 1.25),
-          child: _buildBody(context, state, notifier),
+          child: _buildBody(context, l10n, state, notifier),
         ),
       ),
     );
@@ -108,33 +116,34 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
 
   Widget _buildBody(
     BuildContext context,
+    AppLocalizations l10n,
     ScanFlowState state,
     ScanFlowNotifier notifier,
   ) {
     switch (state.step) {
       case ScanStep.pickImage:
-        return _buildPick(context);
+        return _buildPick(context, l10n);
       case ScanStep.selectRegions:
-        return _buildRegions(context, state, notifier);
+        return _buildRegions(context, l10n, state, notifier);
       case ScanStep.speciesLoading:
-        return _buildLoading(StringsEnum.scanSpeciesLoading.value);
+        return _buildLoading(l10n.scanSpeciesLoading);
       case ScanStep.speciesDone:
-        return _buildSpeciesDone(context, state, notifier);
+        return _buildSpeciesDone(context, l10n, state, notifier);
       case ScanStep.diseaseLoading:
-        return _buildLoading(StringsEnum.scanDiseaseLoading.value);
+        return _buildLoading(l10n.scanDiseaseLoading);
       case ScanStep.diseaseDone:
-        return _buildDiseaseDone(context, state, notifier);
+        return _buildDiseaseDone(context, l10n, state, notifier);
       case ScanStep.summary:
-        return _buildSummary(context, state, notifier);
+        return _buildSummary(context, l10n, state, notifier);
     }
   }
 
-  Widget _buildPick(BuildContext context) {
+  Widget _buildPick(BuildContext context, AppLocalizations l10n) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         Text(
-          StringsEnum.scanPickTitle.value,
+          l10n.scanPickTitle,
           style: TextStyle(
             fontSize: TextSizesEnum.title.value,
             fontWeight: FontWeight.bold,
@@ -142,12 +151,12 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
         ),
         SizedBox(height: WidgetSizesEnum.cardRadius.value * 1.5),
         AppPrimaryButton(
-          label: StringsEnum.scanPickCamera.value,
+          label: l10n.scanPickCamera,
           onPressed: () => _pickImage(ImageSource.camera),
         ),
         SizedBox(height: WidgetSizesEnum.cardRadius.value),
         AppPrimaryButton(
-          label: StringsEnum.scanPickGallery.value,
+          label: l10n.scanPickGallery,
           onPressed: () => _pickImage(ImageSource.gallery),
         ),
       ],
@@ -156,6 +165,7 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
 
   Widget _buildRegions(
     BuildContext context,
+    AppLocalizations l10n,
     ScanFlowState state,
     ScanFlowNotifier notifier,
   ) {
@@ -167,7 +177,7 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         Text(
-          StringsEnum.scanRegionsTitle.value,
+          l10n.scanRegionsTitle,
           style: TextStyle(
             fontSize: TextSizesEnum.title.value,
             fontWeight: FontWeight.bold,
@@ -175,10 +185,10 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
         ),
         SizedBox(height: WidgetSizesEnum.cardRadius.value),
         Text(
-          StringsEnum.scanRegionsHint.value,
+          l10n.scanRegionsHint,
           style: TextStyle(
             fontSize: TextSizesEnum.body.value,
-            color: ColorName.onSurfaceMuted,
+            color: context.palMuted,
           ),
         ),
         SizedBox(height: WidgetSizesEnum.cardRadius.value),
@@ -196,17 +206,17 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
           children: <Widget>[
             TextButton(
               onPressed: state.regions.isEmpty ? null : notifier.clearRegions,
-              child: Text(StringsEnum.scanRegionsClear.value),
+              child: Text(l10n.scanRegionsClear),
             ),
             const Spacer(),
             Text(
-              '${StringsEnum.scanRegionsAdd.value}: ${state.regions.length}',
-              style: TextStyle(color: ColorName.onSurfaceMuted),
+              '${l10n.scanRegionsAdd}: ${state.regions.length}',
+              style: TextStyle(color: context.palMuted),
             ),
           ],
         ),
         AppPrimaryButton(
-          label: StringsEnum.scanRegionsNext.value,
+          label: l10n.scanRegionsNext,
           onPressed: state.regions.isEmpty
               ? null
               : () async {
@@ -232,6 +242,7 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
 
   Widget _buildSpeciesDone(
     BuildContext context,
+    AppLocalizations l10n,
     ScanFlowState state,
     ScanFlowNotifier notifier,
   ) {
@@ -239,12 +250,11 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
     if (sp == null) {
       return const SizedBox.shrink();
     }
-    final double pct = sp.top.confidence * 100;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         Text(
-          StringsEnum.scanSpeciesTitle.value,
+          l10n.scanSpeciesTitle,
           style: TextStyle(
             fontSize: TextSizesEnum.title.value,
             fontWeight: FontWeight.bold,
@@ -254,12 +264,14 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
         Card(
           child: ListTile(
             title: Text(sp.top.label),
-            subtitle: Text('${StringsEnum.scanSpeciesConfidence.value}: ${pct.toStringAsFixed(1)}%'),
+            subtitle: Text(
+              '${l10n.scanSpeciesConfidence}: ${confidencePercentLabel(sp.top.confidence)}',
+            ),
           ),
         ),
         const Spacer(),
         AppPrimaryButton(
-          label: StringsEnum.continueCta.value,
+          label: l10n.continueCta,
           onPressed: () async {
             await notifier.runDisease();
           },
@@ -270,6 +282,7 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
 
   Widget _buildDiseaseDone(
     BuildContext context,
+    AppLocalizations l10n,
     ScanFlowState state,
     ScanFlowNotifier notifier,
   ) {
@@ -277,12 +290,12 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
     if (dis == null) {
       return const SizedBox.shrink();
     }
-    final double pct = dis.top.confidence * 100;
+    final String diseaseText = diseaseClassKeyToDisplay(dis.top.label, l10n);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         Text(
-          StringsEnum.scanDiseaseTitle.value,
+          l10n.scanDiseaseTitle,
           style: TextStyle(
             fontSize: TextSizesEnum.title.value,
             fontWeight: FontWeight.bold,
@@ -290,22 +303,24 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
         ),
         SizedBox(height: WidgetSizesEnum.cardRadius.value),
         Text(
-          StringsEnum.scanDiseaseNote.value,
+          l10n.scanDiseaseNote,
           style: TextStyle(
             fontSize: TextSizesEnum.caption.value,
-            color: ColorName.onSurfaceMuted,
+            color: context.palMuted,
           ),
         ),
         SizedBox(height: WidgetSizesEnum.cardRadius.value),
         Card(
           child: ListTile(
-            title: Text(dis.top.label),
-            subtitle: Text('${StringsEnum.scanSpeciesConfidence.value}: ${pct.toStringAsFixed(1)}%'),
+            title: Text(diseaseText),
+            subtitle: Text(
+              '${l10n.scanSpeciesConfidence}: ${confidencePercentLabel(dis.top.confidence)}',
+            ),
           ),
         ),
         const Spacer(),
         AppPrimaryButton(
-          label: StringsEnum.continueCta.value,
+          label: l10n.continueCta,
           onPressed: notifier.goToSummary,
         ),
       ],
@@ -314,6 +329,7 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
 
   Widget _buildSummary(
     BuildContext context,
+    AppLocalizations l10n,
     ScanFlowState state,
     ScanFlowNotifier notifier,
   ) {
@@ -322,11 +338,12 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
     if (sp == null || dis == null) {
       return const SizedBox.shrink();
     }
+    final String diseaseText = diseaseClassKeyToDisplay(dis.top.label, l10n);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         Text(
-          StringsEnum.scanSummaryTitle.value,
+          l10n.scanSummaryTitle,
           style: TextStyle(
             fontSize: TextSizesEnum.title.value,
             fontWeight: FontWeight.bold,
@@ -335,23 +352,23 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
         SizedBox(height: WidgetSizesEnum.cardRadius.value),
         Card(
           child: ListTile(
-            title: Text(StringsEnum.scanSpeciesTitle.value),
+            title: Text(l10n.scanSpeciesTitle),
             subtitle: Text(
-              '${sp.top.label} (${(sp.top.confidence * 100).toStringAsFixed(1)}%)',
+              '${sp.top.label} (${confidencePercentLabel(sp.top.confidence)})',
             ),
           ),
         ),
         Card(
           child: ListTile(
-            title: Text(StringsEnum.scanDiseaseTitle.value),
+            title: Text(l10n.scanDiseaseTitle),
             subtitle: Text(
-              '${dis.top.label} (${(dis.top.confidence * 100).toStringAsFixed(1)}%)',
+              '$diseaseText (${confidencePercentLabel(dis.top.confidence)})',
             ),
           ),
         ),
         const Spacer(),
         AppPrimaryButton(
-          label: StringsEnum.scanSaveHistory.value,
+          label: l10n.scanSaveHistory,
           onPressed: _onSaveToHistory,
         ),
         SizedBox(height: WidgetSizesEnum.cardRadius.value),
@@ -359,7 +376,7 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
           onPressed: () {
             notifier.reset();
           },
-          child: Text(StringsEnum.scanRetry.value),
+          child: Text(l10n.scanRetry),
         ),
       ],
     );

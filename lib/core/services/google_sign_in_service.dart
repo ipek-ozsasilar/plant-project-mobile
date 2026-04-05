@@ -1,5 +1,4 @@
 import 'package:bitirme_mobile/core/env/env.dart';
-import 'package:bitirme_mobile/core/enums/error_strings_enum.dart';
 import 'package:bitirme_mobile/core/services/app_logger.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -36,7 +35,7 @@ class GoogleSignInService {
       }
       return FirebaseAuth.instance.signInWithCredential(credential);
     } catch (e, st) {
-      _logger.e(ErrorStringsEnum.googleSignIn.value, e, st);
+      _logger.e('google_sign_in', e, st);
       rethrow;
     }
   }
@@ -45,7 +44,7 @@ class GoogleSignInService {
     try {
       await _client().signOut();
     } catch (e, st) {
-      _logger.e(ErrorStringsEnum.googleSignIn.value, e, st);
+      _logger.e('google_sign_in', e, st);
     }
   }
 }

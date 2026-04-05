@@ -1,8 +1,8 @@
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
-import 'package:bitirme_mobile/core/enums/strings_enum.dart';
+import 'package:bitirme_mobile/core/locale/l10n_context.dart';
 import 'package:bitirme_mobile/core/navigation/app_paths.dart';
 import 'package:bitirme_mobile/features/auth/provider/auth_provider.dart';
-import 'package:bitirme_mobile/gen/colors.gen.dart';
+import 'package:bitirme_mobile/core/theme/app_palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -16,7 +16,7 @@ class ProfileView extends ConsumerWidget {
     final AuthState auth = ref.watch(authProvider);
 
     return Scaffold(
-      appBar: AppBar(title: Text(StringsEnum.profileTitle.value)),
+      appBar: AppBar(title: Text(context.l10n.profileTitle)),
       body: Padding(
         padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 1.25),
         child: Column(
@@ -24,12 +24,12 @@ class ProfileView extends ConsumerWidget {
           children: <Widget>[
             CircleAvatar(
               radius: 40,
-              backgroundColor: ColorName.primary.withValues(alpha: 0.15),
-              child: Icon(Icons.person, size: 40, color: ColorName.primary),
+              backgroundColor: context.palPrimary.withValues(alpha: 0.15),
+              child: Icon(Icons.person, size: 40, color: context.palPrimary),
             ),
             SizedBox(height: WidgetSizesEnum.cardRadius.value),
             Text(
-              auth.displayName ?? StringsEnum.placeholderDash.value,
+              auth.displayName ?? context.l10n.placeholderDash,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: TextSizesEnum.title.value,
@@ -38,11 +38,11 @@ class ProfileView extends ConsumerWidget {
             ),
             SizedBox(height: WidgetSizesEnum.divider.value * 2),
             Text(
-              auth.email ?? StringsEnum.placeholderDash.value,
+              auth.email ?? context.l10n.placeholderDash,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: TextSizesEnum.body.value,
-                color: ColorName.onSurfaceMuted,
+                color: context.palMuted,
               ),
             ),
             const Spacer(),
@@ -53,7 +53,7 @@ class ProfileView extends ConsumerWidget {
                   context.go(AppPaths.login);
                 }
               },
-              child: Text(StringsEnum.logout.value),
+              child: Text(context.l10n.logout),
             ),
           ],
         ),

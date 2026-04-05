@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:bitirme_mobile/core/enums/error_strings_enum.dart';
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
 import 'package:bitirme_mobile/core/services/app_logger.dart';
 import 'package:bitirme_mobile/models/plant_region_model.dart';
@@ -37,7 +36,7 @@ class ImageCropService {
       final Uint8List out = Uint8List.fromList(img.encodeJpg(cropped, quality: 92));
       return out;
     } catch (e, st) {
-      _logger.e(ErrorStringsEnum.crop.value, e, st);
+      _logger.e('image_crop', e, st);
       return null;
     }
   }

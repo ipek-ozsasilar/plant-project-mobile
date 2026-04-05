@@ -14,5 +14,7 @@ final class _Env {
 
   static const String useMockInferenceRaw = 'true';
 
+  static const String useLocalTfliteRaw = 'true';
+
   static const String googleWebClientId = '';
 }

@@ -1,6 +1,6 @@
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
-import 'package:bitirme_mobile/core/enums/strings_enum.dart';
-import 'package:bitirme_mobile/gen/colors.gen.dart';
+import 'package:bitirme_mobile/core/locale/l10n_context.dart';
+import 'package:bitirme_mobile/core/theme/app_palette.dart';
 import 'package:flutter/material.dart';
 
 /// Ana sayfa üst karşılama alanı (degrade + selamlama).
@@ -19,30 +19,29 @@ class HomeDashboardHeader extends StatelessWidget {
     final String initial =
         trimmed.isEmpty ? '?' : trimmed.characters.first.toUpperCase();
 
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       width: double.infinity,
       padding: EdgeInsets.fromLTRB(
         WidgetSizesEnum.cardRadius.value * 1.25,
         WidgetSizesEnum.cardRadius.value * 0.75,
         WidgetSizesEnum.cardRadius.value * 1.25,
-        WidgetSizesEnum.homeHeaderExtend.value * 1.35,
+        WidgetSizesEnum.homeHeaderExtend.value * 1.05,
       ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: <Color>[
-            ColorName.primary,
-            ColorName.accent,
-            ColorName.gradientEnd.withValues(alpha: 0.95),
-          ],
+          colors: context.palHeaderGradientColors,
         ),
         borderRadius: BorderRadius.vertical(
           bottom: Radius.circular(WidgetSizesEnum.homeHeaderExtend.value * 1.1),
         ),
         boxShadow: <BoxShadow>[
           BoxShadow(
-            color: ColorName.primary.withValues(alpha: 0.22),
+            color: isDark
+                ? Colors.black.withValues(alpha: 0.55)
+                : context.palPrimary.withValues(alpha: 0.22),
             blurRadius: WidgetSizesEnum.cardShadowBlur.value,
             offset: Offset(0, WidgetSizesEnum.cardShadowOffsetY.value * 0.5),
           ),
@@ -58,7 +57,7 @@ class HomeDashboardHeader extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    StringsEnum.homeGreeting.value,
+                    context.l10n.homeGreeting,
                     style: tt.titleMedium?.copyWith(
                       color: Colors.white.withValues(alpha: 0.88),
                       fontWeight: FontWeight.w600,
@@ -67,15 +66,20 @@ class HomeDashboardHeader extends StatelessWidget {
                   SizedBox(height: WidgetSizesEnum.divider.value * 4),
                   Text(
                     displayName,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     style: tt.headlineSmall?.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.w800,
                       letterSpacing: -0.4,
+                      height: 1.2,
                     ),
                   ),
                   SizedBox(height: WidgetSizesEnum.divider.value * 5),
                   Text(
-                    StringsEnum.appTagline.value,
+                    context.l10n.appTagline,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
                     style: tt.bodyMedium?.copyWith(
                       color: Colors.white.withValues(alpha: 0.9),
                       height: 1.35,
