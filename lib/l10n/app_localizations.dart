@@ -398,6 +398,12 @@ abstract class AppLocalizations {
   /// **'Tema ve uygulama tercihleri'**
   String get moreTileSettingsDesc;
 
+  /// No description provided for @moreTileMyPlantsDesc.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bitkilerinizi ekleyin ve günlük takip edin'**
+  String get moreTileMyPlantsDesc;
+
   /// No description provided for @moreTileHealthProgressDesc.
   ///
   /// In tr, this message translates to:
@@ -752,6 +758,66 @@ abstract class AppLocalizations {
   /// **'Kauçuk'**
   String get healthProgressPlant3;
 
+  /// No description provided for @myPlantsTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bitkilerim'**
+  String get myPlantsTitle;
+
+  /// No description provided for @myPlantsEmpty.
+  ///
+  /// In tr, this message translates to:
+  /// **'Henüz bitki eklemediniz. Yeni bir bitki ekleyerek günlük takibe başlayın.'**
+  String get myPlantsEmpty;
+
+  /// No description provided for @myPlantsAddTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bitki ekle'**
+  String get myPlantsAddTitle;
+
+  /// No description provided for @myPlantsNameLabel.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bitki adı'**
+  String get myPlantsNameLabel;
+
+  /// No description provided for @myPlantsSpeciesLabel.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tür etiketi'**
+  String get myPlantsSpeciesLabel;
+
+  /// No description provided for @myPlantsDetailTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bitki takibi'**
+  String get myPlantsDetailTitle;
+
+  /// No description provided for @myPlantsNoScans.
+  ///
+  /// In tr, this message translates to:
+  /// **'Henüz tarama kaydı yok.'**
+  String get myPlantsNoScans;
+
+  /// No description provided for @myPlantsTimelineTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Geçmiş taramalar'**
+  String get myPlantsTimelineTitle;
+
+  /// No description provided for @myPlantsTimelineEmpty.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu bitki için kayıtlı tarama bulunamadı.'**
+  String get myPlantsTimelineEmpty;
+
+  /// No description provided for @myPlantsHealthScoreLabel.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sağlık skoru:'**
+  String get myPlantsHealthScoreLabel;
+
   /// No description provided for @notificationsLabel.
   ///
   /// In tr, this message translates to:
@@ -859,6 +925,12 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Devam et'**
   String get continueCta;
+
+  /// No description provided for @detailCta.
+  ///
+  /// In tr, this message translates to:
+  /// **'Detay'**
+  String get detailCta;
 
   /// No description provided for @back.
   ///
@@ -1033,6 +1105,366 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Bu giriş yöntemi şu an kullanılamıyor. Firebase konsolunda etkinleştirin.'**
   String get errorAuthOperationNotAllowed;
+
+  /// No description provided for @diseaseDetailTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hastalık detayları'**
+  String get diseaseDetailTitle;
+
+  /// No description provided for @diseaseDetailConfidenceLabel.
+  ///
+  /// In tr, this message translates to:
+  /// **'Güven skoru'**
+  String get diseaseDetailConfidenceLabel;
+
+  /// No description provided for @diseaseDetailSectionDescription.
+  ///
+  /// In tr, this message translates to:
+  /// **'Açıklama'**
+  String get diseaseDetailSectionDescription;
+
+  /// No description provided for @diseaseDetailSectionCauses.
+  ///
+  /// In tr, this message translates to:
+  /// **'Neden oluşur?'**
+  String get diseaseDetailSectionCauses;
+
+  /// No description provided for @diseaseDetailSectionTreatment.
+  ///
+  /// In tr, this message translates to:
+  /// **'Nasıl tedavi edilir?'**
+  String get diseaseDetailSectionTreatment;
+
+  /// No description provided for @diseaseDetailSectionPrevention.
+  ///
+  /// In tr, this message translates to:
+  /// **'Önleyici öneriler'**
+  String get diseaseDetailSectionPrevention;
+
+  /// No description provided for @diseaseDetailDescriptionGeneric.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu sınıf için henüz detaylı içerik eklenmedi. Sonuçlar öneri niteliğindedir.'**
+  String get diseaseDetailDescriptionGeneric;
+
+  /// No description provided for @diseaseDetailCausesGeneric.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yetersiz ışık, yanlış sulama, düşük hava sirkülasyonu veya patojenler etkili olabilir.'**
+  String get diseaseDetailCausesGeneric;
+
+  /// No description provided for @diseaseDetailTreatmentGeneric.
+  ///
+  /// In tr, this message translates to:
+  /// **'Enfekte kısımları temizleyin, bakım koşullarını iyileştirin ve gerekiyorsa uygun ürün kullanın.'**
+  String get diseaseDetailTreatmentGeneric;
+
+  /// No description provided for @diseaseDetailPreventionGeneric.
+  ///
+  /// In tr, this message translates to:
+  /// **'Düzenli kontrol, uygun sulama ve iyi hava akışı riski azaltır.'**
+  String get diseaseDetailPreventionGeneric;
+
+  /// No description provided for @diseaseDetailDescriptionHealthy.
+  ///
+  /// In tr, this message translates to:
+  /// **'Belirgin hastalık belirtisi görünmüyor; bitki genel olarak iyi durumda.'**
+  String get diseaseDetailDescriptionHealthy;
+
+  /// No description provided for @diseaseDetailCausesHealthy.
+  ///
+  /// In tr, this message translates to:
+  /// **'Doğru sulama, yeterli ışık ve uygun ortam koşulları bitkinin sağlıklı kalmasına yardımcı olur.'**
+  String get diseaseDetailCausesHealthy;
+
+  /// No description provided for @diseaseDetailTreatmentHealthy.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bakımı aynı şekilde sürdürün; yaprakları tozdan arındırın ve düzenli gözlem yapın.'**
+  String get diseaseDetailTreatmentHealthy;
+
+  /// No description provided for @diseaseDetailPreventionHealthy.
+  ///
+  /// In tr, this message translates to:
+  /// **'Aşırı sulamadan kaçının, ışık koşullarını sabit tutun ve zararlıları erken tespit edin.'**
+  String get diseaseDetailPreventionHealthy;
+
+  /// No description provided for @diseaseDetailDescriptionPowderyMildew.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yaprak yüzeyinde beyaz, pudramsı tabaka ile görülen mantar hastalığıdır.'**
+  String get diseaseDetailDescriptionPowderyMildew;
+
+  /// No description provided for @diseaseDetailCausesPowderyMildew.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yüksek nem, zayıf hava akışı ve ani sıcaklık değişimleri tetikleyebilir.'**
+  String get diseaseDetailCausesPowderyMildew;
+
+  /// No description provided for @diseaseDetailTreatmentPowderyMildew.
+  ///
+  /// In tr, this message translates to:
+  /// **'Etkilenen yaprakları budayın; yaprakları kuru tutun ve gerekirse mantar ilacı uygulayın.'**
+  String get diseaseDetailTreatmentPowderyMildew;
+
+  /// No description provided for @diseaseDetailPreventionPowderyMildew.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bitkiler arası mesafe bırakın, havalandırmayı artırın ve yaprakları ıslatmadan sulayın.'**
+  String get diseaseDetailPreventionPowderyMildew;
+
+  /// No description provided for @diseaseDetailDescriptionLeafSpot.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yapraklarda kahverengi/siyah lekeler şeklinde ortaya çıkan enfeksiyon belirtisidir.'**
+  String get diseaseDetailDescriptionLeafSpot;
+
+  /// No description provided for @diseaseDetailCausesLeafSpot.
+  ///
+  /// In tr, this message translates to:
+  /// **'Mantar veya bakteri kaynaklı olabilir; yaprakların uzun süre ıslak kalması riski artırır.'**
+  String get diseaseDetailCausesLeafSpot;
+
+  /// No description provided for @diseaseDetailTreatmentLeafSpot.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hastalıklı yaprakları alın; sulamayı düzenleyin ve uygun koruyucu/iyileştirici uygulayın.'**
+  String get diseaseDetailTreatmentLeafSpot;
+
+  /// No description provided for @diseaseDetailPreventionLeafSpot.
+  ///
+  /// In tr, this message translates to:
+  /// **'Üstten sulamayı azaltın, yaprakları kuru tutun ve düzenli temizlik yapın.'**
+  String get diseaseDetailPreventionLeafSpot;
+
+  /// No description provided for @diseaseDetailDescriptionRust.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yaprak altında turuncu-kahverengi püstüllerle görülen mantar hastalığıdır.'**
+  String get diseaseDetailDescriptionRust;
+
+  /// No description provided for @diseaseDetailCausesRust.
+  ///
+  /// In tr, this message translates to:
+  /// **'Nemli ortam, zayıf hava akışı ve enfekte bitki materyali yayılımı artırır.'**
+  String get diseaseDetailCausesRust;
+
+  /// No description provided for @diseaseDetailTreatmentRust.
+  ///
+  /// In tr, this message translates to:
+  /// **'Etkilenen yaprakları uzaklaştırın; hava akışını artırın ve gerekirse mantar ilacı kullanın.'**
+  String get diseaseDetailTreatmentRust;
+
+  /// No description provided for @diseaseDetailPreventionRust.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sıkışık dikimden kaçının, yaprakları kuru tutun ve karantina uygulayın.'**
+  String get diseaseDetailPreventionRust;
+
+  /// No description provided for @diseaseDetailDescriptionBacterial.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bakteriyel enfeksiyonlarda su toplamış görünümlü lekeler ve hızlı yayılım görülebilir.'**
+  String get diseaseDetailDescriptionBacterial;
+
+  /// No description provided for @diseaseDetailCausesBacterial.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yüksek nem, yaralanmış doku ve kontamine ekipmanlar bulaşı artırabilir.'**
+  String get diseaseDetailCausesBacterial;
+
+  /// No description provided for @diseaseDetailTreatmentBacterial.
+  ///
+  /// In tr, this message translates to:
+  /// **'Enfekte kısımları steril kesimle alın; hijyeni artırın ve gerekirse bakır içerikli ürün kullanın.'**
+  String get diseaseDetailTreatmentBacterial;
+
+  /// No description provided for @diseaseDetailPreventionBacterial.
+  ///
+  /// In tr, this message translates to:
+  /// **'Aletleri dezenfekte edin, yaprakları ıslatmadan sulayın ve hava sirkülasyonunu güçlendirin.'**
+  String get diseaseDetailPreventionBacterial;
+
+  /// No description provided for @diseaseDetailDescriptionViral.
+  ///
+  /// In tr, this message translates to:
+  /// **'Viral hastalıklarda mozaik desen, şekil bozukluğu ve gelişim geriliği görülebilir.'**
+  String get diseaseDetailDescriptionViral;
+
+  /// No description provided for @diseaseDetailCausesViral.
+  ///
+  /// In tr, this message translates to:
+  /// **'Zararlılar (ör. yaprak biti), kontamine bitki materyali ve temas bulaşmaya neden olabilir.'**
+  String get diseaseDetailCausesViral;
+
+  /// No description provided for @diseaseDetailTreatmentViral.
+  ///
+  /// In tr, this message translates to:
+  /// **'Viral hastalıklar için kesin tedavi sınırlıdır; bitkiyi izole edin ve zararlı kontrolü yapın.'**
+  String get diseaseDetailTreatmentViral;
+
+  /// No description provided for @diseaseDetailPreventionViral.
+  ///
+  /// In tr, this message translates to:
+  /// **'Zararlıları kontrol edin, yeni bitkileri karantinaya alın ve sağlıklı fide kullanın.'**
+  String get diseaseDetailPreventionViral;
+
+  /// No description provided for @diseaseDetailDescriptionBlight.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yanıklık; yaprak ve gövdede hızla yayılan kararma ve doku ölümüyle ilerleyebilir.'**
+  String get diseaseDetailDescriptionBlight;
+
+  /// No description provided for @diseaseDetailCausesBlight.
+  ///
+  /// In tr, this message translates to:
+  /// **'Mantar benzeri patojenler, aşırı nem ve düşük hava akışı riski artırır.'**
+  String get diseaseDetailCausesBlight;
+
+  /// No description provided for @diseaseDetailTreatmentBlight.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hastalıklı bölgeleri temizleyin, bitkiyi kurutun ve uygun koruyucu ürün uygulayın.'**
+  String get diseaseDetailTreatmentBlight;
+
+  /// No description provided for @diseaseDetailPreventionBlight.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yaprakları kuru tutun, doğru aralıkla dikin ve sulamayı sabah yapın.'**
+  String get diseaseDetailPreventionBlight;
+
+  /// No description provided for @diseaseDetailDescriptionMold.
+  ///
+  /// In tr, this message translates to:
+  /// **'Küf; yaprak ve yüzeylerde gri/yeşilimsi tabaka şeklinde oluşabilir.'**
+  String get diseaseDetailDescriptionMold;
+
+  /// No description provided for @diseaseDetailCausesMold.
+  ///
+  /// In tr, this message translates to:
+  /// **'Aşırı nem, yetersiz havalandırma ve organik kalıntılar büyümeyi hızlandırır.'**
+  String get diseaseDetailCausesMold;
+
+  /// No description provided for @diseaseDetailTreatmentMold.
+  ///
+  /// In tr, this message translates to:
+  /// **'Etkilenen alanı temizleyin, nemi düşürün ve gerekirse uygun ürün uygulayın.'**
+  String get diseaseDetailTreatmentMold;
+
+  /// No description provided for @diseaseDetailPreventionMold.
+  ///
+  /// In tr, this message translates to:
+  /// **'Havalandırmayı artırın, sulamayı azaltın ve yaprakları kuru tutun.'**
+  String get diseaseDetailPreventionMold;
+
+  /// No description provided for @diseaseDetailDescriptionPestDamage.
+  ///
+  /// In tr, this message translates to:
+  /// **'Zararlılar veya fiziksel etkenler yapraklarda delik, ısırık izi ve deformasyon oluşturabilir.'**
+  String get diseaseDetailDescriptionPestDamage;
+
+  /// No description provided for @diseaseDetailCausesPestDamage.
+  ///
+  /// In tr, this message translates to:
+  /// **'Akar, yaprak biti, tırtıl gibi zararlılar veya rüzgar/darbe gibi fiziksel nedenler olabilir.'**
+  String get diseaseDetailCausesPestDamage;
+
+  /// No description provided for @diseaseDetailTreatmentPestDamage.
+  ///
+  /// In tr, this message translates to:
+  /// **'Zararlıyı tespit edin, yaprakları temizleyin ve gerekirse uygun biyolojik/kimyasal mücadele uygulayın.'**
+  String get diseaseDetailTreatmentPestDamage;
+
+  /// No description provided for @diseaseDetailPreventionPestDamage.
+  ///
+  /// In tr, this message translates to:
+  /// **'Düzenli kontrol yapın, bitkiyi güçlendirin ve yeni bitkileri karantinaya alın.'**
+  String get diseaseDetailPreventionPestDamage;
+
+  /// No description provided for @diseaseDetailDescriptionRot.
+  ///
+  /// In tr, this message translates to:
+  /// **'Çürük; kök veya gövdede yumuşama, koyulaşma ve kötü koku ile ilerleyebilir.'**
+  String get diseaseDetailDescriptionRot;
+
+  /// No description provided for @diseaseDetailCausesRot.
+  ///
+  /// In tr, this message translates to:
+  /// **'Aşırı sulama, drenaj zayıflığı ve patojenler çürümeyi başlatabilir.'**
+  String get diseaseDetailCausesRot;
+
+  /// No description provided for @diseaseDetailTreatmentRot.
+  ///
+  /// In tr, this message translates to:
+  /// **'Çürüyen kısımları temizleyin, sulamayı azaltın ve daha iyi drenajlı toprağa alın.'**
+  String get diseaseDetailTreatmentRot;
+
+  /// No description provided for @diseaseDetailPreventionRot.
+  ///
+  /// In tr, this message translates to:
+  /// **'Toprağın kuruma durumuna göre sulayın, saksı drenajını iyileştirin.'**
+  String get diseaseDetailPreventionRot;
+
+  /// No description provided for @speciesDetailTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tür detayları'**
+  String get speciesDetailTitle;
+
+  /// No description provided for @speciesDetailConfidenceLabel.
+  ///
+  /// In tr, this message translates to:
+  /// **'Güven skoru'**
+  String get speciesDetailConfidenceLabel;
+
+  /// No description provided for @speciesDetailCareTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bakım bilgileri'**
+  String get speciesDetailCareTitle;
+
+  /// No description provided for @speciesDetailWateringLabel.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sulama'**
+  String get speciesDetailWateringLabel;
+
+  /// No description provided for @speciesDetailSunLabel.
+  ///
+  /// In tr, this message translates to:
+  /// **'Güneş'**
+  String get speciesDetailSunLabel;
+
+  /// No description provided for @speciesDetailSoilLabel.
+  ///
+  /// In tr, this message translates to:
+  /// **'Toprak'**
+  String get speciesDetailSoilLabel;
+
+  /// No description provided for @speciesDetailWateringValue.
+  ///
+  /// In tr, this message translates to:
+  /// **'Toprak kurudukça (ortalama haftada 1–2)'**
+  String get speciesDetailWateringValue;
+
+  /// No description provided for @speciesDetailSunValue.
+  ///
+  /// In tr, this message translates to:
+  /// **'Aydınlık, dolaylı ışık'**
+  String get speciesDetailSunValue;
+
+  /// No description provided for @speciesDetailSoilValue.
+  ///
+  /// In tr, this message translates to:
+  /// **'İyi drenajlı karışım'**
+  String get speciesDetailSoilValue;
+
+  /// No description provided for @speciesDetailRiskTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Riskli hastalıklar'**
+  String get speciesDetailRiskTitle;
 }
 
 class _AppLocalizationsDelegate

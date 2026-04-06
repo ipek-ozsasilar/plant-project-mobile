@@ -166,6 +166,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get moreTileSettingsDesc => 'Tema ve uygulama tercihleri';
 
   @override
+  String get moreTileMyPlantsDesc =>
+      'Bitkilerinizi ekleyin ve günlük takip edin';
+
+  @override
   String get moreTileHealthProgressDesc =>
       'Bitkilerinizin sağlık ve hastalık trendlerini görün';
 
@@ -353,6 +357,38 @@ class AppLocalizationsTr extends AppLocalizations {
   String get healthProgressPlant3 => 'Kauçuk';
 
   @override
+  String get myPlantsTitle => 'Bitkilerim';
+
+  @override
+  String get myPlantsEmpty =>
+      'Henüz bitki eklemediniz. Yeni bir bitki ekleyerek günlük takibe başlayın.';
+
+  @override
+  String get myPlantsAddTitle => 'Bitki ekle';
+
+  @override
+  String get myPlantsNameLabel => 'Bitki adı';
+
+  @override
+  String get myPlantsSpeciesLabel => 'Tür etiketi';
+
+  @override
+  String get myPlantsDetailTitle => 'Bitki takibi';
+
+  @override
+  String get myPlantsNoScans => 'Henüz tarama kaydı yok.';
+
+  @override
+  String get myPlantsTimelineTitle => 'Geçmiş taramalar';
+
+  @override
+  String get myPlantsTimelineEmpty =>
+      'Bu bitki için kayıtlı tarama bulunamadı.';
+
+  @override
+  String get myPlantsHealthScoreLabel => 'Sağlık skoru:';
+
+  @override
   String get notificationsLabel => 'Bildirimler';
 
   @override
@@ -405,6 +441,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get continueCta => 'Devam et';
+
+  @override
+  String get detailCta => 'Detay';
 
   @override
   String get back => 'Geri';
@@ -499,4 +538,229 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get errorAuthOperationNotAllowed =>
       'Bu giriş yöntemi şu an kullanılamıyor. Firebase konsolunda etkinleştirin.';
+
+  @override
+  String get diseaseDetailTitle => 'Hastalık detayları';
+
+  @override
+  String get diseaseDetailConfidenceLabel => 'Güven skoru';
+
+  @override
+  String get diseaseDetailSectionDescription => 'Açıklama';
+
+  @override
+  String get diseaseDetailSectionCauses => 'Neden oluşur?';
+
+  @override
+  String get diseaseDetailSectionTreatment => 'Nasıl tedavi edilir?';
+
+  @override
+  String get diseaseDetailSectionPrevention => 'Önleyici öneriler';
+
+  @override
+  String get diseaseDetailDescriptionGeneric =>
+      'Bu sınıf için henüz detaylı içerik eklenmedi. Sonuçlar öneri niteliğindedir.';
+
+  @override
+  String get diseaseDetailCausesGeneric =>
+      'Yetersiz ışık, yanlış sulama, düşük hava sirkülasyonu veya patojenler etkili olabilir.';
+
+  @override
+  String get diseaseDetailTreatmentGeneric =>
+      'Enfekte kısımları temizleyin, bakım koşullarını iyileştirin ve gerekiyorsa uygun ürün kullanın.';
+
+  @override
+  String get diseaseDetailPreventionGeneric =>
+      'Düzenli kontrol, uygun sulama ve iyi hava akışı riski azaltır.';
+
+  @override
+  String get diseaseDetailDescriptionHealthy =>
+      'Belirgin hastalık belirtisi görünmüyor; bitki genel olarak iyi durumda.';
+
+  @override
+  String get diseaseDetailCausesHealthy =>
+      'Doğru sulama, yeterli ışık ve uygun ortam koşulları bitkinin sağlıklı kalmasına yardımcı olur.';
+
+  @override
+  String get diseaseDetailTreatmentHealthy =>
+      'Bakımı aynı şekilde sürdürün; yaprakları tozdan arındırın ve düzenli gözlem yapın.';
+
+  @override
+  String get diseaseDetailPreventionHealthy =>
+      'Aşırı sulamadan kaçının, ışık koşullarını sabit tutun ve zararlıları erken tespit edin.';
+
+  @override
+  String get diseaseDetailDescriptionPowderyMildew =>
+      'Yaprak yüzeyinde beyaz, pudramsı tabaka ile görülen mantar hastalığıdır.';
+
+  @override
+  String get diseaseDetailCausesPowderyMildew =>
+      'Yüksek nem, zayıf hava akışı ve ani sıcaklık değişimleri tetikleyebilir.';
+
+  @override
+  String get diseaseDetailTreatmentPowderyMildew =>
+      'Etkilenen yaprakları budayın; yaprakları kuru tutun ve gerekirse mantar ilacı uygulayın.';
+
+  @override
+  String get diseaseDetailPreventionPowderyMildew =>
+      'Bitkiler arası mesafe bırakın, havalandırmayı artırın ve yaprakları ıslatmadan sulayın.';
+
+  @override
+  String get diseaseDetailDescriptionLeafSpot =>
+      'Yapraklarda kahverengi/siyah lekeler şeklinde ortaya çıkan enfeksiyon belirtisidir.';
+
+  @override
+  String get diseaseDetailCausesLeafSpot =>
+      'Mantar veya bakteri kaynaklı olabilir; yaprakların uzun süre ıslak kalması riski artırır.';
+
+  @override
+  String get diseaseDetailTreatmentLeafSpot =>
+      'Hastalıklı yaprakları alın; sulamayı düzenleyin ve uygun koruyucu/iyileştirici uygulayın.';
+
+  @override
+  String get diseaseDetailPreventionLeafSpot =>
+      'Üstten sulamayı azaltın, yaprakları kuru tutun ve düzenli temizlik yapın.';
+
+  @override
+  String get diseaseDetailDescriptionRust =>
+      'Yaprak altında turuncu-kahverengi püstüllerle görülen mantar hastalığıdır.';
+
+  @override
+  String get diseaseDetailCausesRust =>
+      'Nemli ortam, zayıf hava akışı ve enfekte bitki materyali yayılımı artırır.';
+
+  @override
+  String get diseaseDetailTreatmentRust =>
+      'Etkilenen yaprakları uzaklaştırın; hava akışını artırın ve gerekirse mantar ilacı kullanın.';
+
+  @override
+  String get diseaseDetailPreventionRust =>
+      'Sıkışık dikimden kaçının, yaprakları kuru tutun ve karantina uygulayın.';
+
+  @override
+  String get diseaseDetailDescriptionBacterial =>
+      'Bakteriyel enfeksiyonlarda su toplamış görünümlü lekeler ve hızlı yayılım görülebilir.';
+
+  @override
+  String get diseaseDetailCausesBacterial =>
+      'Yüksek nem, yaralanmış doku ve kontamine ekipmanlar bulaşı artırabilir.';
+
+  @override
+  String get diseaseDetailTreatmentBacterial =>
+      'Enfekte kısımları steril kesimle alın; hijyeni artırın ve gerekirse bakır içerikli ürün kullanın.';
+
+  @override
+  String get diseaseDetailPreventionBacterial =>
+      'Aletleri dezenfekte edin, yaprakları ıslatmadan sulayın ve hava sirkülasyonunu güçlendirin.';
+
+  @override
+  String get diseaseDetailDescriptionViral =>
+      'Viral hastalıklarda mozaik desen, şekil bozukluğu ve gelişim geriliği görülebilir.';
+
+  @override
+  String get diseaseDetailCausesViral =>
+      'Zararlılar (ör. yaprak biti), kontamine bitki materyali ve temas bulaşmaya neden olabilir.';
+
+  @override
+  String get diseaseDetailTreatmentViral =>
+      'Viral hastalıklar için kesin tedavi sınırlıdır; bitkiyi izole edin ve zararlı kontrolü yapın.';
+
+  @override
+  String get diseaseDetailPreventionViral =>
+      'Zararlıları kontrol edin, yeni bitkileri karantinaya alın ve sağlıklı fide kullanın.';
+
+  @override
+  String get diseaseDetailDescriptionBlight =>
+      'Yanıklık; yaprak ve gövdede hızla yayılan kararma ve doku ölümüyle ilerleyebilir.';
+
+  @override
+  String get diseaseDetailCausesBlight =>
+      'Mantar benzeri patojenler, aşırı nem ve düşük hava akışı riski artırır.';
+
+  @override
+  String get diseaseDetailTreatmentBlight =>
+      'Hastalıklı bölgeleri temizleyin, bitkiyi kurutun ve uygun koruyucu ürün uygulayın.';
+
+  @override
+  String get diseaseDetailPreventionBlight =>
+      'Yaprakları kuru tutun, doğru aralıkla dikin ve sulamayı sabah yapın.';
+
+  @override
+  String get diseaseDetailDescriptionMold =>
+      'Küf; yaprak ve yüzeylerde gri/yeşilimsi tabaka şeklinde oluşabilir.';
+
+  @override
+  String get diseaseDetailCausesMold =>
+      'Aşırı nem, yetersiz havalandırma ve organik kalıntılar büyümeyi hızlandırır.';
+
+  @override
+  String get diseaseDetailTreatmentMold =>
+      'Etkilenen alanı temizleyin, nemi düşürün ve gerekirse uygun ürün uygulayın.';
+
+  @override
+  String get diseaseDetailPreventionMold =>
+      'Havalandırmayı artırın, sulamayı azaltın ve yaprakları kuru tutun.';
+
+  @override
+  String get diseaseDetailDescriptionPestDamage =>
+      'Zararlılar veya fiziksel etkenler yapraklarda delik, ısırık izi ve deformasyon oluşturabilir.';
+
+  @override
+  String get diseaseDetailCausesPestDamage =>
+      'Akar, yaprak biti, tırtıl gibi zararlılar veya rüzgar/darbe gibi fiziksel nedenler olabilir.';
+
+  @override
+  String get diseaseDetailTreatmentPestDamage =>
+      'Zararlıyı tespit edin, yaprakları temizleyin ve gerekirse uygun biyolojik/kimyasal mücadele uygulayın.';
+
+  @override
+  String get diseaseDetailPreventionPestDamage =>
+      'Düzenli kontrol yapın, bitkiyi güçlendirin ve yeni bitkileri karantinaya alın.';
+
+  @override
+  String get diseaseDetailDescriptionRot =>
+      'Çürük; kök veya gövdede yumuşama, koyulaşma ve kötü koku ile ilerleyebilir.';
+
+  @override
+  String get diseaseDetailCausesRot =>
+      'Aşırı sulama, drenaj zayıflığı ve patojenler çürümeyi başlatabilir.';
+
+  @override
+  String get diseaseDetailTreatmentRot =>
+      'Çürüyen kısımları temizleyin, sulamayı azaltın ve daha iyi drenajlı toprağa alın.';
+
+  @override
+  String get diseaseDetailPreventionRot =>
+      'Toprağın kuruma durumuna göre sulayın, saksı drenajını iyileştirin.';
+
+  @override
+  String get speciesDetailTitle => 'Tür detayları';
+
+  @override
+  String get speciesDetailConfidenceLabel => 'Güven skoru';
+
+  @override
+  String get speciesDetailCareTitle => 'Bakım bilgileri';
+
+  @override
+  String get speciesDetailWateringLabel => 'Sulama';
+
+  @override
+  String get speciesDetailSunLabel => 'Güneş';
+
+  @override
+  String get speciesDetailSoilLabel => 'Toprak';
+
+  @override
+  String get speciesDetailWateringValue =>
+      'Toprak kurudukça (ortalama haftada 1–2)';
+
+  @override
+  String get speciesDetailSunValue => 'Aydınlık, dolaylı ışık';
+
+  @override
+  String get speciesDetailSoilValue => 'İyi drenajlı karışım';
+
+  @override
+  String get speciesDetailRiskTitle => 'Riskli hastalıklar';
 }

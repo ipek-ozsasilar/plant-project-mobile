@@ -4,6 +4,7 @@ import 'package:bitirme_mobile/core/enums/size_enum.dart';
 import 'package:bitirme_mobile/core/locale/l10n_context.dart';
 import 'package:bitirme_mobile/core/locale/scan_flow_localized_error.dart';
 import 'package:bitirme_mobile/core/mixins/scaffold_message_mixin.dart';
+import 'package:bitirme_mobile/core/navigation/app_paths.dart';
 import 'package:bitirme_mobile/core/services/app_logger.dart';
 import 'package:bitirme_mobile/core/services/disease_label_display.dart';
 import 'package:bitirme_mobile/core/theme/app_palette.dart';
@@ -267,6 +268,12 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
             subtitle: Text(
               '${l10n.scanSpeciesConfidence}: ${confidencePercentLabel(sp.top.confidence)}',
             ),
+            trailing: TextButton(
+              onPressed: () => context.push(
+                '${AppPaths.speciesDetail}/${Uri.encodeComponent(sp.top.label)}?confidence=${confidenceToUnit(sp.top.confidence)}',
+              ),
+              child: Text(l10n.detailCta),
+            ),
           ),
         ),
         const Spacer(),
@@ -315,6 +322,12 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
             title: Text(diseaseText),
             subtitle: Text(
               '${l10n.scanSpeciesConfidence}: ${confidencePercentLabel(dis.top.confidence)}',
+            ),
+            trailing: TextButton(
+              onPressed: () => context.push(
+                '${AppPaths.diseaseDetail}/${Uri.encodeComponent(dis.top.label)}?confidence=${confidenceToUnit(dis.top.confidence)}',
+              ),
+              child: Text(l10n.detailCta),
             ),
           ),
         ),

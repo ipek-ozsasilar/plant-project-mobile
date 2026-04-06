@@ -6,6 +6,9 @@ abstract final class AppPaths {
   static const String login = '/login';
   static const String register = '/register';
   static const String healthProgress = '/health-progress';
+  static const String diseaseDetail = '/disease-detail';
+  static const String speciesDetail = '/species-detail';
+  static const String myPlants = '/my-plants';
   static const String home = '/home';
   static const String history = '/history';
   static const String more = '/more';

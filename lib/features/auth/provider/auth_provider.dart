@@ -10,8 +10,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Oturum durumu.
 class AuthState {
-  const AuthState({this.email, this.displayName});
+  const AuthState({this.uid, this.email, this.displayName});
 
+  final String? uid;
   final String? email;
   final String? displayName;
 
@@ -28,24 +29,26 @@ class AuthNotifier extends Notifier<AuthState> {
   Future<void> hydrate() async {
     final User? fb = FirebaseAuth.instance.currentUser;
     if (fb != null) {
+      final String uid = fb.uid;
       final String email = fb.email ?? '';
       final String name =
           fb.displayName ?? (email.contains('@') ? email.split('@').first : email);
-      state = AuthState(email: email, displayName: name);
+      state = AuthState(uid: uid, email: email, displayName: name);
       final AuthStorageService svc = sl<AuthStorageService>();
-      await svc.saveUser(email: email, name: name);
+      await svc.saveUser(uid: uid, email: email, name: name);
       return;
     }
     final AuthStorageService svc = sl<AuthStorageService>();
+    final String? uid = await svc.getUid();
     final String? email = await svc.getEmail();
     final String? name = await svc.getName();
-    state = AuthState(email: email, displayName: name);
+    state = AuthState(uid: uid, email: email, displayName: name);
   }
 
-  Future<void> saveSession({required String email, required String name}) async {
+  Future<void> saveSession({required String uid, required String email, required String name}) async {
     final AuthStorageService svc = sl<AuthStorageService>();
-    await svc.saveUser(email: email, name: name);
-    state = AuthState(email: email, displayName: name);
+    await svc.saveUser(uid: uid, email: email, name: name);
+    state = AuthState(uid: uid, email: email, displayName: name);
   }
 
   /// E-posta/şifre girişi. Başarıda `null`, aksi halde gösterilecek mesaj.
@@ -63,10 +66,11 @@ class AuthNotifier extends Notifier<AuthState> {
       if (u == null) {
         return l10n.errorAuth;
       }
+      final String uid = u.uid;
       final String e = u.email ?? email;
       final String name =
           u.displayName ?? (e.contains('@') ? e.split('@').first : e);
-      await saveSession(email: e, name: name);
+      await saveSession(uid: uid, email: e, name: name);
       await sl<UserProfileFirestoreService>().upsertFromFirebaseUser(
         u,
         authProvider: 'password',
@@ -104,8 +108,9 @@ class AuthNotifier extends Notifier<AuthState> {
       if (u == null) {
         return l10n.errorAuth;
       }
+      final String uid = u.uid;
       final String e = u.email ?? email;
-      await saveSession(email: e, name: name);
+      await saveSession(uid: uid, email: e, name: name);
       await sl<UserProfileFirestoreService>().upsertFromFirebaseUser(
         u,
         authProvider: 'password',
@@ -129,10 +134,11 @@ class AuthNotifier extends Notifier<AuthState> {
         return false;
       }
       final User u = cred!.user!;
+      final String uid = u.uid;
       final String email = u.email ?? '';
       final String name =
           u.displayName ?? (email.contains('@') ? email.split('@').first : email);
-      await saveSession(email: email, name: name);
+      await saveSession(uid: uid, email: email, name: name);
       await sl<UserProfileFirestoreService>().upsertFromFirebaseUser(
         u,
         authProvider: 'google.com',

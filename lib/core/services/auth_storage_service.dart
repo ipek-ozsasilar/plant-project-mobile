@@ -21,6 +21,7 @@ class AuthStorageService {
   static const String _keyOnboarding = 'onboarding_done';
   static const String _keyEmail = 'user_email';
   static const String _keyName = 'user_name';
+  static const String _keyUid = 'user_uid';
 
   Future<bool> hasCompletedOnboarding() async {
     try {
@@ -51,6 +52,16 @@ class AuthStorageService {
     }
   }
 
+  Future<String?> getUid() async {
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      return prefs.getString(_keyUid);
+    } catch (e, st) {
+      _logger.e('storage', e, st);
+      return null;
+    }
+  }
+
   Future<String?> getName() async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -61,9 +72,10 @@ class AuthStorageService {
     }
   }
 
-  Future<void> saveUser({required String email, required String name}) async {
+  Future<void> saveUser({required String uid, required String email, required String name}) async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_keyUid, uid);
       await prefs.setString(_keyEmail, email);
       await prefs.setString(_keyName, name);
     } catch (e, st) {
@@ -74,6 +86,7 @@ class AuthStorageService {
   Future<void> clearUser() async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.remove(_keyUid);
       await prefs.remove(_keyEmail);
       await prefs.remove(_keyName);
     } catch (e, st) {

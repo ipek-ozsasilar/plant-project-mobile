@@ -166,6 +166,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get moreTileSettingsDesc => 'Theme and app preferences';
 
   @override
+  String get moreTileMyPlantsDesc => 'Add plants and track them daily';
+
+  @override
   String get moreTileHealthProgressDesc =>
       'See health and disease trends of your plants';
 
@@ -353,6 +356,37 @@ class AppLocalizationsEn extends AppLocalizations {
   String get healthProgressPlant3 => 'Rubber plant';
 
   @override
+  String get myPlantsTitle => 'My plants';
+
+  @override
+  String get myPlantsEmpty =>
+      'You haven\'t added any plants yet. Add one to start daily tracking.';
+
+  @override
+  String get myPlantsAddTitle => 'Add plant';
+
+  @override
+  String get myPlantsNameLabel => 'Plant name';
+
+  @override
+  String get myPlantsSpeciesLabel => 'Species label';
+
+  @override
+  String get myPlantsDetailTitle => 'Plant tracking';
+
+  @override
+  String get myPlantsNoScans => 'No scans yet.';
+
+  @override
+  String get myPlantsTimelineTitle => 'Scan history';
+
+  @override
+  String get myPlantsTimelineEmpty => 'No saved scans for this plant.';
+
+  @override
+  String get myPlantsHealthScoreLabel => 'Health score:';
+
+  @override
   String get notificationsLabel => 'Notifications';
 
   @override
@@ -405,6 +439,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get continueCta => 'Continue';
+
+  @override
+  String get detailCta => 'Details';
 
   @override
   String get back => 'Back';
@@ -496,4 +533,228 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorAuthOperationNotAllowed =>
       'This sign-in method is disabled. Enable it in the Firebase console.';
+
+  @override
+  String get diseaseDetailTitle => 'Disease details';
+
+  @override
+  String get diseaseDetailConfidenceLabel => 'Confidence';
+
+  @override
+  String get diseaseDetailSectionDescription => 'Description';
+
+  @override
+  String get diseaseDetailSectionCauses => 'Why it happens';
+
+  @override
+  String get diseaseDetailSectionTreatment => 'How to treat';
+
+  @override
+  String get diseaseDetailSectionPrevention => 'Prevention tips';
+
+  @override
+  String get diseaseDetailDescriptionGeneric =>
+      'Detailed content is not available for this class yet. Results are advisory.';
+
+  @override
+  String get diseaseDetailCausesGeneric =>
+      'Low light, over/under watering, poor airflow, or pathogens can contribute.';
+
+  @override
+  String get diseaseDetailTreatmentGeneric =>
+      'Remove affected parts, improve care conditions, and use an appropriate product if needed.';
+
+  @override
+  String get diseaseDetailPreventionGeneric =>
+      'Regular checks, proper watering, and good airflow reduce risk.';
+
+  @override
+  String get diseaseDetailDescriptionHealthy =>
+      'No clear disease symptoms are visible; the plant looks generally healthy.';
+
+  @override
+  String get diseaseDetailCausesHealthy =>
+      'Proper watering, enough light, and stable conditions help plants stay healthy.';
+
+  @override
+  String get diseaseDetailTreatmentHealthy =>
+      'Keep current care; wipe dust off leaves and monitor regularly.';
+
+  @override
+  String get diseaseDetailPreventionHealthy =>
+      'Avoid overwatering, keep light consistent, and detect pests early.';
+
+  @override
+  String get diseaseDetailDescriptionPowderyMildew =>
+      'A fungal disease that appears as a white, powder-like coating on leaves.';
+
+  @override
+  String get diseaseDetailCausesPowderyMildew =>
+      'High humidity, poor airflow, and temperature swings can trigger it.';
+
+  @override
+  String get diseaseDetailTreatmentPowderyMildew =>
+      'Prune affected leaves; keep foliage dry and apply fungicide if needed.';
+
+  @override
+  String get diseaseDetailPreventionPowderyMildew =>
+      'Space plants out, improve ventilation, and water the soil (not leaves).';
+
+  @override
+  String get diseaseDetailDescriptionLeafSpot =>
+      'Leaf spot shows as brown/black lesions on foliage and may spread.';
+
+  @override
+  String get diseaseDetailCausesLeafSpot =>
+      'Often fungal or bacterial; prolonged wet leaves increase risk.';
+
+  @override
+  String get diseaseDetailTreatmentLeafSpot =>
+      'Remove affected leaves; adjust watering and apply appropriate treatment if needed.';
+
+  @override
+  String get diseaseDetailPreventionLeafSpot =>
+      'Reduce overhead watering, keep leaves dry, and clean regularly.';
+
+  @override
+  String get diseaseDetailDescriptionRust =>
+      'A fungal disease seen as orange-brown pustules, often on the underside of leaves.';
+
+  @override
+  String get diseaseDetailCausesRust =>
+      'Humid conditions, poor airflow, and infected material can spread spores.';
+
+  @override
+  String get diseaseDetailTreatmentRust =>
+      'Remove affected leaves; improve airflow and use fungicide if necessary.';
+
+  @override
+  String get diseaseDetailPreventionRust =>
+      'Avoid overcrowding, keep foliage dry, and quarantine new plants.';
+
+  @override
+  String get diseaseDetailDescriptionBacterial =>
+      'Bacterial infections can cause water-soaked spots and fast spreading lesions.';
+
+  @override
+  String get diseaseDetailCausesBacterial =>
+      'High humidity, wounded tissue, and contaminated tools can increase spread.';
+
+  @override
+  String get diseaseDetailTreatmentBacterial =>
+      'Remove infected parts with sterile cuts; improve hygiene and consider copper-based products.';
+
+  @override
+  String get diseaseDetailPreventionBacterial =>
+      'Disinfect tools, avoid wet foliage, and increase air circulation.';
+
+  @override
+  String get diseaseDetailDescriptionViral =>
+      'Viral diseases may show mosaic patterns, deformities, and stunted growth.';
+
+  @override
+  String get diseaseDetailCausesViral =>
+      'Pests (e.g., aphids), contaminated material, and contact transmission can spread viruses.';
+
+  @override
+  String get diseaseDetailTreatmentViral =>
+      'Curative treatment is limited; isolate the plant and control pests.';
+
+  @override
+  String get diseaseDetailPreventionViral =>
+      'Control pests, quarantine new plants, and use healthy propagation material.';
+
+  @override
+  String get diseaseDetailDescriptionBlight =>
+      'Blight can cause rapid darkening and tissue dieback on leaves and stems.';
+
+  @override
+  String get diseaseDetailCausesBlight =>
+      'Moist conditions and pathogen pressure can increase risk.';
+
+  @override
+  String get diseaseDetailTreatmentBlight =>
+      'Remove affected areas, reduce moisture, and apply an appropriate protective product.';
+
+  @override
+  String get diseaseDetailPreventionBlight =>
+      'Keep foliage dry, ensure spacing, and water early in the day.';
+
+  @override
+  String get diseaseDetailDescriptionMold =>
+      'Mold can appear as gray/green growth on plant surfaces.';
+
+  @override
+  String get diseaseDetailCausesMold =>
+      'Excess humidity, poor ventilation, and organic residue support growth.';
+
+  @override
+  String get diseaseDetailTreatmentMold =>
+      'Clean affected areas, lower humidity, and use an appropriate product if needed.';
+
+  @override
+  String get diseaseDetailPreventionMold =>
+      'Improve ventilation, reduce watering, and keep leaves dry.';
+
+  @override
+  String get diseaseDetailDescriptionPestDamage =>
+      'Pests or physical factors can cause holes, bite marks, and deformities.';
+
+  @override
+  String get diseaseDetailCausesPestDamage =>
+      'Mites, aphids, caterpillars, or wind/impact damage may be responsible.';
+
+  @override
+  String get diseaseDetailTreatmentPestDamage =>
+      'Identify the pest, clean leaves, and apply suitable control methods if needed.';
+
+  @override
+  String get diseaseDetailPreventionPestDamage =>
+      'Inspect regularly, keep plants strong, and quarantine new additions.';
+
+  @override
+  String get diseaseDetailDescriptionRot =>
+      'Rot can cause softening, darkening, and bad odor in roots or stems.';
+
+  @override
+  String get diseaseDetailCausesRot =>
+      'Overwatering, poor drainage, and pathogens can lead to rot.';
+
+  @override
+  String get diseaseDetailTreatmentRot =>
+      'Remove rotten parts, reduce watering, and repot into well-draining soil.';
+
+  @override
+  String get diseaseDetailPreventionRot =>
+      'Water based on soil dryness and ensure good drainage.';
+
+  @override
+  String get speciesDetailTitle => 'Species details';
+
+  @override
+  String get speciesDetailConfidenceLabel => 'Confidence';
+
+  @override
+  String get speciesDetailCareTitle => 'Care info';
+
+  @override
+  String get speciesDetailWateringLabel => 'Watering';
+
+  @override
+  String get speciesDetailSunLabel => 'Sunlight';
+
+  @override
+  String get speciesDetailSoilLabel => 'Soil';
+
+  @override
+  String get speciesDetailWateringValue => 'When soil dries (about 1–2x/week)';
+
+  @override
+  String get speciesDetailSunValue => 'Bright, indirect light';
+
+  @override
+  String get speciesDetailSoilValue => 'Well-draining mix';
+
+  @override
+  String get speciesDetailRiskTitle => 'Risky diseases';
 }
