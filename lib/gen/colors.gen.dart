@@ -14,8 +14,8 @@ import 'package:flutter/material.dart';
 class ColorName {
   ColorName._();
 
-  /// Color: #40916C
-  static const Color accent = Color(0xFF40916C);
+  /// Color: #F7A8C3
+  static const Color accent = Color(0xFFF7A8C3);
 
   /// Color: #C94C4C
   static const Color error = Color(0xFFC94C4C);
@@ -23,8 +23,8 @@ class ColorName {
   /// Color: #4285F4
   static const Color googleBrandBlue = Color(0xFF4285F4);
 
-  /// Color: #95D5B2
-  static const Color gradientEnd = Color(0xFF95D5B2);
+  /// Color: #FFE3EE
+  static const Color gradientEnd = Color(0xFFFFE3EE);
 
   /// Color: #2A9D8F
   static const Color info = Color(0xFF2A9D8F);
@@ -53,14 +53,14 @@ class ColorName {
   /// Color: #081C15
   static const Color primaryDark = Color(0xFF081C15);
 
-  /// Color: #D8F3DC
-  static const Color primaryLight = Color(0xFFD8F3DC);
+  /// Color: #FDE7F0
+  static const Color primaryLight = Color(0xFFFDE7F0);
 
   /// Color: #2D6A4F
   static const Color success = Color(0xFF2D6A4F);
 
-  /// Color: #F0F4F1
-  static const Color surface = Color(0xFFF0F4F1);
+  /// Color: #FFF9FB
+  static const Color surface = Color(0xFFFFF9FB);
 
   /// Color: #FFFFFF
   static const Color surfaceCard = Color(0xFFFFFFFF);

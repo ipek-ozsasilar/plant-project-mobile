@@ -48,13 +48,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingStart => 'Get started';
 
   @override
-  String get onboardingStep1 => '1 / 3';
-
-  @override
-  String get onboardingStep2 => '2 / 3';
-
-  @override
-  String get onboardingStep3 => '3 / 3';
+  String onboardingStep(int current, int total) {
+    return '$current / $total';
+  }
 
   @override
   String get loginTitle => 'Welcome';
@@ -168,6 +164,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get moreTileSettingsDesc => 'Theme and app preferences';
+
+  @override
+  String get moreTileHealthProgressDesc =>
+      'See health and disease trends of your plants';
 
   @override
   String get moreTileAboutDesc => 'Project and disclaimer';
@@ -320,6 +320,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get languageEnglish => 'English';
+
+  @override
+  String get healthProgressTitle => 'Health progress';
+
+  @override
+  String get healthProgressSubtitle => 'Pick a plant and track trends';
+
+  @override
+  String get healthProgressHint =>
+      'This screen is a UI demo; once data saving is wired, it will chart from your scan history automatically.';
+
+  @override
+  String get healthProgressSelectPlant => 'Select a plant';
+
+  @override
+  String get healthProgressChartTitle => 'Last 14 days';
+
+  @override
+  String get healthProgressLegendHealth => 'Health';
+
+  @override
+  String get healthProgressLegendDisease => 'Disease';
+
+  @override
+  String get healthProgressPlant1 => 'Monstera';
+
+  @override
+  String get healthProgressPlant2 => 'Aloe vera';
+
+  @override
+  String get healthProgressPlant3 => 'Rubber plant';
 
   @override
   String get notificationsLabel => 'Notifications';

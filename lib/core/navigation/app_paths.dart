@@ -5,6 +5,7 @@ abstract final class AppPaths {
   static const String onboarding = '/onboarding';
   static const String login = '/login';
   static const String register = '/register';
+  static const String healthProgress = '/health-progress';
   static const String home = '/home';
   static const String history = '/history';
   static const String more = '/more';

@@ -170,23 +170,11 @@ abstract class AppLocalizations {
   /// **'Başla'**
   String get onboardingStart;
 
-  /// No description provided for @onboardingStep1.
+  /// Onboarding adım göstergesi
   ///
   /// In tr, this message translates to:
-  /// **'1 / 3'**
-  String get onboardingStep1;
-
-  /// No description provided for @onboardingStep2.
-  ///
-  /// In tr, this message translates to:
-  /// **'2 / 3'**
-  String get onboardingStep2;
-
-  /// No description provided for @onboardingStep3.
-  ///
-  /// In tr, this message translates to:
-  /// **'3 / 3'**
-  String get onboardingStep3;
+  /// **'{current} / {total}'**
+  String onboardingStep(int current, int total);
 
   /// No description provided for @loginTitle.
   ///
@@ -409,6 +397,12 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Tema ve uygulama tercihleri'**
   String get moreTileSettingsDesc;
+
+  /// No description provided for @moreTileHealthProgressDesc.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bitkilerinizin sağlık ve hastalık trendlerini görün'**
+  String get moreTileHealthProgressDesc;
 
   /// No description provided for @moreTileAboutDesc.
   ///
@@ -697,6 +691,66 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'English'**
   String get languageEnglish;
+
+  /// No description provided for @healthProgressTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sağlık ilerlemesi'**
+  String get healthProgressTitle;
+
+  /// No description provided for @healthProgressSubtitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bitki seçin ve trendi izleyin'**
+  String get healthProgressSubtitle;
+
+  /// No description provided for @healthProgressHint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu ekran UI demo amaçlıdır; veri kaydı eklendiğinde geçmiş taramalarınızdan otomatik çizilecektir.'**
+  String get healthProgressHint;
+
+  /// No description provided for @healthProgressSelectPlant.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bir bitki seçin'**
+  String get healthProgressSelectPlant;
+
+  /// No description provided for @healthProgressChartTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Son 14 gün'**
+  String get healthProgressChartTitle;
+
+  /// No description provided for @healthProgressLegendHealth.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sağlık'**
+  String get healthProgressLegendHealth;
+
+  /// No description provided for @healthProgressLegendDisease.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hastalık'**
+  String get healthProgressLegendDisease;
+
+  /// No description provided for @healthProgressPlant1.
+  ///
+  /// In tr, this message translates to:
+  /// **'Monstera'**
+  String get healthProgressPlant1;
+
+  /// No description provided for @healthProgressPlant2.
+  ///
+  /// In tr, this message translates to:
+  /// **'Aloe vera'**
+  String get healthProgressPlant2;
+
+  /// No description provided for @healthProgressPlant3.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kauçuk'**
+  String get healthProgressPlant3;
 
   /// No description provided for @notificationsLabel.
   ///

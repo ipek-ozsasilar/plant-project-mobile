@@ -12,9 +12,18 @@
   "onboardingNext": "İleri",
   "onboardingSkip": "Atla",
   "onboardingStart": "Başla",
-  "onboardingStep1": "1 / 3",
-  "onboardingStep2": "2 / 3",
-  "onboardingStep3": "3 / 3",
+  "onboardingStep": "{current} / {total}",
+  "@onboardingStep": {
+    "description": "Onboarding adım göstergesi",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "loginTitle": "Hoş geldiniz",
   "loginSubtitle": "Hesabınıza giriş yapın",
   "registerTitle": "Kayıt ol",
@@ -52,6 +61,7 @@
   "moreTileGuideDesc": "Çekim ve çoklu bitki önerileri",
   "moreTileProfileDesc": "Hesap ve görünen ad",
   "moreTileSettingsDesc": "Tema ve uygulama tercihleri",
+  "moreTileHealthProgressDesc": "Bitkilerinizin sağlık ve hastalık trendlerini görün",
   "moreTileAboutDesc": "Proje ve sorumluluk reddi",
   "navHome": "Ana",
   "navScan": "Tarama",
@@ -100,6 +110,16 @@
   "languageSystem": "Sistem",
   "languageTurkish": "Türkçe",
   "languageEnglish": "English",
+  "healthProgressTitle": "Sağlık ilerlemesi",
+  "healthProgressSubtitle": "Bitki seçin ve trendi izleyin",
+  "healthProgressHint": "Bu ekran UI demo amaçlıdır; veri kaydı eklendiğinde geçmiş taramalarınızdan otomatik çizilecektir.",
+  "healthProgressSelectPlant": "Bir bitki seçin",
+  "healthProgressChartTitle": "Son 14 gün",
+  "healthProgressLegendHealth": "Sağlık",
+  "healthProgressLegendDisease": "Hastalık",
+  "healthProgressPlant1": "Monstera",
+  "healthProgressPlant2": "Aloe vera",
+  "healthProgressPlant3": "Kauçuk",
   "notificationsLabel": "Bildirimler",
   "dataLabel": "Veri ve gizlilik",
   "apiHint": "Sunucu adresi .env içinden yapılandırılır.",

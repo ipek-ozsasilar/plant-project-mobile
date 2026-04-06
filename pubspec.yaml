@@ -58,6 +58,8 @@ dependencies:
   path: ^1.9.0
   # TensorFlow Lite (yerel tür / hastalık modelleri)
   tflite_flutter: ^0.12.1
+  # grafikler (sağlık ilerlemesi)
+  fl_chart: ^0.70.2
 
 dev_dependencies:
   flutter_test:

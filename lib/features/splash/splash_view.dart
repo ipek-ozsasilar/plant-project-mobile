@@ -32,10 +32,6 @@ class _SplashViewState extends ConsumerState<SplashView> {
     if (!mounted) {
       return;
     }
-    if (!langOk) {
-      context.go(AppPaths.language);
-      return;
-    }
     await Future<void>.delayed(DurationEnum.splashDelay.duration);
     await ref.read(authProvider.notifier).hydrate();
     final bool done = await svc.hasCompletedOnboarding();
@@ -43,7 +39,7 @@ class _SplashViewState extends ConsumerState<SplashView> {
     if (!mounted) {
       return;
     }
-    if (!done) {
+    if (!langOk || !done) {
       context.go(AppPaths.onboarding);
     } else if (email == null || email.isEmpty) {
       context.go(AppPaths.login);

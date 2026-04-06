@@ -48,13 +48,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get onboardingStart => 'Başla';
 
   @override
-  String get onboardingStep1 => '1 / 3';
-
-  @override
-  String get onboardingStep2 => '2 / 3';
-
-  @override
-  String get onboardingStep3 => '3 / 3';
+  String onboardingStep(int current, int total) {
+    return '$current / $total';
+  }
 
   @override
   String get loginTitle => 'Hoş geldiniz';
@@ -168,6 +164,10 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get moreTileSettingsDesc => 'Tema ve uygulama tercihleri';
+
+  @override
+  String get moreTileHealthProgressDesc =>
+      'Bitkilerinizin sağlık ve hastalık trendlerini görün';
 
   @override
   String get moreTileAboutDesc => 'Proje ve sorumluluk reddi';
@@ -320,6 +320,37 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get languageEnglish => 'English';
+
+  @override
+  String get healthProgressTitle => 'Sağlık ilerlemesi';
+
+  @override
+  String get healthProgressSubtitle => 'Bitki seçin ve trendi izleyin';
+
+  @override
+  String get healthProgressHint =>
+      'Bu ekran UI demo amaçlıdır; veri kaydı eklendiğinde geçmiş taramalarınızdan otomatik çizilecektir.';
+
+  @override
+  String get healthProgressSelectPlant => 'Bir bitki seçin';
+
+  @override
+  String get healthProgressChartTitle => 'Son 14 gün';
+
+  @override
+  String get healthProgressLegendHealth => 'Sağlık';
+
+  @override
+  String get healthProgressLegendDisease => 'Hastalık';
+
+  @override
+  String get healthProgressPlant1 => 'Monstera';
+
+  @override
+  String get healthProgressPlant2 => 'Aloe vera';
+
+  @override
+  String get healthProgressPlant3 => 'Kauçuk';
 
   @override
   String get notificationsLabel => 'Bildirimler';

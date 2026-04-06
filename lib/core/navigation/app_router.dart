@@ -3,6 +3,7 @@ import 'package:bitirme_mobile/features/about/about_view.dart';
 import 'package:bitirme_mobile/features/auth/login/login_view.dart';
 import 'package:bitirme_mobile/features/auth/register/register_view.dart';
 import 'package:bitirme_mobile/features/guide/guide_view.dart';
+import 'package:bitirme_mobile/features/health_progress/health_progress_view.dart';
 import 'package:bitirme_mobile/features/language/language_select_view.dart';
 import 'package:bitirme_mobile/features/history/history_view.dart';
 import 'package:bitirme_mobile/features/home/home_view.dart';
@@ -41,6 +42,10 @@ final Provider<GoRouter> appRouterProvider = Provider<GoRouter>((Ref ref) {
       GoRoute(
         path: AppPaths.register,
         builder: (BuildContext context, GoRouterState state) => const RegisterView(),
+      ),
+      GoRoute(
+        path: AppPaths.healthProgress,
+        builder: (BuildContext context, GoRouterState state) => const HealthProgressView(),
       ),
       GoRoute(
         path: AppPaths.scan,

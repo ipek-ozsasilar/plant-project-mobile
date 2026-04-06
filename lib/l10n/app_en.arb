@@ -12,9 +12,18 @@
   "onboardingNext": "Next",
   "onboardingSkip": "Skip",
   "onboardingStart": "Get started",
-  "onboardingStep1": "1 / 3",
-  "onboardingStep2": "2 / 3",
-  "onboardingStep3": "3 / 3",
+  "onboardingStep": "{current} / {total}",
+  "@onboardingStep": {
+    "description": "Onboarding step indicator",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "loginTitle": "Welcome",
   "loginSubtitle": "Sign in to your account",
   "registerTitle": "Sign up",
@@ -52,6 +61,7 @@
   "moreTileGuideDesc": "Photo and multi-plant tips",
   "moreTileProfileDesc": "Account and display name",
   "moreTileSettingsDesc": "Theme and app preferences",
+  "moreTileHealthProgressDesc": "See health and disease trends of your plants",
   "moreTileAboutDesc": "Project and disclaimer",
   "navHome": "Home",
   "navScan": "Scan",
@@ -100,6 +110,16 @@
   "languageSystem": "System",
   "languageTurkish": "Türkçe",
   "languageEnglish": "English",
+  "healthProgressTitle": "Health progress",
+  "healthProgressSubtitle": "Pick a plant and track trends",
+  "healthProgressHint": "This screen is a UI demo; once data saving is wired, it will chart from your scan history automatically.",
+  "healthProgressSelectPlant": "Select a plant",
+  "healthProgressChartTitle": "Last 14 days",
+  "healthProgressLegendHealth": "Health",
+  "healthProgressLegendDisease": "Disease",
+  "healthProgressPlant1": "Monstera",
+  "healthProgressPlant2": "Aloe vera",
+  "healthProgressPlant3": "Rubber plant",
   "notificationsLabel": "Notifications",
   "dataLabel": "Data and privacy",
   "apiHint": "Server URL is configured via .env.",

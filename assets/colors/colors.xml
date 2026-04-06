@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <!-- Açık tema: doğa yeşili -->
+  <!-- Açık tema: doğa yeşili + şeker pembe vurgu -->
   <color name="primary">#1B4332</color>
-  <color name="primary_light">#D8F3DC</color>
+  <color name="primary_light">#FDE7F0</color>
   <color name="primary_dark">#081C15</color>
-  <color name="accent">#40916C</color>
-  <color name="surface">#F0F4F1</color>
+  <color name="accent">#F7A8C3</color>
+  <color name="surface">#FFF9FB</color>
   <color name="surface_card">#FFFFFF</color>
   <color name="on_surface">#102A27</color>
   <color name="on_surface_muted">#5C7068</color>
@@ -27,5 +27,5 @@
   <color name="theme_dark_header_1">#27272A</color>
   <color name="theme_dark_header_2">#3F3F46</color>
   <color name="theme_dark_header_3">#52525B</color>
-  <color name="gradient_end">#95D5B2</color>
+  <color name="gradient_end">#FFE3EE</color>
 </resources>

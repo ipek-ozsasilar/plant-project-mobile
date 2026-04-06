@@ -1,4 +1,7 @@
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
+import 'package:bitirme_mobile/core/enums/language_picker_strings_enum.dart';
+import 'package:bitirme_mobile/core/locale/app_locale_mode.dart';
+import 'package:bitirme_mobile/core/locale/app_locale_provider.dart';
 import 'package:bitirme_mobile/core/locale/l10n_context.dart';
 import 'package:bitirme_mobile/core/navigation/app_paths.dart';
 import 'package:bitirme_mobile/core/services/auth_storage_service.dart';
@@ -10,19 +13,29 @@ import 'package:bitirme_mobile/l10n/app_localizations.dart';
 import 'package:bitirme_mobile/service_locator/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 /// İlk kurulum slaytları — modern kart ve degrade düzen.
-class OnboardingView extends StatefulWidget {
+class OnboardingView extends ConsumerStatefulWidget {
   const OnboardingView({super.key});
 
   @override
-  State<OnboardingView> createState() => _OnboardingViewState();
+  ConsumerState<OnboardingView> createState() => _OnboardingViewState();
 }
 
-class _OnboardingViewState extends State<OnboardingView> {
-  final PageController _pageController = PageController();
+class _OnboardingViewState extends ConsumerState<OnboardingView> {
+  late final PageController _pageController;
+  late bool _languageDone;
   int _index = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _languageDone = ref.read(appLocaleProvider) is! AppLocaleUnset;
+    _index = _languageDone ? 1 : 0;
+    _pageController = PageController(initialPage: _index);
+  }
 
   @override
   void dispose() {
@@ -40,7 +53,7 @@ class _OnboardingViewState extends State<OnboardingView> {
   }
 
   void _next() {
-    if (_index < 2) {
+    if (_index < 3) {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 320),
         curve: Curves.easeOutCubic,
@@ -48,6 +61,22 @@ class _OnboardingViewState extends State<OnboardingView> {
     } else {
       _finish();
     }
+  }
+
+  int get _visibleSlidesCount => _languageDone ? 3 : 4;
+
+  int get _visibleIndex {
+    if (!_languageDone) {
+      return _index;
+    }
+    final int v = _index - 1;
+    if (v < 0) {
+      return 0;
+    }
+    if (v > 2) {
+      return 2;
+    }
+    return v;
   }
 
   @override
@@ -87,7 +116,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       TextButton(
-                        onPressed: _finish,
+                        onPressed: (!_languageDone && _index == 0) ? null : _finish,
                         child: Text(
                           l10n.onboardingSkip,
                           style: TextStyle(
@@ -105,26 +134,53 @@ class _OnboardingViewState extends State<OnboardingView> {
                     controller: _pageController,
                     onPageChanged: (int i) => setState(() => _index = i),
                     children: <Widget>[
+                      _LanguageSlide(
+                        enabled: !_languageDone,
+                        onTurkish: () async {
+                          await ref.read(appLocaleProvider.notifier).selectTurkishFirstRun();
+                          if (!mounted) {
+                            return;
+                          }
+                          setState(() => _languageDone = true);
+                          await _pageController.animateToPage(
+                            1,
+                            duration: const Duration(milliseconds: 320),
+                            curve: Curves.easeOutCubic,
+                          );
+                        },
+                        onEnglish: () async {
+                          await ref.read(appLocaleProvider.notifier).selectEnglishFirstRun();
+                          if (!mounted) {
+                            return;
+                          }
+                          setState(() => _languageDone = true);
+                          await _pageController.animateToPage(
+                            1,
+                            duration: const Duration(milliseconds: 320),
+                            curve: Curves.easeOutCubic,
+                          );
+                        },
+                      ),
                       _OnboardingSlide(
                         icon: Icons.auto_awesome_rounded,
                         iconColor: context.palPrimary,
                         title: l10n.onboardingTitle1,
                         body: l10n.onboardingBody1,
-                        chipLabel: l10n.onboardingStep1,
+                        chipLabel: l10n.onboardingStep(1, 3),
                       ),
                       _OnboardingSlide(
                         icon: Icons.grid_view_rounded,
                         iconColor: context.palAccent,
                         title: l10n.onboardingTitle2,
                         body: l10n.onboardingBody2,
-                        chipLabel: l10n.onboardingStep2,
+                        chipLabel: l10n.onboardingStep(2, 3),
                       ),
                       _OnboardingSlide(
                         icon: Icons.insights_rounded,
                         iconColor: ColorName.info,
                         title: l10n.onboardingTitle3,
                         body: l10n.onboardingBody3,
-                        chipLabel: l10n.onboardingStep3,
+                        chipLabel: l10n.onboardingStep(3, 3),
                       ),
                     ],
                   ),
@@ -135,8 +191,8 @@ class _OnboardingViewState extends State<OnboardingView> {
                     children: <Widget>[
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: List<Widget>.generate(3, (int i) {
-                          final bool active = i == _index;
+                        children: List<Widget>.generate(_visibleSlidesCount, (int i) {
+                          final bool active = i == _visibleIndex;
                           return AnimatedContainer(
                             duration: const Duration(milliseconds: 220),
                             margin: EdgeInsets.symmetric(
@@ -153,8 +209,8 @@ class _OnboardingViewState extends State<OnboardingView> {
                       ),
                       SizedBox(height: WidgetSizesEnum.cardRadius.value * 1.1),
                       AppPrimaryButton(
-                        label: _index < 2 ? l10n.onboardingNext : l10n.onboardingStart,
-                        onPressed: _next,
+                        label: _index < 3 ? l10n.onboardingNext : l10n.onboardingStart,
+                        onPressed: (!_languageDone && _index == 0) ? null : _next,
                       ),
                     ],
                   ),
@@ -289,6 +345,166 @@ class _OnboardingSlide extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _LanguageSlide extends StatelessWidget {
+  const _LanguageSlide({
+    required this.enabled,
+    required this.onTurkish,
+    required this.onEnglish,
+  });
+
+  final bool enabled;
+  final Future<void> Function() onTurkish;
+  final Future<void> Function() onEnglish;
+
+  @override
+  Widget build(BuildContext context) {
+    final TextTheme tt = Theme.of(context).textTheme;
+    final double pad = WidgetSizesEnum.cardRadius.value * 1.35;
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: pad,
+        vertical: WidgetSizesEnum.cardRadius.value * 0.5,
+      ),
+      child: SoftElevationCard(
+        onTap: null,
+        padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 1.35),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 1.35),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: <Color>[
+                    context.palAccent.withValues(alpha: 0.22),
+                    context.palPrimary.withValues(alpha: 0.12),
+                  ],
+                ),
+              ),
+              child: Icon(
+                Icons.language_rounded,
+                size: ImageSizesEnum.hero.value * 0.52,
+                color: context.palPrimary,
+              ),
+            ),
+            SizedBox(height: WidgetSizesEnum.cardRadius.value * 1.35),
+            Text(
+              LanguagePickerStringsEnum.headline.value,
+              textAlign: TextAlign.center,
+              style: tt.titleLarge?.copyWith(
+                fontWeight: FontWeight.w800,
+                color: context.palOnSurface,
+                letterSpacing: -0.35,
+              ),
+            ),
+            SizedBox(height: WidgetSizesEnum.divider.value * 10),
+            Text(
+              LanguagePickerStringsEnum.subtitle.value,
+              textAlign: TextAlign.center,
+              style: tt.bodyLarge?.copyWith(
+                color: context.palMuted,
+                height: 1.4,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            SizedBox(height: WidgetSizesEnum.cardRadius.value * 1.5),
+            _LanguageChoiceCard(
+              enabled: enabled,
+              title: LanguagePickerStringsEnum.turkishTitle.value,
+              subtitle: LanguagePickerStringsEnum.turkishSubtitle.value,
+              flag: '🇹🇷',
+              onTap: onTurkish,
+            ),
+            SizedBox(height: WidgetSizesEnum.cardRadius.value * 0.75),
+            _LanguageChoiceCard(
+              enabled: enabled,
+              title: LanguagePickerStringsEnum.englishTitle.value,
+              subtitle: LanguagePickerStringsEnum.englishSubtitle.value,
+              flag: '🇬🇧',
+              onTap: onEnglish,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _LanguageChoiceCard extends StatelessWidget {
+  const _LanguageChoiceCard({
+    required this.enabled,
+    required this.title,
+    required this.subtitle,
+    required this.flag,
+    required this.onTap,
+  });
+
+  final bool enabled;
+  final String title;
+  final String subtitle;
+  final String flag;
+  final Future<void> Function() onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final TextTheme tt = Theme.of(context).textTheme;
+    final double r = WidgetSizesEnum.cardRadius.value * 1.15;
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: enabled ? () => onTap() : null,
+        borderRadius: BorderRadius.circular(r),
+        child: Ink(
+          decoration: BoxDecoration(
+            color: context.palSurfaceCard,
+            borderRadius: BorderRadius.circular(r),
+            border: Border.all(color: context.palOutline.withValues(alpha: 0.45)),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                color: context.palAccent.withValues(alpha: 0.08),
+                blurRadius: WidgetSizesEnum.cardShadowBlur.value * 0.8,
+                offset: Offset(0, WidgetSizesEnum.cardShadowOffsetY.value * 0.45),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 1.05),
+            child: Row(
+              children: <Widget>[
+                Text(flag, style: TextStyle(fontSize: TextSizesEnum.title.value)),
+                SizedBox(width: WidgetSizesEnum.cardRadius.value),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        title,
+                        style: tt.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w800,
+                          color: context.palOnSurface,
+                        ),
+                      ),
+                      SizedBox(height: WidgetSizesEnum.divider.value * 4),
+                      Text(
+                        subtitle,
+                        style: tt.bodySmall?.copyWith(color: context.palMuted, height: 1.3),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(Icons.chevron_right_rounded, color: context.palMuted),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
