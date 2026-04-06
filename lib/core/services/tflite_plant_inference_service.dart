@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:bitirme_mobile/core/enums/ml_assets_enum.dart';
+import 'package:bitirme_mobile/core/enums/ml_preprocess_enum.dart';
+import 'package:bitirme_mobile/core/enums/size_enum.dart';
 import 'package:bitirme_mobile/core/services/app_logger.dart';
 import 'package:bitirme_mobile/core/services/species_label_formatter.dart';
 import 'package:bitirme_mobile/models/inference_result_model.dart';
@@ -51,6 +53,21 @@ class TflitePlantInferenceService {
     }
   }
 
+  MlPreprocessEnum _preprocessFor(MlAssetsEnum model) {
+    // Not: Eğer modelin içinde preprocess_input varsa "raw0to255" olmalı.
+    // Şu an varsayılanı raw bırakıyoruz; gerekiyorsa kolayca unit0to1'e döndürülür.
+    return MlPreprocessEnum.raw0to255;
+  }
+
+  int _fallbackSquareFor(MlAssetsEnum model) {
+    // Tür modelin leafsnap/efficientnet tabanlı ise 300 yaygın.
+    // Çoğu tflite modelde ise 224.
+    if (model == MlAssetsEnum.speciesModel) {
+      return MlInputSizesEnum.efficientNetB3.asInt;
+    }
+    return MlInputSizesEnum.defaultSquare.asInt;
+  }
+
   Future<InferenceResultModel> predictSpecies(Uint8List imageBytes) async {
     await _ensureReady();
     final Interpreter i = _speciesInterpreter!;
@@ -60,6 +77,8 @@ class TflitePlantInferenceService {
       rawLabels: labels,
       imageBytes: imageBytes,
       formatLabel: formatSpeciesRawLabel,
+      preprocess: _preprocessFor(MlAssetsEnum.speciesModel),
+      fallbackSquare: _fallbackSquareFor(MlAssetsEnum.speciesModel),
     );
   }
 
@@ -72,6 +91,8 @@ class TflitePlantInferenceService {
       rawLabels: labels,
       imageBytes: imageBytes,
       formatLabel: (String raw) => raw,
+      preprocess: _preprocessFor(MlAssetsEnum.diseaseModel),
+      fallbackSquare: _fallbackSquareFor(MlAssetsEnum.diseaseModel),
     );
   }
 
@@ -80,6 +101,8 @@ class TflitePlantInferenceService {
     required List<String> rawLabels,
     required Uint8List imageBytes,
     required String Function(String raw) formatLabel,
+    required MlPreprocessEnum preprocess,
+    required int fallbackSquare,
   }) {
     final img.Image? decoded = img.decodeImage(imageBytes);
     if (decoded == null) {
@@ -91,7 +114,7 @@ class TflitePlantInferenceService {
     final List<int> inShape = List<int>.from(inputTensor.shape);
     for (int i = 0; i < inShape.length; i++) {
       if (inShape[i] < 0) {
-        inShape[i] = 224;
+        inShape[i] = fallbackSquare;
       }
     }
     final List<int> outShape = List<int>.from(outputTensor.shape);
@@ -108,6 +131,7 @@ class TflitePlantInferenceService {
       shape: inShape,
       image: resized,
       tensorType: inType,
+      preprocess: preprocess,
     );
 
     final Object output = _allocOutputBuffer(outShape, outputTensor.type);
@@ -176,6 +200,7 @@ class TflitePlantInferenceService {
     required List<int> shape,
     required img.Image image,
     required TensorType tensorType,
+    required MlPreprocessEnum preprocess,
   }) {
     if (shape.length != 4) {
       throw StateError('4 boyutlu giriş bekleniyordu: $shape');
@@ -186,10 +211,18 @@ class TflitePlantInferenceService {
     final bool useFloat = tensorType == TensorType.float32;
 
     double packCh(num v) {
-      if (useFloat) {
-        return (v.toDouble() / 255.0).clamp(0.0, 1.0);
+      final double x = v.toDouble().clamp(0.0, 255.0);
+      if (!useFloat) {
+        return x;
       }
-      return v.toDouble().clamp(0.0, 255.0);
+      if (preprocess == MlPreprocessEnum.raw0to255) {
+        return x;
+      }
+      if (preprocess == MlPreprocessEnum.minus1to1) {
+        return ((x - 127.5) / 127.5).clamp(-1.0, 1.0);
+      }
+      // unit0to1
+      return (x / 255.0).clamp(0.0, 1.0);
     }
 
     if (nchw && shape[1] == 1) {

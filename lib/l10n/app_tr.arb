@@ -85,6 +85,8 @@
   "scanDiseaseLoading": "Hastalık / sağlık durumu analiz ediliyor…",
   "scanDiseaseTitle": "Hastalık / genel durum",
   "scanDiseaseNote": "Model türden bağımsız genel sınıflandırma yapar; sonuç öneri niteliğindedir.",
+  "scanUnrecognizedTitle": "Tanınamadı",
+  "scanUnrecognizedBody": "Güven skoru düşük. Daha net, aydınlık bir fotoğraf çekip tek bitkiyi kadraja almaya çalışın.",
   "scanSummaryTitle": "Özet rapor",
   "scanSaveHistory": "Geçmişe kaydet",
   "scanSaveToPlantTitle": "Hangi bitkiye kaydedilsin?",

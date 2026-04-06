@@ -38,11 +38,17 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
     final TextTheme tt = Theme.of(context).textTheme;
     final int plantsCount = ref.watch(plantsProvider).items.length;
     final int scansCount = ref.watch(historyProvider).length;
+    final double topInset = MediaQuery.paddingOf(context).top + kToolbarHeight;
 
     return Scaffold(
       backgroundColor: context.palSurface,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(context.l10n.profileTitle),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        surfaceTintColor: Colors.transparent,
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -56,7 +62,12 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
           ),
         ),
         child: ListView(
-          padding: EdgeInsets.fromLTRB(pad, pad, pad, WidgetSizesEnum.bottomNavHeight.value),
+          padding: EdgeInsets.fromLTRB(
+            pad,
+            topInset + (pad * 0.6),
+            pad,
+            WidgetSizesEnum.bottomNavHeight.value,
+          ),
           children: <Widget>[
             Center(
               child: Column(
@@ -108,18 +119,21 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
             ),
             SizedBox(height: WidgetSizesEnum.cardRadius.value * 1.15),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                ProfileStatPill(
-                  value: '$plantsCount',
-                  label: context.l10n.profilePlantsTracked,
-                  accent: context.palPrimary,
+                Expanded(
+                  child: ProfileStatPill(
+                    value: '$plantsCount',
+                    label: context.l10n.profilePlantsTracked,
+                    accent: context.palPrimary,
+                  ),
                 ),
                 SizedBox(width: WidgetSizesEnum.cardRadius.value * 0.75),
-                ProfileStatPill(
-                  value: '$scansCount',
-                  label: context.l10n.profileScansDone,
-                  accent: context.palAccent,
+                Expanded(
+                  child: ProfileStatPill(
+                    value: '$scansCount',
+                    label: context.l10n.profileScansDone,
+                    accent: context.palAccent,
+                  ),
                 ),
               ],
             ),

@@ -18,6 +18,7 @@ class ProfileStatPill extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextTheme tt = Theme.of(context).textTheme;
     return Container(
+      width: double.infinity,
       padding: EdgeInsets.symmetric(
         horizontal: WidgetSizesEnum.cardRadius.value * 0.95,
         vertical: WidgetSizesEnum.cardRadius.value * 0.75,
@@ -35,7 +36,7 @@ class ProfileStatPill extends StatelessWidget {
         ],
       ),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Container(
             padding: EdgeInsets.all(WidgetSizesEnum.divider.value * 8),
@@ -46,26 +47,33 @@ class ProfileStatPill extends StatelessWidget {
             child: Icon(Icons.eco_rounded, color: accent, size: IconSizesEnum.medium.value),
           ),
           SizedBox(width: WidgetSizesEnum.cardRadius.value * 0.75),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                value,
-                style: tt.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w900,
-                  color: context.palOnSurface,
-                  letterSpacing: -0.3,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  value,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: tt.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    color: context.palOnSurface,
+                    letterSpacing: -0.3,
+                  ),
                 ),
-              ),
-              SizedBox(height: WidgetSizesEnum.divider.value * 2),
-              Text(
-                label,
-                style: tt.labelMedium?.copyWith(
-                  color: context.palMuted,
-                  fontWeight: FontWeight.w700,
+                SizedBox(height: WidgetSizesEnum.divider.value * 2),
+                Text(
+                  label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: tt.labelMedium?.copyWith(
+                    color: context.palMuted,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

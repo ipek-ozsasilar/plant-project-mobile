@@ -5,6 +5,7 @@ import 'package:bitirme_mobile/core/services/google_sign_in_service.dart';
 import 'package:bitirme_mobile/core/services/user_profile_firestore_service.dart';
 import 'package:bitirme_mobile/core/services/image_crop_service.dart';
 import 'package:bitirme_mobile/core/services/inference_api_service.dart';
+import 'package:bitirme_mobile/core/services/catalog_firestore_service.dart';
 import 'package:bitirme_mobile/core/services/notification_service.dart';
 import 'package:bitirme_mobile/core/services/pdf_report_service.dart';
 import 'package:bitirme_mobile/core/services/plant_scans_firestore_service.dart';
@@ -53,5 +54,8 @@ Future<void> setupServiceLocator() async {
   );
   sl.registerLazySingleton<PlantScansFirestoreService>(
     () => PlantScansFirestoreService(logger: sl<AppLogger>()),
+  );
+  sl.registerLazySingleton<CatalogFirestoreService>(
+    () => CatalogFirestoreService(logger: sl<AppLogger>()),
   );
 }

@@ -542,6 +542,18 @@ abstract class AppLocalizations {
   /// **'Model türden bağımsız genel sınıflandırma yapar; sonuç öneri niteliğindedir.'**
   String get scanDiseaseNote;
 
+  /// No description provided for @scanUnrecognizedTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tanınamadı'**
+  String get scanUnrecognizedTitle;
+
+  /// No description provided for @scanUnrecognizedBody.
+  ///
+  /// In tr, this message translates to:
+  /// **'Güven skoru düşük. Daha net, aydınlık bir fotoğraf çekip tek bitkiyi kadraja almaya çalışın.'**
+  String get scanUnrecognizedBody;
+
   /// No description provided for @scanSummaryTitle.
   ///
   /// In tr, this message translates to:

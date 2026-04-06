@@ -86,3 +86,17 @@ enum AppBarSizesEnum {
   const AppBarSizesEnum(this.value);
   final double value;
 }
+
+/// ML giriş boyutları (enhanced enum).
+enum MlInputSizesEnum {
+  /// EfficientNetB3 gibi modellerde sık kullanılan native input.
+  efficientNetB3(300),
+
+  /// Varsayılan yedek (mobilde yaygın).
+  defaultSquare(224);
+
+  const MlInputSizesEnum(this.value);
+  final double value;
+
+  int get asInt => value.round();
+}

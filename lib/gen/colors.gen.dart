@@ -26,8 +26,8 @@ class ColorName {
   /// Color: #FFE3EE
   static const Color gradientEnd = Color(0xFFFFE3EE);
 
-  /// Color: #2A9D8F
-  static const Color info = Color(0xFF2A9D8F);
+  /// Color: #D87395
+  static const Color info = Color(0xFFD87395);
 
   /// Color: #102A27
   static const Color onSurface = Color(0xFF102A27);
@@ -41,23 +41,23 @@ class ColorName {
   /// Color: #5C7068
   static const Color onSurfaceMuted = Color(0xFF5C7068);
 
-  /// Color: #C5D4CC
-  static const Color outline = Color(0xFFC5D4CC);
+  /// Color: #F1C6D6
+  static const Color outline = Color(0xFFF1C6D6);
 
   /// Color: #3F3F46
   static const Color outlineDark = Color(0xFF3F3F46);
 
-  /// Color: #1B4332
-  static const Color primary = Color(0xFF1B4332);
+  /// Color: #F7A8C3
+  static const Color primary = Color(0xFFF7A8C3);
 
-  /// Color: #081C15
-  static const Color primaryDark = Color(0xFF081C15);
+  /// Color: #C85B86
+  static const Color primaryDark = Color(0xFFC85B86);
 
   /// Color: #FDE7F0
   static const Color primaryLight = Color(0xFFFDE7F0);
 
-  /// Color: #2D6A4F
-  static const Color success = Color(0xFF2D6A4F);
+  /// Color: #D65C8A
+  static const Color success = Color(0xFFD65C8A);
 
   /// Color: #FFF9FB
   static const Color surface = Color(0xFFFFF9FB);

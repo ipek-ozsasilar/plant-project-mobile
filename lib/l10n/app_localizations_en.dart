@@ -242,6 +242,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'The model performs a general classification independent of species; results are advisory only.';
 
   @override
+  String get scanUnrecognizedTitle => 'Not recognized';
+
+  @override
+  String get scanUnrecognizedBody =>
+      'Confidence is low. Try a sharper photo with better lighting and frame a single plant.';
+
+  @override
   String get scanSummaryTitle => 'Summary';
 
   @override

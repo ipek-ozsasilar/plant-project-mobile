@@ -92,17 +92,17 @@ class MainShellView extends StatelessWidget {
                     Expanded(
                       child: _NavIcon(
                         icon: Icons.show_chart_rounded,
-                        selected: false,
+                        selected: navigationShell.currentIndex == 2,
                         label: context.l10n.navProgress,
-                        onTap: () => context.push(AppPaths.healthProgress),
+                        onTap: () => navigationShell.goBranch(2),
                       ),
                     ),
                     Expanded(
                       child: _NavIcon(
                         icon: Icons.menu_rounded,
-                        selected: navigationShell.currentIndex == 2,
+                        selected: navigationShell.currentIndex == 3,
                         label: context.l10n.navMore,
-                        onTap: () => navigationShell.goBranch(2),
+                        onTap: () => navigationShell.goBranch(3),
                       ),
                     ),
                   ],

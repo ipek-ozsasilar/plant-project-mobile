@@ -1,11 +1,13 @@
 import 'dart:typed_data';
 
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
+import 'package:bitirme_mobile/core/enums/inference_threshold_enum.dart';
 import 'package:bitirme_mobile/core/locale/l10n_context.dart';
 import 'package:bitirme_mobile/core/locale/scan_flow_localized_error.dart';
 import 'package:bitirme_mobile/core/mixins/scaffold_message_mixin.dart';
 import 'package:bitirme_mobile/core/navigation/app_paths.dart';
 import 'package:bitirme_mobile/core/services/app_logger.dart';
+import 'package:bitirme_mobile/core/services/catalog_firestore_service.dart';
 import 'package:bitirme_mobile/core/services/disease_label_display.dart';
 import 'package:bitirme_mobile/core/services/firebase_storage_service.dart';
 import 'package:bitirme_mobile/core/services/health_score_service.dart';
@@ -251,6 +253,8 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
       healthScore: scan.healthScore,
       imageUrl: imageUrl,
     );
+    await sl<CatalogFirestoreService>().ensureSpecies(rawLabel: scanWithImage.speciesLabel);
+    await sl<CatalogFirestoreService>().ensureDisease(diseaseKey: scanWithImage.diseaseKey);
     await sl<PlantScansFirestoreService>().addScan(scanWithImage);
     if (healthScore < 55) {
       await sl<NotificationService>().showRiskAlert(
@@ -452,6 +456,8 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
     if (sp == null) {
       return const SizedBox.shrink();
     }
+    final double unit = confidenceToUnit(sp.top.confidence);
+    final bool unrecognized = unit < InferenceThresholdEnum.unrecognized.value;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
@@ -465,16 +471,20 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
         SizedBox(height: WidgetSizesEnum.cardRadius.value),
         Card(
           child: ListTile(
-            title: Text(sp.top.label),
+            title: Text(unrecognized ? l10n.scanUnrecognizedTitle : sp.top.label),
             subtitle: Text(
-              '${l10n.scanSpeciesConfidence}: ${confidencePercentLabel(sp.top.confidence)}',
+              unrecognized
+                  ? l10n.scanUnrecognizedBody
+                  : '${l10n.scanSpeciesConfidence}: ${confidencePercentLabel(sp.top.confidence)}',
             ),
-            trailing: TextButton(
-              onPressed: () => context.push(
-                '${AppPaths.speciesDetail}/${Uri.encodeComponent(sp.top.label)}?confidence=${confidenceToUnit(sp.top.confidence)}',
-              ),
-              child: Text(l10n.detailCta),
-            ),
+            trailing: unrecognized
+                ? null
+                : TextButton(
+                    onPressed: () => context.push(
+                      '${AppPaths.speciesDetail}/${Uri.encodeComponent(sp.top.label)}?confidence=$unit',
+                    ),
+                    child: Text(l10n.detailCta),
+                  ),
           ),
         ),
         const Spacer(),
@@ -498,6 +508,8 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
     if (dis == null) {
       return const SizedBox.shrink();
     }
+    final double unit = confidenceToUnit(dis.top.confidence);
+    final bool unrecognized = unit < InferenceThresholdEnum.unrecognized.value;
     final String diseaseText = diseaseClassKeyToDisplay(dis.top.label, l10n);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -520,16 +532,20 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
         SizedBox(height: WidgetSizesEnum.cardRadius.value),
         Card(
           child: ListTile(
-            title: Text(diseaseText),
+            title: Text(unrecognized ? l10n.scanUnrecognizedTitle : diseaseText),
             subtitle: Text(
-              '${l10n.scanSpeciesConfidence}: ${confidencePercentLabel(dis.top.confidence)}',
+              unrecognized
+                  ? l10n.scanUnrecognizedBody
+                  : '${l10n.scanSpeciesConfidence}: ${confidencePercentLabel(dis.top.confidence)}',
             ),
-            trailing: TextButton(
-              onPressed: () => context.push(
-                '${AppPaths.diseaseDetail}/${Uri.encodeComponent(dis.top.label)}?confidence=${confidenceToUnit(dis.top.confidence)}',
-              ),
-              child: Text(l10n.detailCta),
-            ),
+            trailing: unrecognized
+                ? null
+                : TextButton(
+                    onPressed: () => context.push(
+                      '${AppPaths.diseaseDetail}/${Uri.encodeComponent(dis.top.label)}?confidence=$unit',
+                    ),
+                    child: Text(l10n.detailCta),
+                  ),
           ),
         ),
         const Spacer(),
@@ -552,6 +568,10 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
     if (sp == null || dis == null) {
       return const SizedBox.shrink();
     }
+    final double spUnit = confidenceToUnit(sp.top.confidence);
+    final double disUnit = confidenceToUnit(dis.top.confidence);
+    final bool spUnrecognized = spUnit < InferenceThresholdEnum.unrecognized.value;
+    final bool disUnrecognized = disUnit < InferenceThresholdEnum.unrecognized.value;
     final String diseaseText = diseaseClassKeyToDisplay(dis.top.label, l10n);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -568,7 +588,9 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
           child: ListTile(
             title: Text(l10n.scanSpeciesTitle),
             subtitle: Text(
-              '${sp.top.label} (${confidencePercentLabel(sp.top.confidence)})',
+              spUnrecognized
+                  ? l10n.scanUnrecognizedTitle
+                  : '${sp.top.label} (${confidencePercentLabel(sp.top.confidence)})',
             ),
           ),
         ),
@@ -576,7 +598,9 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
           child: ListTile(
             title: Text(l10n.scanDiseaseTitle),
             subtitle: Text(
-              '$diseaseText (${confidencePercentLabel(dis.top.confidence)})',
+              disUnrecognized
+                  ? l10n.scanUnrecognizedTitle
+                  : '$diseaseText (${confidencePercentLabel(dis.top.confidence)})',
             ),
           ),
         ),

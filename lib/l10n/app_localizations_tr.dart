@@ -243,6 +243,13 @@ class AppLocalizationsTr extends AppLocalizations {
       'Model türden bağımsız genel sınıflandırma yapar; sonuç öneri niteliğindedir.';
 
   @override
+  String get scanUnrecognizedTitle => 'Tanınamadı';
+
+  @override
+  String get scanUnrecognizedBody =>
+      'Güven skoru düşük. Daha net, aydınlık bir fotoğraf çekip tek bitkiyi kadraja almaya çalışın.';
+
+  @override
   String get scanSummaryTitle => 'Özet rapor';
 
   @override

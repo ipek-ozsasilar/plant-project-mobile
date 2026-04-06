@@ -85,6 +85,8 @@
   "scanDiseaseLoading": "Analyzing disease / health…",
   "scanDiseaseTitle": "Disease / overall status",
   "scanDiseaseNote": "The model performs a general classification independent of species; results are advisory only.",
+  "scanUnrecognizedTitle": "Not recognized",
+  "scanUnrecognizedBody": "Confidence is low. Try a sharper photo with better lighting and frame a single plant.",
   "scanSummaryTitle": "Summary",
   "scanSaveHistory": "Save to history",
   "scanSaveToPlantTitle": "Save to which plant?",

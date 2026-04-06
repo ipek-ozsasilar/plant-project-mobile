@@ -49,10 +49,6 @@ final Provider<GoRouter> appRouterProvider = Provider<GoRouter>((Ref ref) {
         builder: (BuildContext context, GoRouterState state) => const RegisterView(),
       ),
       GoRoute(
-        path: AppPaths.healthProgress,
-        builder: (BuildContext context, GoRouterState state) => const HealthProgressView(),
-      ),
-      GoRoute(
         path: '${AppPaths.diseaseDetail}/:diseaseKey',
         builder: (BuildContext context, GoRouterState state) {
           final String diseaseKey = state.pathParameters['diseaseKey'] ?? '';
@@ -129,6 +125,14 @@ final Provider<GoRouter> appRouterProvider = Provider<GoRouter>((Ref ref) {
               GoRoute(
                 path: AppPaths.history,
                 builder: (BuildContext context, GoRouterState state) => const HistoryView(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: <RouteBase>[
+              GoRoute(
+                path: AppPaths.healthProgress,
+                builder: (BuildContext context, GoRouterState state) => const HealthProgressView(),
               ),
             ],
           ),
