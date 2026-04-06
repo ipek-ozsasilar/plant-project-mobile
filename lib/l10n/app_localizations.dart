@@ -566,6 +566,12 @@ abstract class AppLocalizations {
   /// **'Bitki takibine kaydedildi.'**
   String get scanSavedToPlantSuccess;
 
+  /// No description provided for @scanExportPdfCta.
+  ///
+  /// In tr, this message translates to:
+  /// **'PDF raporu paylaş'**
+  String get scanExportPdfCta;
+
   /// No description provided for @scanDone.
   ///
   /// In tr, this message translates to:
@@ -584,6 +590,18 @@ abstract class AppLocalizations {
   /// **'Geçmiş taramalar'**
   String get historyTitle;
 
+  /// No description provided for @historyHeadline.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tarama geçmişi'**
+  String get historyHeadline;
+
+  /// No description provided for @historySubtitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kaydettiğin taramaları gün gün görüntüle, detaylara ve PDF rapora hızlıca ulaş.'**
+  String get historySubtitle;
+
   /// No description provided for @historyEmpty.
   ///
   /// In tr, this message translates to:
@@ -596,11 +614,65 @@ abstract class AppLocalizations {
   /// **'Detay'**
   String get historyOpen;
 
+  /// No description provided for @search.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ara'**
+  String get search;
+
   /// No description provided for @guideTitle.
   ///
   /// In tr, this message translates to:
   /// **'Rehber'**
   String get guideTitle;
+
+  /// No description provided for @guidesHeadline.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bitki bakım rehberi'**
+  String get guidesHeadline;
+
+  /// No description provided for @guidesSubtitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Daha doğru sonuçlar için çekim ipuçları, çoklu bitki kullanımı ve hastalık taraması önerileri.'**
+  String get guidesSubtitle;
+
+  /// No description provided for @guidesEssentialsBadge.
+  ///
+  /// In tr, this message translates to:
+  /// **'Temel'**
+  String get guidesEssentialsBadge;
+
+  /// No description provided for @guidesAdvancedBadge.
+  ///
+  /// In tr, this message translates to:
+  /// **'İleri'**
+  String get guidesAdvancedBadge;
+
+  /// No description provided for @guidesLearnMore.
+  ///
+  /// In tr, this message translates to:
+  /// **'Devamını oku'**
+  String get guidesLearnMore;
+
+  /// No description provided for @guidesSafetyCheckBadge.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kontrol listesi'**
+  String get guidesSafetyCheckBadge;
+
+  /// No description provided for @guidesCheckPlantsCta.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bitkini kontrol et'**
+  String get guidesCheckPlantsCta;
+
+  /// No description provided for @guidesFooterInfo.
+  ///
+  /// In tr, this message translates to:
+  /// **'İpucu: Işık, netlik ve tek bitki kadrajı güven skorunu en çok etkileyen üç faktördür.'**
+  String get guidesFooterInfo;
 
   /// No description provided for @guideSectionPhoto.
   ///
@@ -643,6 +715,18 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Ayarlar'**
   String get settingsTitle;
+
+  /// No description provided for @settingsHeadline.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tercihler'**
+  String get settingsHeadline;
+
+  /// No description provided for @settingsSubtitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Dil, tema ve bildirim ayarlarını buradan yönetin.'**
+  String get settingsSubtitle;
 
   /// No description provided for @profileTitle.
   ///
@@ -824,6 +908,18 @@ abstract class AppLocalizations {
   /// **'Bitkilerim'**
   String get myPlantsTitle;
 
+  /// No description provided for @myPlantsHeadline.
+  ///
+  /// In tr, this message translates to:
+  /// **'Koleksiyonun'**
+  String get myPlantsHeadline;
+
+  /// No description provided for @myPlantsSubtitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bitkilerini ekle, günlük taramalarla sağlık trendini takip et.'**
+  String get myPlantsSubtitle;
+
   /// No description provided for @myPlantsEmpty.
   ///
   /// In tr, this message translates to:
@@ -883,6 +979,36 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Bildirimler'**
   String get notificationsLabel;
+
+  /// No description provided for @notificationsSubtitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sulama ve risk hatırlatmaları al'**
+  String get notificationsSubtitle;
+
+  /// No description provided for @notificationWateringTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bakım hatırlatması'**
+  String get notificationWateringTitle;
+
+  /// No description provided for @notificationWateringBody.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bugün sulama günü olabilir. Bitkini kontrol etmek ister misin?'**
+  String get notificationWateringBody;
+
+  /// No description provided for @notificationRiskTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bitki riski artıyor olabilir'**
+  String get notificationRiskTitle;
+
+  /// No description provided for @notificationRiskBody.
+  ///
+  /// In tr, this message translates to:
+  /// **'Son taramada risk tespit edildi. Bitkini kontrol edip önerilere göz at.'**
+  String get notificationRiskBody;
 
   /// No description provided for @dataLabel.
   ///
@@ -1039,6 +1165,48 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Yükleniyor…'**
   String get loading;
+
+  /// No description provided for @pdfReportTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Analiz raporu'**
+  String get pdfReportTitle;
+
+  /// No description provided for @pdfReportDate.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tarih'**
+  String get pdfReportDate;
+
+  /// No description provided for @pdfReportSpecies.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bitki türü'**
+  String get pdfReportSpecies;
+
+  /// No description provided for @pdfReportSpeciesConfidence.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tür güven skoru'**
+  String get pdfReportSpeciesConfidence;
+
+  /// No description provided for @pdfReportDisease.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hastalık'**
+  String get pdfReportDisease;
+
+  /// No description provided for @pdfReportDiseaseConfidence.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hastalık güven skoru'**
+  String get pdfReportDiseaseConfidence;
+
+  /// No description provided for @pdfReportDisclaimer.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu rapor bilgilendirme amaçlıdır; kesin teşhis değildir.'**
+  String get pdfReportDisclaimer;
 
   /// No description provided for @emptyState.
   ///

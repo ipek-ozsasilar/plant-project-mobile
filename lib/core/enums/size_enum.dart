@@ -67,7 +67,11 @@ enum WidgetSizesEnum {
   authLoginHeroFlexTop(44),
   authLoginHeroFlexBottom(56),
   authRegisterHeroFlexTop(40),
-  authRegisterHeroFlexBottom(60);
+  authRegisterHeroFlexBottom(60),
+  pdfPagePadding(24),
+  pdfSectionSpacing(14),
+  pdfTitleFont(18),
+  pdfBodyFont(12);
 
   const WidgetSizesEnum(this.value);
   final double value;

@@ -7,9 +7,14 @@ import 'package:bitirme_mobile/core/mixins/scaffold_message_mixin.dart';
 import 'package:bitirme_mobile/core/navigation/app_paths.dart';
 import 'package:bitirme_mobile/core/services/app_logger.dart';
 import 'package:bitirme_mobile/core/services/disease_label_display.dart';
+import 'package:bitirme_mobile/core/services/firebase_storage_service.dart';
 import 'package:bitirme_mobile/core/services/health_score_service.dart';
+import 'package:bitirme_mobile/core/services/pdf_report_service.dart';
+import 'package:bitirme_mobile/core/services/notification_service.dart';
+import 'package:bitirme_mobile/core/services/image_crop_service.dart';
 import 'package:bitirme_mobile/core/theme/app_palette.dart';
 import 'package:bitirme_mobile/core/utils/confidence_format.dart';
+import 'package:bitirme_mobile/core/widgets/animation/scan_loading_widget.dart';
 import 'package:bitirme_mobile/core/widgets/button/app_primary_button.dart';
 import 'package:bitirme_mobile/core/widgets/surface/soft_elevation_card.dart';
 import 'package:bitirme_mobile/features/history/provider/history_provider.dart';
@@ -28,6 +33,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 import 'package:bitirme_mobile/core/services/plant_scans_firestore_service.dart';
+import 'package:printing/printing.dart';
 
 /// Tarama sihirbazı: görüntü → bölge → tür → hastalık → özet.
 class ScanFlowView extends ConsumerStatefulWidget {
@@ -40,6 +46,7 @@ class ScanFlowView extends ConsumerStatefulWidget {
 class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessageMixin {
   final ImagePicker _picker = ImagePicker();
   bool _savingToPlant = false;
+  bool _exportingPdf = false;
 
   @override
   void initState() {
@@ -198,6 +205,13 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
 
     setState(() => _savingToPlant = true);
     final double diseaseConfUnit = confidenceToUnit(dis.top.confidence);
+    final int healthScore = computeHealthScore(
+      diseaseKey: dis.top.label,
+      diseaseConfidenceUnit: diseaseConfUnit,
+    );
+    final String riskTitle = context.l10n.notificationRiskTitle;
+    final String riskBody = context.l10n.notificationRiskBody;
+
     final PlantScanModel scan = PlantScanModel(
       id: const Uuid().v4(),
       ownerUid: selected.ownerUid,
@@ -207,17 +221,73 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
       speciesConfidence: confidenceToUnit(sp.top.confidence),
       diseaseKey: dis.top.label,
       diseaseConfidence: diseaseConfUnit,
-      healthScore: computeHealthScore(
-        diseaseKey: dis.top.label,
-        diseaseConfidenceUnit: diseaseConfUnit,
-      ),
+      healthScore: healthScore,
+      imageUrl: null,
     );
-    await sl<PlantScansFirestoreService>().addScan(scan);
+    String? imageUrl;
+    final Uint8List? originalBytes = s.imageBytes;
+    if (originalBytes != null && s.regions.isNotEmpty) {
+      final int idx = s.selectedRegionIndex.clamp(0, s.regions.length - 1);
+      final Uint8List? cropped = sl<ImageCropService>().cropRegion(
+        imageBytes: originalBytes,
+        region: s.regions[idx],
+      );
+      if (cropped != null) {
+        imageUrl = await sl<FirebaseStorageService>().uploadJpegBytes(
+          path: 'users/${selected.ownerUid}/scans/${scan.id}.jpg',
+          bytes: cropped,
+        );
+      }
+    }
+    final PlantScanModel scanWithImage = PlantScanModel(
+      id: scan.id,
+      ownerUid: scan.ownerUid,
+      plantId: scan.plantId,
+      createdAt: scan.createdAt,
+      speciesLabel: scan.speciesLabel,
+      speciesConfidence: scan.speciesConfidence,
+      diseaseKey: scan.diseaseKey,
+      diseaseConfidence: scan.diseaseConfidence,
+      healthScore: scan.healthScore,
+      imageUrl: imageUrl,
+    );
+    await sl<PlantScansFirestoreService>().addScan(scanWithImage);
+    if (healthScore < 55) {
+      await sl<NotificationService>().showRiskAlert(
+        title: riskTitle,
+        body: riskBody,
+      );
+    }
     if (!mounted) {
       return;
     }
     setState(() => _savingToPlant = false);
     showAppSnackBar(context, message: context.l10n.scanSavedToPlantSuccess, isError: false);
+  }
+
+  Future<void> _exportPdfFromCurrent() async {
+    final ScanFlowState s = ref.read(scanFlowProvider);
+    final InferenceResultModel? sp = s.species;
+    final InferenceResultModel? dis = s.disease;
+    if (sp == null || dis == null) {
+      return;
+    }
+    setState(() => _exportingPdf = true);
+    final ScanRecordModel record = ScanRecordModel(
+      id: const Uuid().v4(),
+      createdAt: DateTime.now(),
+      speciesLabel: sp.top.label,
+      speciesConfidence: confidenceToUnit(sp.top.confidence),
+      diseaseLabel: dis.top.label,
+      diseaseConfidence: confidenceToUnit(dis.top.confidence),
+    );
+    final PdfReportService pdf = sl<PdfReportService>();
+    final Uint8List bytes = await pdf.buildScanReportPdf(record: record, l10n: context.l10n);
+    await Printing.sharePdf(bytes: bytes, filename: 'phytoguard_report.pdf');
+    if (!mounted) {
+      return;
+    }
+    setState(() => _exportingPdf = false);
   }
 
   @override
@@ -369,16 +439,7 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
   }
 
   Widget _buildLoading(String message) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const CircularProgressIndicator(),
-          SizedBox(height: WidgetSizesEnum.cardRadius.value),
-          Text(message, textAlign: TextAlign.center),
-        ],
-      ),
-    );
+    return ScanLoadingWidget(message: message);
   }
 
   Widget _buildSpeciesDone(
@@ -520,6 +581,12 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
           ),
         ),
         const Spacer(),
+        AppPrimaryButton(
+          label: l10n.scanExportPdfCta,
+          isLoading: _exportingPdf,
+          onPressed: _exportPdfFromCurrent,
+        ),
+        SizedBox(height: WidgetSizesEnum.cardRadius.value),
         AppPrimaryButton(
           label: l10n.scanSaveToPlantCta,
           isLoading: _savingToPlant,

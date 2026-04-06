@@ -254,6 +254,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get scanSavedToPlantSuccess => 'Saved to plant tracking.';
 
   @override
+  String get scanExportPdfCta => 'Share PDF report';
+
+  @override
   String get scanDone => 'Done';
 
   @override
@@ -263,13 +266,49 @@ class AppLocalizationsEn extends AppLocalizations {
   String get historyTitle => 'Scan history';
 
   @override
+  String get historyHeadline => 'Scan timeline';
+
+  @override
+  String get historySubtitle =>
+      'Browse your saved scans day by day, open details, and share PDF reports.';
+
+  @override
   String get historyEmpty => 'No saved scans yet.';
 
   @override
   String get historyOpen => 'Details';
 
   @override
+  String get search => 'Search';
+
+  @override
   String get guideTitle => 'Guide';
+
+  @override
+  String get guidesHeadline => 'Plant care guide';
+
+  @override
+  String get guidesSubtitle =>
+      'Tips for better results: photo quality, multi-plant usage, and disease scan recommendations.';
+
+  @override
+  String get guidesEssentialsBadge => 'Essentials';
+
+  @override
+  String get guidesAdvancedBadge => 'Advanced';
+
+  @override
+  String get guidesLearnMore => 'Learn more';
+
+  @override
+  String get guidesSafetyCheckBadge => 'Safety check';
+
+  @override
+  String get guidesCheckPlantsCta => 'Check your plant';
+
+  @override
+  String get guidesFooterInfo =>
+      'Tip: Lighting, sharpness, and framing a single plant affect confidence the most.';
 
   @override
   String get guideSectionPhoto => 'Good photos';
@@ -294,6 +333,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsTitle => 'Settings';
+
+  @override
+  String get settingsHeadline => 'Preferences';
+
+  @override
+  String get settingsSubtitle =>
+      'Manage language, theme, and notification settings.';
 
   @override
   String get profileTitle => 'Profile';
@@ -389,6 +435,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get myPlantsTitle => 'My plants';
 
   @override
+  String get myPlantsHeadline => 'Your collection';
+
+  @override
+  String get myPlantsSubtitle =>
+      'Add plants and track health trends with daily scans.';
+
+  @override
   String get myPlantsEmpty =>
       'You haven\'t added any plants yet. Add one to start daily tracking.';
 
@@ -418,6 +471,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notificationsLabel => 'Notifications';
+
+  @override
+  String get notificationsSubtitle => 'Get watering and risk reminders';
+
+  @override
+  String get notificationWateringTitle => 'Care reminder';
+
+  @override
+  String get notificationWateringBody =>
+      'It might be watering day. Want to check your plant today?';
+
+  @override
+  String get notificationRiskTitle => 'Plant risk may be increasing';
+
+  @override
+  String get notificationRiskBody =>
+      'Risk was detected in the latest scan. Check your plant and review recommendations.';
 
   @override
   String get dataLabel => 'Data and privacy';
@@ -496,6 +566,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loading => 'Loading…';
+
+  @override
+  String get pdfReportTitle => 'Analysis report';
+
+  @override
+  String get pdfReportDate => 'Date';
+
+  @override
+  String get pdfReportSpecies => 'Species';
+
+  @override
+  String get pdfReportSpeciesConfidence => 'Species confidence';
+
+  @override
+  String get pdfReportDisease => 'Disease';
+
+  @override
+  String get pdfReportDiseaseConfidence => 'Disease confidence';
+
+  @override
+  String get pdfReportDisclaimer =>
+      'This report is informational and not a definitive diagnosis.';
 
   @override
   String get emptyState => 'Nothing to show.';

@@ -255,6 +255,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get scanSavedToPlantSuccess => 'Bitki takibine kaydedildi.';
 
   @override
+  String get scanExportPdfCta => 'PDF raporu paylaş';
+
+  @override
   String get scanDone => 'Tamam';
 
   @override
@@ -264,13 +267,49 @@ class AppLocalizationsTr extends AppLocalizations {
   String get historyTitle => 'Geçmiş taramalar';
 
   @override
+  String get historyHeadline => 'Tarama geçmişi';
+
+  @override
+  String get historySubtitle =>
+      'Kaydettiğin taramaları gün gün görüntüle, detaylara ve PDF rapora hızlıca ulaş.';
+
+  @override
   String get historyEmpty => 'Henüz kayıtlı tarama yok.';
 
   @override
   String get historyOpen => 'Detay';
 
   @override
+  String get search => 'Ara';
+
+  @override
   String get guideTitle => 'Rehber';
+
+  @override
+  String get guidesHeadline => 'Bitki bakım rehberi';
+
+  @override
+  String get guidesSubtitle =>
+      'Daha doğru sonuçlar için çekim ipuçları, çoklu bitki kullanımı ve hastalık taraması önerileri.';
+
+  @override
+  String get guidesEssentialsBadge => 'Temel';
+
+  @override
+  String get guidesAdvancedBadge => 'İleri';
+
+  @override
+  String get guidesLearnMore => 'Devamını oku';
+
+  @override
+  String get guidesSafetyCheckBadge => 'Kontrol listesi';
+
+  @override
+  String get guidesCheckPlantsCta => 'Bitkini kontrol et';
+
+  @override
+  String get guidesFooterInfo =>
+      'İpucu: Işık, netlik ve tek bitki kadrajı güven skorunu en çok etkileyen üç faktördür.';
 
   @override
   String get guideSectionPhoto => 'İyi fotoğraf';
@@ -295,6 +334,13 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get settingsTitle => 'Ayarlar';
+
+  @override
+  String get settingsHeadline => 'Tercihler';
+
+  @override
+  String get settingsSubtitle =>
+      'Dil, tema ve bildirim ayarlarını buradan yönetin.';
 
   @override
   String get profileTitle => 'Profil';
@@ -390,6 +436,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String get myPlantsTitle => 'Bitkilerim';
 
   @override
+  String get myPlantsHeadline => 'Koleksiyonun';
+
+  @override
+  String get myPlantsSubtitle =>
+      'Bitkilerini ekle, günlük taramalarla sağlık trendini takip et.';
+
+  @override
   String get myPlantsEmpty =>
       'Henüz bitki eklemediniz. Yeni bir bitki ekleyerek günlük takibe başlayın.';
 
@@ -420,6 +473,23 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get notificationsLabel => 'Bildirimler';
+
+  @override
+  String get notificationsSubtitle => 'Sulama ve risk hatırlatmaları al';
+
+  @override
+  String get notificationWateringTitle => 'Bakım hatırlatması';
+
+  @override
+  String get notificationWateringBody =>
+      'Bugün sulama günü olabilir. Bitkini kontrol etmek ister misin?';
+
+  @override
+  String get notificationRiskTitle => 'Bitki riski artıyor olabilir';
+
+  @override
+  String get notificationRiskBody =>
+      'Son taramada risk tespit edildi. Bitkini kontrol edip önerilere göz at.';
 
   @override
   String get dataLabel => 'Veri ve gizlilik';
@@ -498,6 +568,28 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get loading => 'Yükleniyor…';
+
+  @override
+  String get pdfReportTitle => 'Analiz raporu';
+
+  @override
+  String get pdfReportDate => 'Tarih';
+
+  @override
+  String get pdfReportSpecies => 'Bitki türü';
+
+  @override
+  String get pdfReportSpeciesConfidence => 'Tür güven skoru';
+
+  @override
+  String get pdfReportDisease => 'Hastalık';
+
+  @override
+  String get pdfReportDiseaseConfidence => 'Hastalık güven skoru';
+
+  @override
+  String get pdfReportDisclaimer =>
+      'Bu rapor bilgilendirme amaçlıdır; kesin teşhis değildir.';
 
   @override
   String get emptyState => 'Gösterilecek kayıt yok.';

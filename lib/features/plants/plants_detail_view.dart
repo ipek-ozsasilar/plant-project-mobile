@@ -115,7 +115,21 @@ class _PlantsDetailViewState extends ConsumerState<PlantsDetailView> {
                                 borderRadius:
                                     BorderRadius.circular(WidgetSizesEnum.chipRadius.value),
                               ),
-                              child: Icon(Icons.analytics_rounded, color: context.palPrimary),
+                              child: e.imageUrl == null || e.imageUrl!.isEmpty
+                                  ? Icon(Icons.analytics_rounded, color: context.palPrimary)
+                                  : ClipRRect(
+                                      borderRadius: BorderRadius.circular(
+                                        WidgetSizesEnum.chipRadius.value,
+                                      ),
+                                      child: Image.network(
+                                        e.imageUrl!,
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (_, __, ___) => Icon(
+                                          Icons.analytics_rounded,
+                                          color: context.palPrimary,
+                                        ),
+                                      ),
+                                    ),
                             ),
                             SizedBox(width: WidgetSizesEnum.cardRadius.value),
                             Expanded(

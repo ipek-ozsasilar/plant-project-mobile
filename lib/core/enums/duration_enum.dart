@@ -4,7 +4,8 @@ enum DurationEnum {
   pageTransition(300),
   snackBarShort(2500),
   debounceSearch(400),
-  retryDelay(800);
+  retryDelay(800),
+  scanLaserCycle(1300);
 
   const DurationEnum(this.milliseconds);
   final int milliseconds;

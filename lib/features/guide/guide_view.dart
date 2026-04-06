@@ -1,6 +1,7 @@
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
 import 'package:bitirme_mobile/core/locale/l10n_context.dart';
 import 'package:bitirme_mobile/core/theme/app_palette.dart';
+import 'package:bitirme_mobile/core/widgets/surface/soft_elevation_card.dart';
 import 'package:flutter/material.dart';
 
 /// Bakım ve fotoğraf ipuçları rehberi.
@@ -9,27 +10,150 @@ class GuideView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextTheme tt = Theme.of(context).textTheme;
+    final double pad = WidgetSizesEnum.cardRadius.value * 1.15;
     return Scaffold(
-      appBar: AppBar(title: Text(context.l10n.guideTitle)),
+      backgroundColor: context.palSurface,
+      appBar: AppBar(
+        title: Text(context.l10n.guideTitle),
+        actions: <Widget>[
+          IconButton(
+            tooltip: context.l10n.search,
+            onPressed: null,
+            icon: const Icon(Icons.search_rounded),
+          ),
+        ],
+      ),
       body: ListView(
-        padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 1.25),
+        padding: EdgeInsets.fromLTRB(pad, pad, pad, WidgetSizesEnum.bottomNavHeight.value),
         children: <Widget>[
-          _Section(
+          Text(
+            context.l10n.guidesHeadline,
+            style: tt.headlineSmall?.copyWith(
+              fontWeight: FontWeight.w900,
+              color: context.palOnSurface,
+              letterSpacing: -0.4,
+            ),
+          ),
+          SizedBox(height: WidgetSizesEnum.divider.value * 8),
+          Text(
+            context.l10n.guidesSubtitle,
+            style: tt.bodyLarge?.copyWith(
+              color: context.palMuted,
+              height: 1.4,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          SizedBox(height: WidgetSizesEnum.cardRadius.value * 1.25),
+          _GuideHeroCard(
+            badge: context.l10n.guidesEssentialsBadge,
             title: context.l10n.guideSectionPhoto,
             body: context.l10n.guidePhotoTips,
-            icon: Icons.photo_camera_outlined,
+            icon: Icons.photo_camera_rounded,
+            onTap: null,
           ),
           SizedBox(height: WidgetSizesEnum.cardRadius.value),
-          _Section(
+          _GuideDualCard(
+            badge: context.l10n.guidesAdvancedBadge,
             title: context.l10n.guideSectionMulti,
             body: context.l10n.guideMultiTips,
-            icon: Icons.grid_on_outlined,
+            leftIcon: Icons.crop_free_rounded,
+            rightIcon: Icons.center_focus_strong_rounded,
+            onTap: null,
           ),
           SizedBox(height: WidgetSizesEnum.cardRadius.value),
-          _Section(
+          _SafetyCheckCard(
             title: context.l10n.guideSectionDisease,
             body: context.l10n.guideDiseaseTips,
-            icon: Icons.biotech_outlined,
+            onTap: null,
+          ),
+          SizedBox(height: WidgetSizesEnum.cardRadius.value),
+          _InfoBanner(text: context.l10n.guidesFooterInfo),
+        ],
+      ),
+    );
+  }
+}
+
+class _GuideHeroCard extends StatelessWidget {
+  const _GuideHeroCard({
+    required this.badge,
+    required this.title,
+    required this.body,
+    required this.icon,
+    required this.onTap,
+  });
+
+  final String badge;
+  final String title;
+  final String body;
+  final IconData icon;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final TextTheme tt = Theme.of(context).textTheme;
+    return SoftElevationCard(
+      onTap: onTap,
+      padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 1.05),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Container(
+                width: WidgetSizesEnum.cardRadius.value * 1.85,
+                height: WidgetSizesEnum.cardRadius.value * 1.85,
+                decoration: BoxDecoration(
+                  color: context.palPrimarySoftBg,
+                  borderRadius: BorderRadius.circular(WidgetSizesEnum.chipRadius.value),
+                ),
+                child: Icon(icon, color: context.palPrimary),
+              ),
+              const Spacer(),
+              Text(
+                badge.toUpperCase(),
+                style: tt.labelSmall?.copyWith(
+                  letterSpacing: 0.8,
+                  color: context.palMuted,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: WidgetSizesEnum.cardRadius.value * 0.85),
+          Text(
+            title,
+            style: tt.titleMedium?.copyWith(
+              fontWeight: FontWeight.w900,
+              color: context.palOnSurface,
+            ),
+          ),
+          SizedBox(height: WidgetSizesEnum.divider.value * 8),
+          Text(
+            body,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+            style: tt.bodyMedium?.copyWith(
+              color: context.palMuted,
+              height: 1.35,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          SizedBox(height: WidgetSizesEnum.cardRadius.value * 0.85),
+          Row(
+            children: <Widget>[
+              Text(
+                context.l10n.guidesLearnMore,
+                style: tt.labelLarge?.copyWith(
+                  color: context.palPrimary,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+              SizedBox(width: WidgetSizesEnum.divider.value * 6),
+              Icon(Icons.arrow_forward_rounded,
+                  color: context.palPrimary, size: IconSizesEnum.small.value),
+            ],
           ),
         ],
       ),
@@ -37,52 +161,225 @@ class GuideView extends StatelessWidget {
   }
 }
 
-class _Section extends StatelessWidget {
-  const _Section({
+class _GuideDualCard extends StatelessWidget {
+  const _GuideDualCard({
+    required this.badge,
     required this.title,
     required this.body,
-    required this.icon,
+    required this.leftIcon,
+    required this.rightIcon,
+    required this.onTap,
   });
 
+  final String badge;
   final String title;
   final String body;
+  final IconData leftIcon;
+  final IconData rightIcon;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final TextTheme tt = Theme.of(context).textTheme;
+    return SoftElevationCard(
+      onTap: onTap,
+      padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 1.05),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Text(
+                badge.toUpperCase(),
+                style: tt.labelSmall?.copyWith(
+                  letterSpacing: 0.8,
+                  color: context.palMuted,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+              const Spacer(),
+              Row(
+                children: <Widget>[
+                  _MiniIconBox(icon: leftIcon),
+                  SizedBox(width: WidgetSizesEnum.cardRadius.value * 0.65),
+                  _MiniIconBox(icon: rightIcon),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: WidgetSizesEnum.cardRadius.value * 0.85),
+          Text(
+            title,
+            style: tt.titleMedium?.copyWith(
+              fontWeight: FontWeight.w900,
+              color: context.palOnSurface,
+            ),
+          ),
+          SizedBox(height: WidgetSizesEnum.divider.value * 8),
+          Text(
+            body,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+            style: tt.bodyMedium?.copyWith(
+              color: context.palMuted,
+              height: 1.35,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _MiniIconBox extends StatelessWidget {
+  const _MiniIconBox({required this.icon});
   final IconData icon;
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 1.25),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Icon(icon, color: context.palPrimary, size: IconSizesEnum.large.value),
-            SizedBox(width: WidgetSizesEnum.cardRadius.value),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: TextSizesEnum.subtitle.value,
-                      fontWeight: FontWeight.w600,
+    return Container(
+      width: WidgetSizesEnum.cardRadius.value * 1.65,
+      height: WidgetSizesEnum.cardRadius.value * 1.65,
+      decoration: BoxDecoration(
+        color: context.palSurface,
+        borderRadius: BorderRadius.circular(WidgetSizesEnum.chipRadius.value),
+        border: Border.all(color: context.palOutline.withValues(alpha: 0.35)),
+      ),
+      child: Icon(icon, color: context.palPrimary, size: IconSizesEnum.medium.value),
+    );
+  }
+}
+
+class _SafetyCheckCard extends StatelessWidget {
+  const _SafetyCheckCard({
+    required this.title,
+    required this.body,
+    required this.onTap,
+  });
+
+  final String title;
+  final String body;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final TextTheme tt = Theme.of(context).textTheme;
+    return SoftElevationCard(
+      onTap: onTap,
+      padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 1.05),
+      backgroundColor: context.palPrimary,
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: WidgetSizesEnum.cardRadius.value * 0.65,
+                    vertical: WidgetSizesEnum.divider.value * 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.14),
+                    borderRadius: BorderRadius.circular(WidgetSizesEnum.chipRadius.value),
+                  ),
+                  child: Text(
+                    context.l10n.guidesSafetyCheckBadge.toUpperCase(),
+                    style: tt.labelSmall?.copyWith(
+                      letterSpacing: 0.8,
+                      color: Colors.white.withValues(alpha: 0.92),
+                      fontWeight: FontWeight.w900,
                     ),
                   ),
-                  SizedBox(height: WidgetSizesEnum.divider.value * 4),
-                  Text(
-                    body,
-                    style: TextStyle(
-                      fontSize: TextSizesEnum.body.value,
-                      color: context.palMuted,
-                      height: 1.4,
-                    ),
+                ),
+                SizedBox(height: WidgetSizesEnum.cardRadius.value * 0.75),
+                Text(
+                  title,
+                  style: tt.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    color: Colors.white,
                   ),
-                ],
+                ),
+                SizedBox(height: WidgetSizesEnum.divider.value * 8),
+                Text(
+                  body,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: tt.bodySmall?.copyWith(
+                    color: Colors.white.withValues(alpha: 0.9),
+                    height: 1.35,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                SizedBox(height: WidgetSizesEnum.cardRadius.value * 0.85),
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: WidgetSizesEnum.cardRadius.value * 0.85,
+                    vertical: WidgetSizesEnum.divider.value * 10,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.16),
+                    borderRadius: BorderRadius.circular(WidgetSizesEnum.chipRadius.value),
+                    border: Border.all(color: Colors.white.withValues(alpha: 0.25)),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Icon(Icons.local_florist_rounded,
+                          size: IconSizesEnum.small.value, color: Colors.white),
+                      SizedBox(width: WidgetSizesEnum.divider.value * 8),
+                      Text(
+                        context.l10n.guidesCheckPlantsCta,
+                        style: tt.labelLarge?.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(width: WidgetSizesEnum.cardRadius.value),
+          Icon(Icons.shield_moon_rounded,
+              color: Colors.white.withValues(alpha: 0.9), size: IconSizesEnum.xlarge.value),
+        ],
+      ),
+    );
+  }
+}
+
+class _InfoBanner extends StatelessWidget {
+  const _InfoBanner({required this.text});
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 0.95),
+      decoration: BoxDecoration(
+        color: context.palPrimarySoftBg.withValues(alpha: 0.65),
+        borderRadius: BorderRadius.circular(WidgetSizesEnum.cardRadius.value),
+        border: Border.all(color: context.palOutline.withValues(alpha: 0.35)),
+      ),
+      child: Row(
+        children: <Widget>[
+          Icon(Icons.info_outline_rounded, color: context.palPrimary),
+          SizedBox(width: WidgetSizesEnum.cardRadius.value * 0.75),
+          Expanded(
+            child: Text(
+              text,
+              style: TextStyle(
+                color: context.palMuted,
+                height: 1.35,
+                fontWeight: FontWeight.w600,
+                fontSize: TextSizesEnum.caption.value,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

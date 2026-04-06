@@ -1,4 +1,5 @@
 import 'package:bitirme_mobile/core/locale/app_locale_provider.dart';
+import 'package:bitirme_mobile/core/services/notification_service.dart';
 import 'package:bitirme_mobile/firebase_options.dart';
 import 'package:bitirme_mobile/service_locator/service_locator.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -16,6 +17,7 @@ final class AppInitializers {
     await initializeDateFormatting('tr', null);
     await initializeDateFormatting('en', null);
     await setupServiceLocator();
+    await sl<NotificationService>().init();
     await AppLocaleNotifier.preloadFromDisk();
   }
 }
