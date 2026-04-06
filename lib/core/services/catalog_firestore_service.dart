@@ -1,5 +1,6 @@
 import 'package:bitirme_mobile/core/enums/firestore_collection_enum.dart';
 import 'package:bitirme_mobile/core/services/app_logger.dart';
+import 'package:bitirme_mobile/core/services/plantnet_species_name_repository.dart';
 import 'package:bitirme_mobile/core/services/species_label_formatter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -7,9 +8,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 ///
 /// Amaç: Kullanıcı tarama yaptıkça "species" ve "diseases" koleksiyonlarının otomatik dolması.
 final class CatalogFirestoreService {
-  CatalogFirestoreService({required AppLogger logger}) : _logger = logger;
+  CatalogFirestoreService({
+    required AppLogger logger,
+    required PlantnetSpeciesNameRepository plantnetNames,
+  })  : _logger = logger,
+        _plantnetNames = plantnetNames;
 
   final AppLogger _logger;
+  final PlantnetSpeciesNameRepository _plantnetNames;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   Future<void> ensureDisease({required String diseaseKey}) async {
@@ -38,7 +44,10 @@ final class CatalogFirestoreService {
     }
     try {
       final String source = id.contains('__') ? id.split('__').first : 'unknown';
-      final String display = formatSpeciesRawLabel(id);
+      final String display = formatSpeciesRawLabel(
+        id,
+        plantnetMap: _plantnetNames.snapshot,
+      );
 
       final DocumentReference<Map<String, dynamic>> ref =
           _db.collection(FirestoreCollectionEnum.species.value).doc(id);

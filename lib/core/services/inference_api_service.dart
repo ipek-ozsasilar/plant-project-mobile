@@ -122,11 +122,16 @@ class InferenceApiService {
         InferenceClassScoreModel(
           label: labels[i],
           confidence: _random.nextDouble() * 0.4,
+          rawKey: labels[i],
         ),
       );
     }
     return InferenceResultModel(
-      top: InferenceClassScoreModel(label: topLabel, confidence: topConf),
+      top: InferenceClassScoreModel(
+        label: topLabel,
+        confidence: topConf,
+        rawKey: topLabel,
+      ),
       alternatives: alt,
     );
   }
@@ -141,10 +146,12 @@ class InferenceApiService {
     if (topLabel == null || topConf == null) {
       throw FormatException('Missing fields', body);
     }
+    final String? rawLabel = decoded['raw_label'] as String? ?? decoded['raw'] as String?;
     return InferenceResultModel(
       top: InferenceClassScoreModel(
         label: topLabel,
         confidence: confidenceToUnit(topConf),
+        rawKey: rawLabel ?? topLabel,
       ),
     );
   }

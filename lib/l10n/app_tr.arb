@@ -287,5 +287,14 @@
   "speciesDetailWateringValue": "Toprak kurudukça (ortalama haftada 1–2)",
   "speciesDetailSunValue": "Aydınlık, dolaylı ışık",
   "speciesDetailSoilValue": "İyi drenajlı karışım",
-  "speciesDetailRiskTitle": "Riskli hastalıklar"
+  "speciesDetailRiskTitle": "Riskli hastalıklar",
+  "speciesPlantNetUnmapped": "Tür (ID: {id})",
+  "@speciesPlantNetUnmapped": {
+    "description": "plantnet__… sınıfı için isim haritası yokken; gerçek ad plantnet_species_id_map.json ile eklenir",
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  }
 }

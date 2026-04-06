@@ -1747,6 +1747,12 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Riskli hastalıklar'**
   String get speciesDetailRiskTitle;
+
+  /// plantnet__… sınıfı için isim haritası yokken; gerçek ad plantnet_species_id_map.json ile eklenir
+  ///
+  /// In tr, this message translates to:
+  /// **'Tür (ID: {id})'**
+  String speciesPlantNetUnmapped(String id);
 }
 
 class _AppLocalizationsDelegate

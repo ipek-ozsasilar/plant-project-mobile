@@ -287,5 +287,14 @@
   "speciesDetailWateringValue": "When soil dries (about 1–2x/week)",
   "speciesDetailSunValue": "Bright, indirect light",
   "speciesDetailSoilValue": "Well-draining mix",
-  "speciesDetailRiskTitle": "Risky diseases"
+  "speciesDetailRiskTitle": "Risky diseases",
+  "speciesPlantNetUnmapped": "Species (ID: {id})",
+  "@speciesPlantNetUnmapped": {
+    "description": "No entry in plantnet_species_id_map.json; add ID to name mapping for full labels",
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  }
 }

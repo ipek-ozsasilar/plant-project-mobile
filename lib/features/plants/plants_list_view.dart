@@ -1,5 +1,6 @@
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
 import 'package:bitirme_mobile/core/locale/l10n_context.dart';
+import 'package:bitirme_mobile/core/locale/species_class_display.dart';
 import 'package:bitirme_mobile/core/navigation/app_paths.dart';
 import 'package:bitirme_mobile/core/theme/app_palette.dart';
 import 'package:bitirme_mobile/core/widgets/surface/soft_elevation_card.dart';
@@ -191,7 +192,7 @@ class _PlantsListViewState extends ConsumerState<PlantsListView> {
                                   ),
                                   SizedBox(height: WidgetSizesEnum.divider.value * 6),
                                   Text(
-                                    p.speciesLabel,
+                                    speciesClassDisplayForRaw(context, p.speciesLabel),
                                     style: TextStyle(
                                       color: context.palMuted,
                                       fontWeight: FontWeight.w600,

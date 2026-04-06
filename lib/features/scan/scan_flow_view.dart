@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
 import 'package:bitirme_mobile/core/enums/inference_threshold_enum.dart';
 import 'package:bitirme_mobile/core/locale/l10n_context.dart';
+import 'package:bitirme_mobile/core/locale/species_class_display.dart';
 import 'package:bitirme_mobile/core/locale/scan_flow_localized_error.dart';
 import 'package:bitirme_mobile/core/mixins/scaffold_message_mixin.dart';
 import 'package:bitirme_mobile/core/navigation/app_paths.dart';
@@ -84,7 +85,7 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
     final ScanRecordModel record = ScanRecordModel(
       id: Uuid().v4(),
       createdAt: DateTime.now(),
-      speciesLabel: sp.top.label,
+      speciesLabel: sp.top.rawKey ?? sp.top.label,
       speciesConfidence: confidenceToUnit(sp.top.confidence),
       diseaseLabel: dis.top.label,
       diseaseConfidence: confidenceToUnit(dis.top.confidence),
@@ -171,7 +172,7 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
                                 ),
                                 SizedBox(height: WidgetSizesEnum.divider.value * 4),
                                 Text(
-                                  p.speciesLabel,
+                                  speciesClassDisplayForRaw(context, p.speciesLabel),
                                   style: TextStyle(
                                     color: Theme.of(context)
                                         .colorScheme
@@ -219,7 +220,7 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
       ownerUid: selected.ownerUid,
       plantId: selected.id,
       createdAt: DateTime.now(),
-      speciesLabel: sp.top.label,
+      speciesLabel: sp.top.rawKey ?? sp.top.label,
       speciesConfidence: confidenceToUnit(sp.top.confidence),
       diseaseKey: dis.top.label,
       diseaseConfidence: diseaseConfUnit,
@@ -280,7 +281,7 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
     final ScanRecordModel record = ScanRecordModel(
       id: const Uuid().v4(),
       createdAt: DateTime.now(),
-      speciesLabel: sp.top.label,
+      speciesLabel: sp.top.rawKey ?? sp.top.label,
       speciesConfidence: confidenceToUnit(sp.top.confidence),
       diseaseLabel: dis.top.label,
       diseaseConfidence: confidenceToUnit(dis.top.confidence),
@@ -482,7 +483,11 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
         SizedBox(height: WidgetSizesEnum.cardRadius.value),
         Card(
           child: ListTile(
-            title: Text(unrecognized ? l10n.scanUnrecognizedTitle : sp.top.label),
+            title: Text(
+              unrecognized
+                  ? l10n.scanUnrecognizedTitle
+                  : speciesInferenceTopForUi(context, sp.top),
+            ),
             subtitle: Text(
               unrecognized
                   ? l10n.scanUnrecognizedBody
@@ -492,7 +497,7 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
                 ? null
                 : TextButton(
                     onPressed: () => context.push(
-                      '${AppPaths.speciesDetail}/${Uri.encodeComponent(sp.top.label)}?confidence=$unit',
+                      '${AppPaths.speciesDetail}/${Uri.encodeComponent(sp.top.rawKey ?? sp.top.label)}?confidence=$unit',
                     ),
                     child: Text(l10n.detailCta),
                   ),
@@ -601,7 +606,7 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
             subtitle: Text(
               spUnrecognized
                   ? l10n.scanUnrecognizedTitle
-                  : '${sp.top.label} (${confidencePercentLabel(sp.top.confidence)})',
+                  : '${speciesInferenceTopForUi(context, sp.top)} (${confidencePercentLabel(sp.top.confidence)})',
             ),
           ),
         ),

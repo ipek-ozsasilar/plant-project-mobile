@@ -8,6 +8,7 @@ import 'package:bitirme_mobile/core/services/inference_api_service.dart';
 import 'package:bitirme_mobile/core/services/catalog_firestore_service.dart';
 import 'package:bitirme_mobile/core/services/notification_service.dart';
 import 'package:bitirme_mobile/core/services/pdf_report_service.dart';
+import 'package:bitirme_mobile/core/services/plantnet_species_name_repository.dart';
 import 'package:bitirme_mobile/core/services/plant_scans_firestore_service.dart';
 import 'package:bitirme_mobile/core/services/plants_firestore_service.dart';
 import 'package:bitirme_mobile/core/services/scan_history_service.dart';
@@ -27,8 +28,12 @@ Future<void> setupServiceLocator() async {
   sl.registerLazySingleton<ImageCropService>(
     () => ImageCropService(logger: sl<AppLogger>()),
   );
+  sl.registerLazySingleton<PlantnetSpeciesNameRepository>(() => PlantnetSpeciesNameRepository());
   sl.registerLazySingleton<TflitePlantInferenceService>(
-    () => TflitePlantInferenceService(logger: sl<AppLogger>()),
+    () => TflitePlantInferenceService(
+      logger: sl<AppLogger>(),
+      plantnetNames: sl<PlantnetSpeciesNameRepository>(),
+    ),
   );
   sl.registerLazySingleton<InferenceApiService>(
     () => InferenceApiService(
@@ -56,6 +61,9 @@ Future<void> setupServiceLocator() async {
     () => PlantScansFirestoreService(logger: sl<AppLogger>()),
   );
   sl.registerLazySingleton<CatalogFirestoreService>(
-    () => CatalogFirestoreService(logger: sl<AppLogger>()),
+    () => CatalogFirestoreService(
+      logger: sl<AppLogger>(),
+      plantnetNames: sl<PlantnetSpeciesNameRepository>(),
+    ),
   );
 }

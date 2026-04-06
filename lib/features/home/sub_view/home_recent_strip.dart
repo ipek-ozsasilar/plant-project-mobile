@@ -1,5 +1,6 @@
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
 import 'package:bitirme_mobile/core/locale/l10n_context.dart';
+import 'package:bitirme_mobile/core/locale/species_class_display.dart';
 import 'package:bitirme_mobile/core/services/disease_label_display.dart';
 import 'package:bitirme_mobile/core/theme/app_palette.dart';
 import 'package:bitirme_mobile/models/scan_record_model.dart';
@@ -68,7 +69,7 @@ class HomeRecentStrip extends StatelessWidget {
                               SizedBox(width: WidgetSizesEnum.divider.value * 4),
                               Expanded(
                                 child: Text(
-                                  e.speciesLabel,
+                                  speciesClassDisplayForRaw(context, e.speciesLabel),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: tt.titleSmall?.copyWith(

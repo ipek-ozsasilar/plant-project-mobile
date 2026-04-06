@@ -1,5 +1,6 @@
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
 import 'package:bitirme_mobile/core/locale/l10n_context.dart';
+import 'package:bitirme_mobile/core/locale/species_class_display.dart';
 import 'package:bitirme_mobile/core/navigation/app_paths.dart';
 import 'package:bitirme_mobile/core/theme/app_palette.dart';
 import 'package:bitirme_mobile/core/widgets/indicator/confidence_indicator.dart';
@@ -36,7 +37,7 @@ class SpeciesDetailView extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(pad, pad, pad, WidgetSizesEnum.bottomNavHeight.value),
         children: <Widget>[
           Text(
-            speciesLabel,
+            speciesClassDisplayForRaw(context, Uri.decodeComponent(speciesLabel)),
             style: tt.headlineSmall?.copyWith(
               fontWeight: FontWeight.w900,
               color: context.palOnSurface,

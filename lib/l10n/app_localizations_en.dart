@@ -908,4 +908,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get speciesDetailRiskTitle => 'Risky diseases';
+
+  @override
+  String speciesPlantNetUnmapped(String id) {
+    return 'Species (ID: $id)';
+  }
 }

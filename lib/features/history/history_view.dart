@@ -1,5 +1,6 @@
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
 import 'package:bitirme_mobile/core/locale/l10n_context.dart';
+import 'package:bitirme_mobile/core/locale/species_class_display.dart';
 import 'package:bitirme_mobile/core/navigation/app_paths.dart';
 import 'package:bitirme_mobile/core/services/pdf_report_service.dart';
 import 'package:bitirme_mobile/core/services/disease_label_display.dart';
@@ -205,7 +206,7 @@ class _HistoryViewState extends ConsumerState<HistoryView> {
                                     children: <Widget>[
                                       Expanded(
                                         child: Text(
-                                          e.speciesLabel,
+                                          speciesClassDisplayForRaw(context, e.speciesLabel),
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
@@ -294,7 +295,7 @@ class _HistoryViewState extends ConsumerState<HistoryView> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Text(
-                e.speciesLabel,
+                speciesClassDisplayForRaw(context, e.speciesLabel),
                 style: TextStyle(
                   fontWeight: FontWeight.w900,
                   fontSize: TextSizesEnum.subtitle.value,

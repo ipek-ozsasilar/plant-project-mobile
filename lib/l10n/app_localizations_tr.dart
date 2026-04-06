@@ -914,4 +914,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get speciesDetailRiskTitle => 'Riskli hastalıklar';
+
+  @override
+  String speciesPlantNetUnmapped(String id) {
+    return 'Tür (ID: $id)';
+  }
 }

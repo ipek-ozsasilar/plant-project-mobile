@@ -4,6 +4,7 @@ import 'package:bitirme_mobile/core/enums/ml_assets_enum.dart';
 import 'package:bitirme_mobile/core/enums/ml_preprocess_enum.dart';
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
 import 'package:bitirme_mobile/core/services/app_logger.dart';
+import 'package:bitirme_mobile/core/services/plantnet_species_name_repository.dart';
 import 'package:bitirme_mobile/core/services/species_label_formatter.dart';
 import 'package:bitirme_mobile/models/inference_result_model.dart';
 import 'package:flutter/foundation.dart';
@@ -13,9 +14,14 @@ import 'package:tflite_flutter/tflite_flutter.dart';
 
 /// Yerel [plant_species_model] / [plant_disease_model] TFLite çıkarımı.
 class TflitePlantInferenceService {
-  TflitePlantInferenceService({required AppLogger logger}) : _logger = logger;
+  TflitePlantInferenceService({
+    required AppLogger logger,
+    required PlantnetSpeciesNameRepository plantnetNames,
+  })  : _logger = logger,
+        _plantnetNames = plantnetNames;
 
   final AppLogger _logger;
+  final PlantnetSpeciesNameRepository _plantnetNames;
   Interpreter? _speciesInterpreter;
   Interpreter? _diseaseInterpreter;
   List<String>? _speciesLabels;
@@ -48,6 +54,15 @@ class TflitePlantInferenceService {
         MlAssetsEnum.diseaseModel.value,
         options: opts,
       );
+      try {
+        final String mapJson = await rootBundle.loadString(MlAssetsEnum.plantnetSpeciesIdMapJson.value);
+        final Object? mapDec = json.decode(mapJson);
+        if (mapDec is Map<String, dynamic>) {
+          _plantnetNames.setFromJson(mapDec);
+        }
+      } catch (e, st) {
+        _logger.w('PlantNet ID haritası yüklenemedi (isteğe bağlı)', e, st);
+      }
       _logger.d(
         'TFLite yüklendi — species: ${MlAssetsEnum.speciesModel.value}, '
         'disease: ${MlAssetsEnum.diseaseModel.value}',
@@ -81,9 +96,11 @@ class TflitePlantInferenceService {
       interpreter: i,
       rawLabels: labels,
       imageBytes: imageBytes,
-      formatLabel: formatSpeciesRawLabel,
+      formatLabel: (String raw) =>
+          formatSpeciesRawLabel(raw, plantnetMap: _plantnetNames.snapshot),
       preprocess: _preprocessFor(MlAssetsEnum.speciesModel),
       fallbackSquare: _fallbackSquareFor(MlAssetsEnum.speciesModel),
+      attachRawKey: true,
     );
   }
 
@@ -98,6 +115,7 @@ class TflitePlantInferenceService {
       formatLabel: (String raw) => raw,
       preprocess: _preprocessFor(MlAssetsEnum.diseaseModel),
       fallbackSquare: _fallbackSquareFor(MlAssetsEnum.diseaseModel),
+      attachRawKey: true,
     );
   }
 
@@ -108,6 +126,7 @@ class TflitePlantInferenceService {
     required String Function(String raw) formatLabel,
     required MlPreprocessEnum preprocess,
     required int fallbackSquare,
+    bool attachRawKey = false,
   }) {
     final img.Image? decoded = img.decodeImage(imageBytes);
     if (decoded == null) {
@@ -170,15 +189,18 @@ class TflitePlantInferenceService {
     final InferenceClassScoreModel top = InferenceClassScoreModel(
       label: formatLabel(rawTop),
       confidence: scores[topIdx].clamp(0.0, 1.0),
+      rawKey: attachRawKey ? rawTop : null,
     );
 
     final List<InferenceClassScoreModel> alternatives = <InferenceClassScoreModel>[];
     for (int k = 1; k < order.length && alternatives.length < 4; k++) {
       final int idx = order[k];
+      final String rawAlt = rawLabels[idx];
       alternatives.add(
         InferenceClassScoreModel(
-          label: formatLabel(rawLabels[idx]),
+          label: formatLabel(rawAlt),
           confidence: scores[idx].clamp(0.0, 1.0),
+          rawKey: attachRawKey ? rawAlt : null,
         ),
       );
     }

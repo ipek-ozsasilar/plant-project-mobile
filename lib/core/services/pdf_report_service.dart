@@ -1,4 +1,5 @@
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
+import 'package:bitirme_mobile/core/locale/species_class_display.dart';
 import 'package:bitirme_mobile/core/services/disease_info_catalog.dart';
 import 'package:bitirme_mobile/core/services/disease_label_display.dart';
 import 'package:bitirme_mobile/core/utils/confidence_format.dart';
@@ -19,6 +20,7 @@ class PdfReportService {
     final pw.Document doc = pw.Document();
     final DiseaseInfo info = const DiseaseInfoCatalog().get(record.diseaseLabel, l10n);
     final String diseaseDisplay = diseaseClassKeyToDisplay(record.diseaseLabel, l10n);
+    final String speciesDisplay = speciesClassDisplayForExport(l10n, record.speciesLabel);
     final String dateLine = record.createdAt.toIso8601String();
 
     final double pad = WidgetSizesEnum.pdfPagePadding.value;
@@ -40,7 +42,7 @@ class PdfReportService {
               ),
               pw.SizedBox(height: sectionGap),
               _kv(l10n.pdfReportDate, dateLine, bodySize),
-              _kv(l10n.pdfReportSpecies, record.speciesLabel, bodySize),
+              _kv(l10n.pdfReportSpecies, speciesDisplay, bodySize),
               _kv(
                 l10n.pdfReportSpeciesConfidence,
                 confidencePercentLabel(record.speciesConfidence),

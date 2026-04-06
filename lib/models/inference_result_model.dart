@@ -5,13 +5,17 @@ class InferenceClassScoreModel extends Equatable {
   const InferenceClassScoreModel({
     required this.label,
     required this.confidence,
+    this.rawKey,
   });
 
   final String label;
   final double confidence;
 
+  /// Model `class_names.json` satırı (örn. `plantnet__1355868`). Tercih ve katalog için ham anahtar.
+  final String? rawKey;
+
   @override
-  List<Object?> get props => <Object?>[label, confidence];
+  List<Object?> get props => <Object?>[label, confidence, rawKey];
 }
 
 /// Tür veya hastalık servisinden dönen özet sonuç.
