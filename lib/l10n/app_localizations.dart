@@ -548,6 +548,24 @@ abstract class AppLocalizations {
   /// **'Geçmişe kaydet'**
   String get scanSaveHistory;
 
+  /// No description provided for @scanSaveToPlantTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hangi bitkiye kaydedilsin?'**
+  String get scanSaveToPlantTitle;
+
+  /// No description provided for @scanSaveToPlantCta.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bitkiye kaydet'**
+  String get scanSaveToPlantCta;
+
+  /// No description provided for @scanSavedToPlantSuccess.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bitki takibine kaydedildi.'**
+  String get scanSavedToPlantSuccess;
+
   /// No description provided for @scanDone.
   ///
   /// In tr, this message translates to:
@@ -631,6 +649,48 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Profil'**
   String get profileTitle;
+
+  /// No description provided for @profileAccountSettingsTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hesap ayarları'**
+  String get profileAccountSettingsTitle;
+
+  /// No description provided for @profilePersonalInfo.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kişisel bilgiler'**
+  String get profilePersonalInfo;
+
+  /// No description provided for @profileNotificationSettings.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bildirim ayarları'**
+  String get profileNotificationSettings;
+
+  /// No description provided for @profilePrivacySecurity.
+  ///
+  /// In tr, this message translates to:
+  /// **'Gizlilik ve güvenlik'**
+  String get profilePrivacySecurity;
+
+  /// No description provided for @profileHelpCenter.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yardım merkezi'**
+  String get profileHelpCenter;
+
+  /// No description provided for @profilePlantsTracked.
+  ///
+  /// In tr, this message translates to:
+  /// **'takip edilen bitki'**
+  String get profilePlantsTracked;
+
+  /// No description provided for @profileScansDone.
+  ///
+  /// In tr, this message translates to:
+  /// **'tarama'**
+  String get profileScansDone;
 
   /// No description provided for @aboutTitle.
   ///

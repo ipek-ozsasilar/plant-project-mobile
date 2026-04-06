@@ -7,14 +7,19 @@ import 'package:bitirme_mobile/core/mixins/scaffold_message_mixin.dart';
 import 'package:bitirme_mobile/core/navigation/app_paths.dart';
 import 'package:bitirme_mobile/core/services/app_logger.dart';
 import 'package:bitirme_mobile/core/services/disease_label_display.dart';
+import 'package:bitirme_mobile/core/services/health_score_service.dart';
 import 'package:bitirme_mobile/core/theme/app_palette.dart';
 import 'package:bitirme_mobile/core/utils/confidence_format.dart';
 import 'package:bitirme_mobile/core/widgets/button/app_primary_button.dart';
+import 'package:bitirme_mobile/core/widgets/surface/soft_elevation_card.dart';
 import 'package:bitirme_mobile/features/history/provider/history_provider.dart';
+import 'package:bitirme_mobile/features/plants/provider/plants_provider.dart';
 import 'package:bitirme_mobile/features/scan/provider/scan_flow_provider.dart';
 import 'package:bitirme_mobile/features/scan/sub_view/plant_region_picker_widget.dart';
 import 'package:bitirme_mobile/l10n/app_localizations.dart';
 import 'package:bitirme_mobile/models/inference_result_model.dart';
+import 'package:bitirme_mobile/models/plant_model.dart';
+import 'package:bitirme_mobile/models/plant_scan_model.dart';
 import 'package:bitirme_mobile/models/scan_record_model.dart';
 import 'package:bitirme_mobile/service_locator/service_locator.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +27,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
+import 'package:bitirme_mobile/core/services/plant_scans_firestore_service.dart';
 
 /// Tarama sihirbazı: görüntü → bölge → tür → hastalık → özet.
 class ScanFlowView extends ConsumerStatefulWidget {
@@ -33,6 +39,7 @@ class ScanFlowView extends ConsumerStatefulWidget {
 
 class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessageMixin {
   final ImagePicker _picker = ImagePicker();
+  bool _savingToPlant = false;
 
   @override
   void initState() {
@@ -78,6 +85,139 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
       showAppSnackBar(context, message: context.l10n.successTitle, isError: false);
       context.pop();
     }
+  }
+
+  Future<void> _onSaveToPlant() async {
+    final ScanFlowState s = ref.read(scanFlowProvider);
+    final InferenceResultModel? sp = s.species;
+    final InferenceResultModel? dis = s.disease;
+    if (sp == null || dis == null) {
+      return;
+    }
+
+    await ref.read(plantsProvider.notifier).load();
+    if (!mounted) {
+      return;
+    }
+    final List<PlantModel> plants = ref.read(plantsProvider).items;
+    if (plants.isEmpty) {
+      showAppSnackBar(context, message: context.l10n.myPlantsEmpty, isError: true);
+      return;
+    }
+
+    final PlantModel? selected = await showModalBottomSheet<PlantModel>(
+      context: context,
+      showDragHandle: true,
+      useSafeArea: true,
+      builder: (BuildContext ctx) {
+        final double pad = WidgetSizesEnum.cardRadius.value * 1.15;
+        return Padding(
+          padding: EdgeInsets.fromLTRB(pad, pad, pad, pad),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Text(
+                context.l10n.scanSaveToPlantTitle,
+                style: TextStyle(
+                  fontWeight: FontWeight.w900,
+                  fontSize: TextSizesEnum.subtitle.value,
+                ),
+              ),
+              SizedBox(height: WidgetSizesEnum.cardRadius.value * 0.75),
+              Flexible(
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  itemCount: plants.length,
+                  separatorBuilder: (_, __) => SizedBox(height: WidgetSizesEnum.divider.value * 8),
+                  itemBuilder: (BuildContext context, int index) {
+                    final PlantModel p = plants[index];
+                    return SoftElevationCard(
+                      onTap: () => Navigator.of(ctx).pop(p),
+                      padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 0.9),
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            width: WidgetSizesEnum.cardRadius.value * 1.9,
+                            height: WidgetSizesEnum.cardRadius.value * 1.9,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.12),
+                              borderRadius:
+                                  BorderRadius.circular(WidgetSizesEnum.chipRadius.value),
+                            ),
+                            child: Icon(Icons.local_florist_rounded,
+                                color: Theme.of(context).colorScheme.primary),
+                          ),
+                          SizedBox(width: WidgetSizesEnum.cardRadius.value * 0.75),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  p.name,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w900,
+                                    color: Theme.of(context).colorScheme.onSurface,
+                                  ),
+                                ),
+                                SizedBox(height: WidgetSizesEnum.divider.value * 4),
+                                Text(
+                                  p.speciesLabel,
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface
+                                        .withValues(alpha: 0.65),
+                                    fontSize: TextSizesEnum.caption.value,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Icon(Icons.chevron_right_rounded,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurface
+                                  .withValues(alpha: 0.45)),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
+    if (selected == null || !mounted) {
+      return;
+    }
+
+    setState(() => _savingToPlant = true);
+    final double diseaseConfUnit = confidenceToUnit(dis.top.confidence);
+    final PlantScanModel scan = PlantScanModel(
+      id: const Uuid().v4(),
+      ownerUid: selected.ownerUid,
+      plantId: selected.id,
+      createdAt: DateTime.now(),
+      speciesLabel: sp.top.label,
+      speciesConfidence: confidenceToUnit(sp.top.confidence),
+      diseaseKey: dis.top.label,
+      diseaseConfidence: diseaseConfUnit,
+      healthScore: computeHealthScore(
+        diseaseKey: dis.top.label,
+        diseaseConfidenceUnit: diseaseConfUnit,
+      ),
+    );
+    await sl<PlantScansFirestoreService>().addScan(scan);
+    if (!mounted) {
+      return;
+    }
+    setState(() => _savingToPlant = false);
+    showAppSnackBar(context, message: context.l10n.scanSavedToPlantSuccess, isError: false);
   }
 
   @override
@@ -380,6 +520,12 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
           ),
         ),
         const Spacer(),
+        AppPrimaryButton(
+          label: l10n.scanSaveToPlantCta,
+          isLoading: _savingToPlant,
+          onPressed: _onSaveToPlant,
+        ),
+        SizedBox(height: WidgetSizesEnum.cardRadius.value),
         AppPrimaryButton(
           label: l10n.scanSaveHistory,
           onPressed: _onSaveToHistory,

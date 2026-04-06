@@ -246,6 +246,15 @@ class AppLocalizationsTr extends AppLocalizations {
   String get scanSaveHistory => 'Geçmişe kaydet';
 
   @override
+  String get scanSaveToPlantTitle => 'Hangi bitkiye kaydedilsin?';
+
+  @override
+  String get scanSaveToPlantCta => 'Bitkiye kaydet';
+
+  @override
+  String get scanSavedToPlantSuccess => 'Bitki takibine kaydedildi.';
+
+  @override
   String get scanDone => 'Tamam';
 
   @override
@@ -289,6 +298,27 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get profileTitle => 'Profil';
+
+  @override
+  String get profileAccountSettingsTitle => 'Hesap ayarları';
+
+  @override
+  String get profilePersonalInfo => 'Kişisel bilgiler';
+
+  @override
+  String get profileNotificationSettings => 'Bildirim ayarları';
+
+  @override
+  String get profilePrivacySecurity => 'Gizlilik ve güvenlik';
+
+  @override
+  String get profileHelpCenter => 'Yardım merkezi';
+
+  @override
+  String get profilePlantsTracked => 'takip edilen bitki';
+
+  @override
+  String get profileScansDone => 'tarama';
 
   @override
   String get aboutTitle => 'Hakkında';

@@ -245,6 +245,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get scanSaveHistory => 'Save to history';
 
   @override
+  String get scanSaveToPlantTitle => 'Save to which plant?';
+
+  @override
+  String get scanSaveToPlantCta => 'Save to plant';
+
+  @override
+  String get scanSavedToPlantSuccess => 'Saved to plant tracking.';
+
+  @override
   String get scanDone => 'Done';
 
   @override
@@ -288,6 +297,27 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileTitle => 'Profile';
+
+  @override
+  String get profileAccountSettingsTitle => 'Account settings';
+
+  @override
+  String get profilePersonalInfo => 'Personal info';
+
+  @override
+  String get profileNotificationSettings => 'Notification settings';
+
+  @override
+  String get profilePrivacySecurity => 'Privacy & security';
+
+  @override
+  String get profileHelpCenter => 'Help center';
+
+  @override
+  String get profilePlantsTracked => 'plants tracked';
+
+  @override
+  String get profileScansDone => 'scans';
 
   @override
   String get aboutTitle => 'About';
