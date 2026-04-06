@@ -60,7 +60,7 @@ class HomeDashboardHeader extends StatelessWidget {
                     context.l10n.homeGreeting,
                     style: tt.titleMedium?.copyWith(
                       color: Colors.white.withValues(alpha: 0.88),
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                   SizedBox(height: WidgetSizesEnum.divider.value * 4),
@@ -70,7 +70,7 @@ class HomeDashboardHeader extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: tt.headlineSmall?.copyWith(
                       color: Colors.white,
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w900,
                       letterSpacing: -0.4,
                       height: 1.2,
                     ),
@@ -83,6 +83,7 @@ class HomeDashboardHeader extends StatelessWidget {
                     style: tt.bodyMedium?.copyWith(
                       color: Colors.white.withValues(alpha: 0.9),
                       height: 1.35,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],
@@ -101,7 +102,7 @@ class HomeDashboardHeader extends StatelessWidget {
                 initial,
                 style: tt.titleLarge?.copyWith(
                   color: Colors.white,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w900,
                 ),
               ),
             ),

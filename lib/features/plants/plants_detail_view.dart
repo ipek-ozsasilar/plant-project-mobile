@@ -54,32 +54,96 @@ class _PlantsDetailViewState extends ConsumerState<PlantsDetailView> {
     final double pad = WidgetSizesEnum.cardRadius.value * 1.15;
     final String loc = Localizations.localeOf(context).languageCode;
     final DateFormat fmt = DateFormat.yMMMd(loc);
+    final TextTheme tt = Theme.of(context).textTheme;
+    final bool hasData = _items.isNotEmpty;
+    final int lastScore = hasData ? _items.first.healthScore : 0;
+    final int avgScore = hasData
+        ? (_items.fold<int>(0, (int sum, PlantScanModel e) => sum + e.healthScore) / _items.length)
+            .round()
+        : 0;
 
     return Scaffold(
       backgroundColor: context.palSurface,
-      appBar: AppBar(title: Text(context.l10n.myPlantsDetailTitle)),
+      appBar: AppBar(
+        title: Text(context.l10n.myPlantsDetailTitle),
+        actions: <Widget>[
+          IconButton(
+            tooltip: context.l10n.search,
+            onPressed: null,
+            icon: const Icon(Icons.search_rounded),
+          ),
+        ],
+      ),
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : ListView(
               padding: EdgeInsets.fromLTRB(pad, pad, pad, WidgetSizesEnum.bottomNavHeight.value),
               children: <Widget>[
+                Text(
+                  context.l10n.myPlantsDetailHeadline,
+                  style: tt.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    color: context.palOnSurface,
+                    letterSpacing: -0.4,
+                  ),
+                ),
+                SizedBox(height: WidgetSizesEnum.divider.value * 8),
+                Text(
+                  context.l10n.myPlantsDetailSubtitle,
+                  style: tt.bodyLarge?.copyWith(
+                    color: context.palMuted,
+                    height: 1.4,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                SizedBox(height: WidgetSizesEnum.cardRadius.value * 1.15),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: SoftElevationCard(
+                        onTap: null,
+                        padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 1.05),
+                        child: _StatPill(
+                          icon: Icons.favorite_rounded,
+                          iconColor: context.palPrimary,
+                          label: context.l10n.myPlantsLastScore,
+                          value: hasData ? '$lastScore' : context.l10n.placeholderDash,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: WidgetSizesEnum.cardRadius.value * 0.85),
+                    Expanded(
+                      child: SoftElevationCard(
+                        onTap: null,
+                        padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 1.05),
+                        child: _StatPill(
+                          icon: Icons.insights_rounded,
+                          iconColor: context.palAccent,
+                          label: context.l10n.myPlantsAvgScore,
+                          value: hasData ? '$avgScore' : context.l10n.placeholderDash,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: WidgetSizesEnum.cardRadius.value),
                 SoftElevationCard(
                   onTap: null,
                   padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value),
                   child: SizedBox(
-                    height: WidgetSizesEnum.homeHeaderHeight.value * 0.85,
+                    height: WidgetSizesEnum.homeHeaderHeight.value * 0.9,
                     child: _items.isEmpty
                         ? Center(
                             child: Text(
                               context.l10n.myPlantsNoScans,
                               textAlign: TextAlign.center,
-                              style: TextStyle(color: context.palMuted),
+                              style: TextStyle(color: context.palMuted, fontWeight: FontWeight.w700),
                             ),
                           )
                         : LineChart(_chartData(context, _items)),
                   ),
                 ),
-                SizedBox(height: WidgetSizesEnum.cardRadius.value),
+                SizedBox(height: WidgetSizesEnum.cardRadius.value * 0.85),
                 Text(
                   context.l10n.myPlantsTimelineTitle,
                   style: TextStyle(
@@ -90,11 +154,32 @@ class _PlantsDetailViewState extends ConsumerState<PlantsDetailView> {
                 ),
                 SizedBox(height: WidgetSizesEnum.cardRadius.value * 0.65),
                 if (_items.isEmpty)
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: WidgetSizesEnum.cardRadius.value),
-                    child: Text(
-                      context.l10n.myPlantsTimelineEmpty,
-                      style: TextStyle(color: context.palMuted),
+                  SoftElevationCard(
+                    onTap: null,
+                    padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 1.05),
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          width: WidgetSizesEnum.cardRadius.value * 2.1,
+                          height: WidgetSizesEnum.cardRadius.value * 2.1,
+                          decoration: BoxDecoration(
+                            color: context.palPrimarySoftBg,
+                            borderRadius: BorderRadius.circular(WidgetSizesEnum.chipRadius.value),
+                          ),
+                          child: Icon(Icons.timeline_rounded, color: context.palPrimary),
+                        ),
+                        SizedBox(width: WidgetSizesEnum.cardRadius.value),
+                        Expanded(
+                          child: Text(
+                            context.l10n.myPlantsTimelineEmpty,
+                            style: tt.bodyMedium?.copyWith(
+                              color: context.palMuted,
+                              height: 1.35,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   )
                 else
@@ -151,6 +236,7 @@ class _PlantsDetailViewState extends ConsumerState<PlantsDetailView> {
                                 ],
                               ),
                             ),
+                            Icon(Icons.chevron_right_rounded, color: context.palMuted),
                           ],
                         ),
                       ),
@@ -160,7 +246,6 @@ class _PlantsDetailViewState extends ConsumerState<PlantsDetailView> {
             ),
     );
   }
-
   LineChartData _chartData(BuildContext context, List<PlantScanModel> items) {
     final List<PlantScanModel> sorted = List<PlantScanModel>.from(items)
       ..sort((PlantScanModel a, PlantScanModel b) => a.createdAt.compareTo(b.createdAt));
@@ -194,3 +279,57 @@ class _PlantsDetailViewState extends ConsumerState<PlantsDetailView> {
   }
 }
 
+class _StatPill extends StatelessWidget {
+  const _StatPill({
+    required this.icon,
+    required this.iconColor,
+    required this.label,
+    required this.value,
+  });
+
+  final IconData icon;
+  final Color iconColor;
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    final TextTheme tt = Theme.of(context).textTheme;
+    return Row(
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.all(WidgetSizesEnum.divider.value * 10),
+          decoration: BoxDecoration(
+            color: iconColor.withValues(alpha: 0.14),
+            borderRadius: BorderRadius.circular(WidgetSizesEnum.chipRadius.value),
+          ),
+          child: Icon(icon, color: iconColor, size: IconSizesEnum.large.value),
+        ),
+        SizedBox(width: WidgetSizesEnum.cardRadius.value * 0.85),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                value,
+                style: tt.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w900,
+                  color: context.palOnSurface,
+                  letterSpacing: -0.4,
+                ),
+              ),
+              SizedBox(height: WidgetSizesEnum.divider.value * 4),
+              Text(
+                label,
+                style: tt.labelMedium?.copyWith(
+                  color: context.palMuted,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}

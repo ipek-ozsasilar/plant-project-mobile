@@ -35,7 +35,7 @@ class MoreView extends StatelessWidget {
                   Text(
                     context.l10n.moreScreenTitle,
                     style: tt.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w900,
                       color: context.palOnSurface,
                       letterSpacing: -0.4,
                     ),
@@ -58,9 +58,9 @@ class MoreView extends StatelessWidget {
             sliver: SliverGrid(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                mainAxisSpacing: WidgetSizesEnum.cardRadius.value,
-                crossAxisSpacing: WidgetSizesEnum.cardRadius.value,
-                childAspectRatio: 0.92,
+                mainAxisSpacing: WidgetSizesEnum.cardRadius.value * 0.9,
+                crossAxisSpacing: WidgetSizesEnum.cardRadius.value * 0.9,
+                childAspectRatio: 0.9,
               ),
               delegate: SliverChildListDelegate(
                 <Widget>[
@@ -144,14 +144,14 @@ class _MoreTileCard extends StatelessWidget {
     final TextTheme tt = Theme.of(context).textTheme;
     return SoftElevationCard(
       onTap: onTap,
-      padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 1.05),
+      padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Row(
             children: <Widget>[
               Container(
-                padding: EdgeInsets.all(WidgetSizesEnum.divider.value * 10),
+                padding: EdgeInsets.all(WidgetSizesEnum.divider.value * 11),
                 decoration: BoxDecoration(
                   color: iconBg,
                   borderRadius: BorderRadius.circular(WidgetSizesEnum.chipRadius.value),
@@ -172,8 +172,9 @@ class _MoreTileCard extends StatelessWidget {
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: tt.titleSmall?.copyWith(
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w900,
               color: context.palOnSurface,
+              letterSpacing: -0.2,
             ),
           ),
           SizedBox(height: WidgetSizesEnum.divider.value * 6),
@@ -184,6 +185,7 @@ class _MoreTileCard extends StatelessWidget {
             style: tt.bodySmall?.copyWith(
               color: context.palMuted,
               height: 1.35,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ],

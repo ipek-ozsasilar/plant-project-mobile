@@ -30,86 +30,110 @@ class HealthProgressView extends ConsumerWidget {
       appBar: AppBar(
         title: Text(context.l10n.healthProgressTitle),
       ),
-      body: Padding(
-        padding: EdgeInsets.fromLTRB(pad, pad, pad, pad),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            SoftElevationCard(
-              onTap: null,
-              padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 1.05),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    context.l10n.healthProgressSubtitle,
-                    style: tt.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w800,
-                      color: context.palOnSurface,
-                    ),
-                  ),
-                  SizedBox(height: WidgetSizesEnum.divider.value * 10),
-                  Text(
-                    context.l10n.healthProgressHint,
-                    style: tt.bodySmall?.copyWith(color: context.palMuted, height: 1.35),
-                  ),
-                  SizedBox(height: WidgetSizesEnum.cardRadius.value),
-                  DropdownButtonFormField<String>(
-                    value: selected,
-                    hint: Text(context.l10n.healthProgressSelectPlant),
-                    items: plants
-                        .map(
-                          (_PlantOption p) => DropdownMenuItem<String>(
-                            value: p.id,
-                            child: Text(p.label),
-                          ),
-                        )
-                        .toList(),
-                    onChanged: (String? value) => vm.selectPlant(value),
-                  ),
-                ],
-              ),
+      body: ListView(
+        padding: EdgeInsets.fromLTRB(pad, pad, pad, WidgetSizesEnum.bottomNavHeight.value),
+        children: <Widget>[
+          Text(
+            context.l10n.healthProgressHeadline,
+            style: tt.headlineSmall?.copyWith(
+              fontWeight: FontWeight.w900,
+              color: context.palOnSurface,
+              letterSpacing: -0.4,
             ),
-            SizedBox(height: WidgetSizesEnum.cardRadius.value),
-            Expanded(
-              child: SoftElevationCard(
-                onTap: null,
-                padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 1.05),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Text(
-                            context.l10n.healthProgressChartTitle,
-                            style: tt.titleSmall?.copyWith(
-                              fontWeight: FontWeight.w800,
-                              color: context.palOnSurface,
-                            ),
-                          ),
+          ),
+          SizedBox(height: WidgetSizesEnum.divider.value * 8),
+          Text(
+            context.l10n.healthProgressSubtitle,
+            style: tt.bodyLarge?.copyWith(
+              color: context.palMuted,
+              height: 1.4,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          SizedBox(height: WidgetSizesEnum.cardRadius.value * 1.25),
+          SoftElevationCard(
+            onTap: null,
+            padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 1.05),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  context.l10n.healthProgressPickPlantTitle,
+                  style: tt.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    color: context.palOnSurface,
+                  ),
+                ),
+                SizedBox(height: WidgetSizesEnum.divider.value * 10),
+                Text(
+                  context.l10n.healthProgressHint,
+                  style: tt.bodySmall?.copyWith(
+                    color: context.palMuted,
+                    height: 1.35,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                SizedBox(height: WidgetSizesEnum.cardRadius.value),
+                DropdownButtonFormField<String>(
+                  value: selected,
+                  hint: Text(context.l10n.healthProgressSelectPlant),
+                  items: plants
+                      .map(
+                        (_PlantOption p) => DropdownMenuItem<String>(
+                          value: p.id,
+                          child: Text(p.label),
                         ),
-                        _LegendDot(color: context.palPrimary, label: context.l10n.healthProgressLegendHealth),
-                        SizedBox(width: WidgetSizesEnum.cardRadius.value * 0.75),
-                        _LegendDot(color: context.palAccent, label: context.l10n.healthProgressLegendDisease),
-                      ],
-                    ),
-                    SizedBox(height: WidgetSizesEnum.cardRadius.value * 0.85),
+                      )
+                      .toList(),
+                  onChanged: (String? value) => vm.selectPlant(value),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: WidgetSizesEnum.cardRadius.value),
+          SoftElevationCard(
+            onTap: null,
+            padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 1.05),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
                     Expanded(
-                      child: _ProgressLineChart(
-                        primary: context.palPrimary,
-                        accent: context.palAccent,
-                        outline: context.palOutline,
-                        muted: context.palMuted,
-                        data: _demoSeriesFor(selected),
+                      child: Text(
+                        context.l10n.healthProgressChartTitle,
+                        style: tt.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w900,
+                          color: context.palOnSurface,
+                        ),
                       ),
+                    ),
+                    _LegendDot(
+                      color: context.palPrimary,
+                      label: context.l10n.healthProgressLegendHealth,
+                    ),
+                    SizedBox(width: WidgetSizesEnum.cardRadius.value * 0.75),
+                    _LegendDot(
+                      color: context.palAccent,
+                      label: context.l10n.healthProgressLegendDisease,
                     ),
                   ],
                 ),
-              ),
+                SizedBox(height: WidgetSizesEnum.cardRadius.value * 0.85),
+                SizedBox(
+                  height: WidgetSizesEnum.homeHeaderHeight.value * 0.95,
+                  child: _ProgressLineChart(
+                    primary: context.palPrimary,
+                    accent: context.palAccent,
+                    outline: context.palOutline,
+                    muted: context.palMuted,
+                    data: _demoSeriesFor(selected),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

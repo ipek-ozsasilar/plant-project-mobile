@@ -72,8 +72,9 @@ class HomeRecentStrip extends StatelessWidget {
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: tt.titleSmall?.copyWith(
-                                    fontWeight: FontWeight.w800,
+                                    fontWeight: FontWeight.w900,
                                     color: context.palOnSurface,
+                                    letterSpacing: -0.2,
                                   ),
                                 ),
                               ),
@@ -87,6 +88,7 @@ class HomeRecentStrip extends StatelessWidget {
                             style: tt.bodySmall?.copyWith(
                               color: context.palMuted,
                               height: 1.25,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                           const Spacer(),
@@ -94,7 +96,7 @@ class HomeRecentStrip extends StatelessWidget {
                             dateStr,
                             style: tt.labelSmall?.copyWith(
                               color: context.palMuted,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
                         ],

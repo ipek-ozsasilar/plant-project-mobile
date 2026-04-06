@@ -18,6 +18,7 @@ class MainShellView extends StatelessWidget {
 
     return Scaffold(
       extendBody: true,
+      backgroundColor: context.palSurface,
       body: navigationShell,
       floatingActionButton: Container(
         decoration: BoxDecoration(
@@ -43,54 +44,70 @@ class MainShellView extends StatelessWidget {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.fromLTRB(hPad, 0, hPad, bPad),
-        child: Material(
-          elevation: 12,
-          shadowColor: context.palPrimary.withValues(alpha: 0.22),
-          surfaceTintColor: context.palPrimarySoftBg,
-          color: context.palSurfaceCard,
-          borderRadius: BorderRadius.circular(WidgetSizesEnum.cardRadius.value * 1.35),
-          clipBehavior: Clip.antiAlias,
-          child: BottomAppBar(
-            height: WidgetSizesEnum.bottomNavHeight.value,
-            elevation: 0,
-            color: Colors.transparent,
-            padding: EdgeInsets.symmetric(
-              horizontal: WidgetSizesEnum.divider.value * 4,
-              vertical: WidgetSizesEnum.divider.value * 6,
-            ),
-            shape: const CircularNotchedRectangle(),
-            notchMargin: WidgetSizesEnum.divider.value * 6,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Expanded(
-                  child: _NavIcon(
-                    icon: Icons.home_rounded,
-                    selected: navigationShell.currentIndex == 0,
-                    label: context.l10n.navHome,
-                    onTap: () => navigationShell.goBranch(0),
-                  ),
+      bottomNavigationBar: Container(
+        // Alttaki "gri boşluk" hissini engellemek için zemin rengi sabit.
+        color: context.palSurface,
+        child: SafeArea(
+          top: false,
+          minimum: EdgeInsets.only(bottom: bPad),
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(hPad, 0, hPad, 0),
+            child: Material(
+              elevation: 12,
+              shadowColor: context.palPrimary.withValues(alpha: 0.22),
+              surfaceTintColor: context.palPrimarySoftBg,
+              color: context.palSurfaceCard,
+              borderRadius: BorderRadius.circular(WidgetSizesEnum.cardRadius.value * 1.35),
+              clipBehavior: Clip.antiAlias,
+              child: BottomAppBar(
+                height: WidgetSizesEnum.bottomNavHeight.value,
+                elevation: 0,
+                color: Colors.transparent,
+                padding: EdgeInsets.symmetric(
+                  horizontal: WidgetSizesEnum.divider.value * 4,
+                  vertical: WidgetSizesEnum.divider.value * 6,
                 ),
-                Expanded(
-                  child: _NavIcon(
-                    icon: Icons.history_rounded,
-                    selected: navigationShell.currentIndex == 1,
-                    label: context.l10n.navHistory,
-                    onTap: () => navigationShell.goBranch(1),
-                  ),
+                shape: const CircularNotchedRectangle(),
+                notchMargin: WidgetSizesEnum.divider.value * 6,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Expanded(
+                      child: _NavIcon(
+                        icon: Icons.home_rounded,
+                        selected: navigationShell.currentIndex == 0,
+                        label: context.l10n.navHome,
+                        onTap: () => navigationShell.goBranch(0),
+                      ),
+                    ),
+                    Expanded(
+                      child: _NavIcon(
+                        icon: Icons.history_rounded,
+                        selected: navigationShell.currentIndex == 1,
+                        label: context.l10n.navHistory,
+                        onTap: () => navigationShell.goBranch(1),
+                      ),
+                    ),
+                    SizedBox(width: WidgetSizesEnum.bottomNavFabCutoutWidth.value),
+                    Expanded(
+                      child: _NavIcon(
+                        icon: Icons.show_chart_rounded,
+                        selected: false,
+                        label: context.l10n.navProgress,
+                        onTap: () => context.push(AppPaths.healthProgress),
+                      ),
+                    ),
+                    Expanded(
+                      child: _NavIcon(
+                        icon: Icons.menu_rounded,
+                        selected: navigationShell.currentIndex == 2,
+                        label: context.l10n.navMore,
+                        onTap: () => navigationShell.goBranch(2),
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(width: WidgetSizesEnum.bottomNavFabCutoutWidth.value),
-                Expanded(
-                  child: _NavIcon(
-                    icon: Icons.menu_rounded,
-                    selected: navigationShell.currentIndex == 2,
-                    label: context.l10n.navMore,
-                    onTap: () => navigationShell.goBranch(2),
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
         ),

@@ -48,7 +48,7 @@ class HomeSearchBar extends StatelessWidget {
                     context.l10n.homeSearchHint,
                     style: tt.bodyMedium?.copyWith(
                       color: context.palMuted,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),

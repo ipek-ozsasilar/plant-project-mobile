@@ -186,6 +186,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get navHistory => 'Geçmiş';
 
   @override
+  String get navProgress => 'İlerleme';
+
+  @override
   String get navMore => 'Menü';
 
   @override
@@ -405,6 +408,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get healthProgressTitle => 'Sağlık ilerlemesi';
 
   @override
+  String get healthProgressHeadline => 'Trend analizi';
+
+  @override
   String get healthProgressSubtitle => 'Bitki seçin ve trendi izleyin';
 
   @override
@@ -413,6 +419,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get healthProgressSelectPlant => 'Bir bitki seçin';
+
+  @override
+  String get healthProgressPickPlantTitle => 'Bitki seçimi';
 
   @override
   String get healthProgressChartTitle => 'Son 14 gün';
@@ -457,6 +466,19 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get myPlantsDetailTitle => 'Bitki takibi';
+
+  @override
+  String get myPlantsDetailHeadline => 'Sağlık özeti';
+
+  @override
+  String get myPlantsDetailSubtitle =>
+      'Bu bitkinin son taramalarından sağlık skorunu ve zaman çizelgesini görüntüle.';
+
+  @override
+  String get myPlantsLastScore => 'Son skor';
+
+  @override
+  String get myPlantsAvgScore => 'Ortalama';
 
   @override
   String get myPlantsNoScans => 'Henüz tarama kaydı yok.';

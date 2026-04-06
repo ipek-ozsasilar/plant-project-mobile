@@ -185,6 +185,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navHistory => 'History';
 
   @override
+  String get navProgress => 'Progress';
+
+  @override
   String get navMore => 'Menu';
 
   @override
@@ -404,6 +407,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get healthProgressTitle => 'Health progress';
 
   @override
+  String get healthProgressHeadline => 'Trend analysis';
+
+  @override
   String get healthProgressSubtitle => 'Pick a plant and track trends';
 
   @override
@@ -412,6 +418,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get healthProgressSelectPlant => 'Select a plant';
+
+  @override
+  String get healthProgressPickPlantTitle => 'Pick a plant';
 
   @override
   String get healthProgressChartTitle => 'Last 14 days';
@@ -456,6 +465,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get myPlantsDetailTitle => 'Plant tracking';
+
+  @override
+  String get myPlantsDetailHeadline => 'Health summary';
+
+  @override
+  String get myPlantsDetailSubtitle =>
+      'See this plant’s latest health score trend and scan timeline.';
+
+  @override
+  String get myPlantsLastScore => 'Last score';
+
+  @override
+  String get myPlantsAvgScore => 'Average';
 
   @override
   String get myPlantsNoScans => 'No scans yet.';

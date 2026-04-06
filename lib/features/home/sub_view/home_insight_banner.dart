@@ -38,8 +38,9 @@ class HomeInsightBanner extends StatelessWidget {
                 Text(
                   context.l10n.homeTipTitle,
                   style: tt.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w900,
                     color: context.palOnSurface,
+                    letterSpacing: -0.2,
                   ),
                 ),
                 SizedBox(height: WidgetSizesEnum.divider.value * 6),
@@ -48,6 +49,7 @@ class HomeInsightBanner extends StatelessWidget {
                   style: tt.bodySmall?.copyWith(
                     color: context.palMuted,
                     height: 1.45,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ],

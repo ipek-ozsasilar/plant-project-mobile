@@ -20,15 +20,17 @@ class HomeQuickActionsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextTheme tt = Theme.of(context).textTheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
           context.l10n.homeQuickAccessTitle,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w700,
-                color: context.palOnSurface,
-              ),
+          style: tt.titleMedium?.copyWith(
+            fontWeight: FontWeight.w900,
+            color: context.palOnSurface,
+            letterSpacing: -0.2,
+          ),
         ),
         SizedBox(height: WidgetSizesEnum.cardRadius.value * 0.85),
         Row(

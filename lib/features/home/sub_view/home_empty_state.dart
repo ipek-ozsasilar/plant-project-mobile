@@ -48,8 +48,9 @@ class HomeEmptyState extends StatelessWidget {
             context.l10n.homeEmptyTitle,
             textAlign: TextAlign.center,
             style: tt.titleMedium?.copyWith(
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w900,
               color: context.palOnSurface,
+              letterSpacing: -0.2,
             ),
           ),
           SizedBox(height: WidgetSizesEnum.divider.value * 8),
@@ -59,6 +60,7 @@ class HomeEmptyState extends StatelessWidget {
             style: tt.bodyMedium?.copyWith(
               color: context.palMuted,
               height: 1.45,
+              fontWeight: FontWeight.w500,
             ),
           ),
           SizedBox(height: WidgetSizesEnum.cardRadius.value * 1.35),

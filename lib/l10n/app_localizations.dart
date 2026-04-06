@@ -434,6 +434,12 @@ abstract class AppLocalizations {
   /// **'Geçmiş'**
   String get navHistory;
 
+  /// No description provided for @navProgress.
+  ///
+  /// In tr, this message translates to:
+  /// **'İlerleme'**
+  String get navProgress;
+
   /// No description provided for @navMore.
   ///
   /// In tr, this message translates to:
@@ -848,6 +854,12 @@ abstract class AppLocalizations {
   /// **'Sağlık ilerlemesi'**
   String get healthProgressTitle;
 
+  /// No description provided for @healthProgressHeadline.
+  ///
+  /// In tr, this message translates to:
+  /// **'Trend analizi'**
+  String get healthProgressHeadline;
+
   /// No description provided for @healthProgressSubtitle.
   ///
   /// In tr, this message translates to:
@@ -865,6 +877,12 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Bir bitki seçin'**
   String get healthProgressSelectPlant;
+
+  /// No description provided for @healthProgressPickPlantTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bitki seçimi'**
+  String get healthProgressPickPlantTitle;
 
   /// No description provided for @healthProgressChartTitle.
   ///
@@ -949,6 +967,30 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Bitki takibi'**
   String get myPlantsDetailTitle;
+
+  /// No description provided for @myPlantsDetailHeadline.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sağlık özeti'**
+  String get myPlantsDetailHeadline;
+
+  /// No description provided for @myPlantsDetailSubtitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu bitkinin son taramalarından sağlık skorunu ve zaman çizelgesini görüntüle.'**
+  String get myPlantsDetailSubtitle;
+
+  /// No description provided for @myPlantsLastScore.
+  ///
+  /// In tr, this message translates to:
+  /// **'Son skor'**
+  String get myPlantsLastScore;
+
+  /// No description provided for @myPlantsAvgScore.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ortalama'**
+  String get myPlantsAvgScore;
 
   /// No description provided for @myPlantsNoScans.
   ///
