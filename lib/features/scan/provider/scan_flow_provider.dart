@@ -112,6 +112,38 @@ class ScanFlowNotifier extends Notifier<ScanFlowState> {
     );
   }
 
+  void addRegionFromDragRect({
+    required double startNx,
+    required double startNy,
+    required double endNx,
+    required double endNy,
+  }) {
+    final Uint8List? bytes = state.imageBytes;
+    if (bytes == null) {
+      return;
+    }
+    final ImageCropService crop = sl<ImageCropService>();
+    final PlantRegionModel base = crop.regionFromDragRect(
+      startNx: startNx,
+      startNy: startNy,
+      endNx: endNx,
+      endNy: endNy,
+    );
+    final PlantRegionModel region = PlantRegionModel(
+      id: _uuid.v4(),
+      nx: base.nx,
+      ny: base.ny,
+      nw: base.nw,
+      nh: base.nh,
+    );
+    final List<PlantRegionModel> next = List<PlantRegionModel>.from(state.regions)..add(region);
+    state = state.copyWith(
+      regions: next,
+      selectedRegionIndex: next.length - 1,
+      clearError: true,
+    );
+  }
+
   void selectRegion(int index) {
     if (index < 0 || index >= state.regions.length) {
       return;

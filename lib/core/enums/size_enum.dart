@@ -53,7 +53,9 @@ enum WidgetSizesEnum {
   bottomNavFabCutoutWidth(88),
   fabSize(56),
   maxContentWidth(520),
-  regionMinSide(0.12),
+  // Küçük bölge seçilirse model gürültüyle öğreniyor gibi davranır.
+  // EfficientNet 300x300'e yine resize yapılır; ama başlangıçta daha büyük crop daha stabil.
+  regionMinSide(0.20),
   fabBlurRadius(18),
   fabYOffset(6),
   cardShadowBlur(20),

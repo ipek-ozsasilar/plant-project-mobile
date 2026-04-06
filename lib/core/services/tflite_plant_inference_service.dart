@@ -6,6 +6,7 @@ import 'package:bitirme_mobile/core/enums/size_enum.dart';
 import 'package:bitirme_mobile/core/services/app_logger.dart';
 import 'package:bitirme_mobile/core/services/species_label_formatter.dart';
 import 'package:bitirme_mobile/models/inference_result_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart' as img;
 import 'package:tflite_flutter/tflite_flutter.dart';
@@ -46,6 +47,10 @@ class TflitePlantInferenceService {
       _diseaseInterpreter = await Interpreter.fromAsset(
         MlAssetsEnum.diseaseModel.value,
         options: opts,
+      );
+      _logger.d(
+        'TFLite yüklendi — species: ${MlAssetsEnum.speciesModel.value}, '
+        'disease: ${MlAssetsEnum.diseaseModel.value}',
       );
     } catch (e, st) {
       _logger.e('TFLite yükleme', e, st);
@@ -110,6 +115,10 @@ class TflitePlantInferenceService {
     }
 
     final Tensor inputTensor = interpreter.getInputTensor(0);
+    // Geçici doğrulama: konsolda [1, 300, 300, 3] ve MlPreprocessEnum.raw0to255 beklenir.
+    final List<int> inputShape = List<int>.from(inputTensor.shape);
+    debugPrint('>>> Input shape: $inputShape');
+    debugPrint('>>> Preprocess mode: $preprocess');
     final Tensor outputTensor = interpreter.getOutputTensor(0);
     final List<int> inShape = List<int>.from(inputTensor.shape);
     for (int i = 0; i < inShape.length; i++) {

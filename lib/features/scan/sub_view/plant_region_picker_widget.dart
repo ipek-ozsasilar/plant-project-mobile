@@ -13,7 +13,7 @@ class PlantRegionPickerWidget extends StatefulWidget {
     required this.bytes,
     required this.regions,
     required this.selectedIndex,
-    required this.onTapNormalized,
+    required this.onCreateRegionFromDrag,
     required this.onSelectRegion,
     super.key,
   });
@@ -21,7 +21,12 @@ class PlantRegionPickerWidget extends StatefulWidget {
   final Uint8List bytes;
   final List<PlantRegionModel> regions;
   final int selectedIndex;
-  final void Function(double nx, double ny) onTapNormalized;
+  final void Function({
+    required double startNx,
+    required double startNy,
+    required double endNx,
+    required double endNy,
+  }) onCreateRegionFromDrag;
   final ValueChanged<int> onSelectRegion;
 
   @override
@@ -30,6 +35,8 @@ class PlantRegionPickerWidget extends StatefulWidget {
 
 class _PlantRegionPickerWidgetState extends State<PlantRegionPickerWidget> {
   img.Image? _decoded;
+  Offset? _dragStart;
+  Offset? _dragNow;
 
   @override
   void initState() {
@@ -53,6 +60,16 @@ class _PlantRegionPickerWidgetState extends State<PlantRegionPickerWidget> {
         final double dw = iw * scale;
         final double dh = ih * scale;
         final Color accent = context.palPrimary;
+        final Offset? dragStart = _dragStart;
+        final Offset? dragNow = _dragNow;
+        Rect? liveRect;
+        if (dragStart != null && dragNow != null) {
+          final double l = math.min(dragStart.dx, dragNow.dx);
+          final double t = math.min(dragStart.dy, dragNow.dy);
+          final double r = math.max(dragStart.dx, dragNow.dx);
+          final double b = math.max(dragStart.dy, dragNow.dy);
+          liveRect = Rect.fromLTRB(l, t, r, b);
+        }
         return Center(
           child: SizedBox(
             width: dw,
@@ -62,11 +79,45 @@ class _PlantRegionPickerWidgetState extends State<PlantRegionPickerWidget> {
               children: <Widget>[
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
-                  onTapDown: (TapDownDetails details) {
+                  onPanStart: (DragStartDetails details) {
                     final Offset local = details.localPosition;
-                    final double nx = (local.dx / dw).clamp(0.0, 1.0);
-                    final double ny = (local.dy / dh).clamp(0.0, 1.0);
-                    widget.onTapNormalized(nx, ny);
+                    setState(() {
+                      _dragStart = Offset(
+                        local.dx.clamp(0.0, dw),
+                        local.dy.clamp(0.0, dh),
+                      );
+                      _dragNow = _dragStart;
+                    });
+                  },
+                  onPanUpdate: (DragUpdateDetails details) {
+                    final Offset local = details.localPosition;
+                    setState(() {
+                      _dragNow = Offset(
+                        local.dx.clamp(0.0, dw),
+                        local.dy.clamp(0.0, dh),
+                      );
+                    });
+                  },
+                  onPanEnd: (_) {
+                    final Offset? a = _dragStart;
+                    final Offset? b = _dragNow;
+                    setState(() {
+                      _dragStart = null;
+                      _dragNow = null;
+                    });
+                    if (a == null || b == null) {
+                      return;
+                    }
+                    final double startNx = (a.dx / dw).clamp(0.0, 1.0);
+                    final double startNy = (a.dy / dh).clamp(0.0, 1.0);
+                    final double endNx = (b.dx / dw).clamp(0.0, 1.0);
+                    final double endNy = (b.dy / dh).clamp(0.0, 1.0);
+                    widget.onCreateRegionFromDrag(
+                      startNx: startNx,
+                      startNy: startNy,
+                      endNx: endNx,
+                      endNy: endNy,
+                    );
                   },
                   child: Image.memory(
                     widget.bytes,
@@ -107,6 +158,18 @@ class _PlantRegionPickerWidgetState extends State<PlantRegionPickerWidget> {
                     ),
                   );
                 }),
+                if (liveRect != null)
+                  Positioned.fromRect(
+                    rect: liveRect,
+                    child: IgnorePointer(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: accent, width: 2),
+                          color: accent.withValues(alpha: 0.10),
+                        ),
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),

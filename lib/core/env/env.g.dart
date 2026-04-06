@@ -12,7 +12,7 @@ part of 'env.dart';
 final class _Env {
   static const String apiBaseUrl = 'http://127.0.0.1:8000';
 
-  static const String useMockInferenceRaw = 'true';
+  static const String useMockInferenceRaw = 'false';
 
   static const String useLocalTfliteRaw = 'true';
 

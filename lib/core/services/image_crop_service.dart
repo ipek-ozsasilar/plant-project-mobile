@@ -70,4 +70,49 @@ class ImageCropService {
       nh: s,
     );
   }
+
+  /// Sürükle-bırak ile seçilen dikdörtgen bölgeyi normalize edip minimum boyuta zorlar.
+  PlantRegionModel regionFromDragRect({
+    required double startNx,
+    required double startNy,
+    required double endNx,
+    required double endNy,
+    double? minSide,
+  }) {
+    final double sMin = minSide ?? WidgetSizesEnum.regionMinSide.value;
+    final double left0 = startNx < endNx ? startNx : endNx;
+    final double top0 = startNy < endNy ? startNy : endNy;
+    final double right0 = startNx < endNx ? endNx : startNx;
+    final double bottom0 = startNy < endNy ? endNy : startNy;
+
+    double left = left0.clamp(0.0, 1.0);
+    double top = top0.clamp(0.0, 1.0);
+    final double right = right0.clamp(0.0, 1.0);
+    final double bottom = bottom0.clamp(0.0, 1.0);
+
+    double w = (right - left).clamp(0.0, 1.0);
+    double h = (bottom - top).clamp(0.0, 1.0);
+    if (w < sMin || h < sMin) {
+      final double cx = (left + right) / 2.0;
+      final double cy = (top + bottom) / 2.0;
+      w = w < sMin ? sMin : w;
+      h = h < sMin ? sMin : h;
+      left = (cx - w / 2.0).clamp(0.0, 1.0);
+      top = (cy - h / 2.0).clamp(0.0, 1.0);
+      if (left + w > 1.0) {
+        left = 1.0 - w;
+      }
+      if (top + h > 1.0) {
+        top = 1.0 - h;
+      }
+    }
+
+    return PlantRegionModel(
+      id: '',
+      nx: left,
+      ny: top,
+      nw: w,
+      nh: h,
+    );
+  }
 }

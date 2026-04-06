@@ -412,7 +412,18 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
             bytes: bytes,
             regions: state.regions,
             selectedIndex: state.selectedRegionIndex,
-            onTapNormalized: notifier.addRegionAtNormalized,
+            onCreateRegionFromDrag: ({
+              required double startNx,
+              required double startNy,
+              required double endNx,
+              required double endNy,
+            }) =>
+                notifier.addRegionFromDragRect(
+              startNx: startNx,
+              startNy: startNy,
+              endNx: endNx,
+              endNy: endNy,
+            ),
             onSelectRegion: notifier.selectRegion,
           ),
         ),
