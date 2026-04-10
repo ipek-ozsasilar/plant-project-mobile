@@ -12,6 +12,7 @@ import 'package:bitirme_mobile/core/services/plantnet_species_name_repository.da
 import 'package:bitirme_mobile/core/services/plant_scans_firestore_service.dart';
 import 'package:bitirme_mobile/core/services/plants_firestore_service.dart';
 import 'package:bitirme_mobile/core/services/scan_history_service.dart';
+import 'package:bitirme_mobile/core/services/sink_species_class_repository.dart';
 import 'package:bitirme_mobile/core/services/tflite_plant_inference_service.dart';
 import 'package:get_it/get_it.dart';
 
@@ -29,10 +30,12 @@ Future<void> setupServiceLocator() async {
     () => ImageCropService(logger: sl<AppLogger>()),
   );
   sl.registerLazySingleton<PlantnetSpeciesNameRepository>(() => PlantnetSpeciesNameRepository());
+  sl.registerLazySingleton<SinkSpeciesClassRepository>(() => SinkSpeciesClassRepository());
   sl.registerLazySingleton<TflitePlantInferenceService>(
     () => TflitePlantInferenceService(
       logger: sl<AppLogger>(),
       plantnetNames: sl<PlantnetSpeciesNameRepository>(),
+      sinkSpeciesClasses: sl<SinkSpeciesClassRepository>(),
     ),
   );
   sl.registerLazySingleton<InferenceApiService>(

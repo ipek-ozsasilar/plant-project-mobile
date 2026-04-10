@@ -34,8 +34,21 @@ class $AssetsMlGen {
   /// File path: assets/ml/plant_species_model.tflite
   String get plantSpeciesModel => 'assets/ml/plant_species_model.tflite';
 
+  /// File path: assets/ml/plantnet_species_id_map.json
+  String get plantnetSpeciesIdMap => 'assets/ml/plantnet_species_id_map.json';
+
+  /// File path: assets/ml/sink_classes.json
+  String get sinkClasses => 'assets/ml/sink_classes.json';
+
   /// List of all assets
-  List<String> get values => [classNames, diseaseClassNames, plantDiseaseModel, plantSpeciesModel];
+  List<String> get values => [
+    classNames,
+    diseaseClassNames,
+    plantDiseaseModel,
+    plantSpeciesModel,
+    plantnetSpeciesIdMap,
+    sinkClasses,
+  ];
 }
 
 class Assets {

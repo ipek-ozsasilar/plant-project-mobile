@@ -15,6 +15,7 @@ import 'package:bitirme_mobile/core/services/health_score_service.dart';
 import 'package:bitirme_mobile/core/services/pdf_report_service.dart';
 import 'package:bitirme_mobile/core/services/notification_service.dart';
 import 'package:bitirme_mobile/core/services/image_crop_service.dart';
+import 'package:bitirme_mobile/core/services/sink_species_class_repository.dart';
 import 'package:bitirme_mobile/core/theme/app_palette.dart';
 import 'package:bitirme_mobile/core/utils/confidence_format.dart';
 import 'package:bitirme_mobile/core/widgets/animation/scan_loading_widget.dart';
@@ -469,7 +470,11 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
       return const SizedBox.shrink();
     }
     final double unit = confidenceToUnit(sp.top.confidence);
-    final bool unrecognized = unit < InferenceThresholdEnum.unrecognized.value;
+    final String raw = (sp.top.rawKey ?? sp.top.label).trim();
+    final bool isSink = sl<SinkSpeciesClassRepository>().snapshot.contains(raw);
+    final bool unrecognized = isSink
+        ? unit < InferenceThresholdEnum.unrecognizedSink.value
+        : unit < InferenceThresholdEnum.unrecognizedGlobal.value;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
@@ -525,7 +530,7 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
       return const SizedBox.shrink();
     }
     final double unit = confidenceToUnit(dis.top.confidence);
-    final bool unrecognized = unit < InferenceThresholdEnum.unrecognized.value;
+    final bool unrecognized = unit < InferenceThresholdEnum.unrecognizedGlobal.value;
     final String diseaseText = diseaseClassKeyToDisplay(dis.top.label, l10n);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -586,8 +591,12 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
     }
     final double spUnit = confidenceToUnit(sp.top.confidence);
     final double disUnit = confidenceToUnit(dis.top.confidence);
-    final bool spUnrecognized = spUnit < InferenceThresholdEnum.unrecognized.value;
-    final bool disUnrecognized = disUnit < InferenceThresholdEnum.unrecognized.value;
+    final String spRaw = (sp.top.rawKey ?? sp.top.label).trim();
+    final bool spIsSink = sl<SinkSpeciesClassRepository>().snapshot.contains(spRaw);
+    final bool spUnrecognized = spIsSink
+        ? spUnit < InferenceThresholdEnum.unrecognizedSink.value
+        : spUnit < InferenceThresholdEnum.unrecognizedGlobal.value;
+    final bool disUnrecognized = disUnit < InferenceThresholdEnum.unrecognizedGlobal.value;
     final String diseaseText = diseaseClassKeyToDisplay(dis.top.label, l10n);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,

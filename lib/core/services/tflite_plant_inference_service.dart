@@ -5,6 +5,7 @@ import 'package:bitirme_mobile/core/enums/ml_preprocess_enum.dart';
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
 import 'package:bitirme_mobile/core/services/app_logger.dart';
 import 'package:bitirme_mobile/core/services/plantnet_species_name_repository.dart';
+import 'package:bitirme_mobile/core/services/sink_species_class_repository.dart';
 import 'package:bitirme_mobile/core/services/species_label_formatter.dart';
 import 'package:bitirme_mobile/models/inference_result_model.dart';
 import 'package:flutter/foundation.dart';
@@ -17,11 +18,14 @@ class TflitePlantInferenceService {
   TflitePlantInferenceService({
     required AppLogger logger,
     required PlantnetSpeciesNameRepository plantnetNames,
+    required SinkSpeciesClassRepository sinkSpeciesClasses,
   })  : _logger = logger,
-        _plantnetNames = plantnetNames;
+        _plantnetNames = plantnetNames,
+        _sinkSpeciesClasses = sinkSpeciesClasses;
 
   final AppLogger _logger;
   final PlantnetSpeciesNameRepository _plantnetNames;
+  final SinkSpeciesClassRepository _sinkSpeciesClasses;
   Interpreter? _speciesInterpreter;
   Interpreter? _diseaseInterpreter;
   List<String>? _speciesLabels;
@@ -63,6 +67,15 @@ class TflitePlantInferenceService {
       } catch (e, st) {
         _logger.w('PlantNet ID haritası yüklenemedi (isteğe bağlı)', e, st);
       }
+      try {
+        final String sinkJson = await rootBundle.loadString(MlAssetsEnum.sinkSpeciesClassesJson.value);
+        final Object? sinkDec = json.decode(sinkJson);
+        if (sinkDec is List<dynamic>) {
+          _sinkSpeciesClasses.setFromJsonList(sinkDec);
+        }
+      } catch (e, st) {
+        _logger.w('Sink sınıf listesi yüklenemedi (isteğe bağlı)', e, st);
+      }
       _logger.d(
         'TFLite yüklendi — species: ${MlAssetsEnum.speciesModel.value}, '
         'disease: ${MlAssetsEnum.diseaseModel.value}',
@@ -74,8 +87,7 @@ class TflitePlantInferenceService {
   }
 
   MlPreprocessEnum _preprocessFor(MlAssetsEnum model) {
-    // Not: Eğer modelin içinde preprocess_input varsa "raw0to255" olmalı.
-    // Şu an varsayılanı raw bırakıyoruz; gerekiyorsa kolayca unit0to1'e döndürülür.
+    // DEBUG: raw0to255 test — model içinde preprocess varsa bu doğru
     return MlPreprocessEnum.raw0to255;
   }
 
@@ -203,6 +215,13 @@ class TflitePlantInferenceService {
           rawKey: attachRawKey ? rawAlt : null,
         ),
       );
+    }
+
+    // DEBUG: top-5 sonuçları konsola yaz
+    debugPrint('>>> TOP: ${top.label} (${(top.confidence * 100).toStringAsFixed(1)}%) rawKey=${top.rawKey}');
+    for (int k = 0; k < alternatives.length; k++) {
+      final InferenceClassScoreModel alt = alternatives[k];
+      debugPrint('>>> ALT ${k + 1}: ${alt.label} (${(alt.confidence * 100).toStringAsFixed(1)}%) rawKey=${alt.rawKey}');
     }
 
     return InferenceResultModel(top: top, alternatives: alternatives);
