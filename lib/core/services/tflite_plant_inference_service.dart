@@ -259,11 +259,22 @@ class TflitePlantInferenceService {
     final int h = nchw ? shape[2] : shape[1];
     final int w = nchw ? shape[3] : shape[2];
     final bool useFloat = tensorType == TensorType.float32;
+    final bool useUint8 = tensorType == TensorType.uint8;
+    final bool useInt8 = tensorType == TensorType.int8;
 
-    double packCh(num v) {
+    if (!useFloat && !useUint8 && !useInt8) {
+      throw StateError('Desteklenmeyen input tensor type: $tensorType');
+    }
+
+    num packCh(num v) {
       final double x = v.toDouble().clamp(0.0, 255.0);
       if (!useFloat) {
-        return x;
+        // Quantized input: uint8/int8
+        if (useUint8) {
+          return x.round().clamp(0, 255);
+        }
+        // int8: [-128, 127] aralığı
+        return (x.round() - 128).clamp(-128, 127);
       }
       if (preprocess == MlPreprocessEnum.raw0to255) {
         return x;
@@ -276,13 +287,13 @@ class TflitePlantInferenceService {
     }
 
     if (nchw && shape[1] == 1) {
-      return List<List<List<List<double>>>>.generate(
+      return List<List<List<List<num>>>>.generate(
         1,
-        (_) => List<List<List<double>>>.generate(
+        (_) => List<List<List<num>>>.generate(
           1,
-          (_) => List<List<double>>.generate(
+          (_) => List<List<num>>.generate(
             h,
-            (int y) => List<double>.generate(
+            (int y) => List<num>.generate(
               w,
               (int x) {
                 final dynamic px = image.getPixel(x, y);
@@ -296,13 +307,13 @@ class TflitePlantInferenceService {
     }
 
     if (nchw) {
-      return List<List<List<List<double>>>>.generate(
+      return List<List<List<List<num>>>>.generate(
         1,
-        (_) => List<List<List<double>>>.generate(
+        (_) => List<List<List<num>>>.generate(
           3,
-          (int c) => List<List<double>>.generate(
+          (int c) => List<List<num>>.generate(
             h,
-            (int y) => List<double>.generate(
+            (int y) => List<num>.generate(
               w,
               (int x) {
                 final dynamic px = image.getPixel(x, y);
@@ -323,15 +334,15 @@ class TflitePlantInferenceService {
       );
     }
 
-    return List<List<List<List<double>>>>.generate(
+    return List<List<List<List<num>>>>.generate(
       1,
-      (_) => List<List<List<double>>>.generate(
+      (_) => List<List<List<num>>>.generate(
         h,
-        (int y) => List<List<double>>.generate(
+        (int y) => List<List<num>>.generate(
           w,
           (int x) {
             final dynamic px = image.getPixel(x, y);
-            return <double>[
+            return <num>[
               packCh(px.r),
               packCh(px.g),
               packCh(px.b),
@@ -343,16 +354,26 @@ class TflitePlantInferenceService {
   }
 
   Object _allocOutputBuffer(List<int> shape, TensorType type) {
+    final bool isFloat = type == TensorType.float32;
+    final bool isUint8 = type == TensorType.uint8;
+    final bool isInt8 = type == TensorType.int8;
+    if (!isFloat && !isUint8 && !isInt8) {
+      throw StateError('Desteklenmeyen output tensor type: $type');
+    }
+
     if (shape.length == 2) {
       final int a = shape[0] < 1 ? 1 : shape[0];
       final int b = shape[1];
-      return List<List<double>>.generate(
-        a,
-        (_) => List<double>.filled(b, 0.0),
-      );
+      if (isFloat) {
+        return List<List<double>>.generate(a, (_) => List<double>.filled(b, 0.0));
+      }
+      return List<List<int>>.generate(a, (_) => List<int>.filled(b, 0));
     }
     if (shape.length == 1) {
-      return List<double>.filled(shape[0], 0.0);
+      if (isFloat) {
+        return List<double>.filled(shape[0], 0.0);
+      }
+      return List<int>.filled(shape[0], 0);
     }
     throw StateError('Çıktı şekli desteklenmiyor: $shape');
   }

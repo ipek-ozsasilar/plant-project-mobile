@@ -1,11 +1,11 @@
 import 'dart:math' as math;
 import 'dart:typed_data';
+import 'dart:ui' as ui;
 
 import 'package:bitirme_mobile/core/enums/size_enum.dart';
 import 'package:bitirme_mobile/core/theme/app_palette.dart';
 import 'package:bitirme_mobile/models/plant_region_model.dart';
 import 'package:flutter/material.dart';
-import 'package:image/image.dart' as img;
 
 /// Görüntü üzerinde dokunarak bitki bölgeleri ekler.
 class PlantRegionPickerWidget extends StatefulWidget {
@@ -34,19 +34,36 @@ class PlantRegionPickerWidget extends StatefulWidget {
 }
 
 class _PlantRegionPickerWidgetState extends State<PlantRegionPickerWidget> {
-  img.Image? _decoded;
+  ui.Image? _decoded;
   Offset? _dragStart;
   Offset? _dragNow;
 
   @override
   void initState() {
     super.initState();
-    _decoded = img.decodeImage(widget.bytes);
+    _decode();
+  }
+
+  Future<void> _decode() async {
+    try {
+      final ui.Codec codec = await ui.instantiateImageCodec(widget.bytes);
+      final ui.FrameInfo frame = await codec.getNextFrame();
+      final ui.Image imgDecoded = frame.image;
+      if (!mounted) {
+        return;
+      }
+      setState(() => _decoded = imgDecoded);
+    } catch (_) {
+      if (!mounted) {
+        return;
+      }
+      setState(() => _decoded = null);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final img.Image? decoded = _decoded;
+    final ui.Image? decoded = _decoded;
     if (decoded == null) {
       return const Center(child: CircularProgressIndicator());
     }

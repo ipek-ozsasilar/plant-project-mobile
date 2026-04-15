@@ -62,7 +62,13 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
 
   Future<void> _pickImage(ImageSource source) async {
     try {
-      final XFile? file = await _picker.pickImage(source: source, imageQuality: 88);
+      final double maxPx = ImageSizesEnum.galleryPickMax.value;
+      final XFile? file = await _picker.pickImage(
+        source: source,
+        imageQuality: 88,
+        maxWidth: maxPx,
+        maxHeight: maxPx,
+      );
       if (file == null) {
         return;
       }

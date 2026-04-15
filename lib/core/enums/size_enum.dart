@@ -3,7 +3,10 @@ enum ImageSizesEnum {
   thumb(56),
   preview(120),
   hero(200),
-  fullWidthBanner(320);
+  fullWidthBanner(320),
+
+  /// Galeriden seçilen büyük görselleri belleğe göre sınırlamak için.
+  galleryPickMax(2048);
 
   const ImageSizesEnum(this.pixels);
   final double pixels;
