@@ -1088,11 +1088,29 @@ abstract class AppLocalizations {
   /// **'Yanıklık'**
   String get inferenceDiseaseBlight;
 
+  /// No description provided for @inferenceDiseaseChlorosisYellowing.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kloroz / sararma'**
+  String get inferenceDiseaseChlorosisYellowing;
+
   /// No description provided for @inferenceDiseaseHealthy.
   ///
   /// In tr, this message translates to:
   /// **'Sağlıklı'**
   String get inferenceDiseaseHealthy;
+
+  /// No description provided for @inferenceDiseaseLeafDamage.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yaprak hasarı'**
+  String get inferenceDiseaseLeafDamage;
+
+  /// No description provided for @inferenceDiseaseLeafDisease.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yaprak hastalığı'**
+  String get inferenceDiseaseLeafDisease;
 
   /// No description provided for @inferenceDiseaseLeafSpot.
   ///
@@ -1130,11 +1148,23 @@ abstract class AppLocalizations {
   /// **'Pas'**
   String get inferenceDiseaseRust;
 
+  /// No description provided for @inferenceDiseaseScab.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kabuklanma'**
+  String get inferenceDiseaseScab;
+
   /// No description provided for @inferenceDiseaseViral.
   ///
   /// In tr, this message translates to:
   /// **'Viral'**
   String get inferenceDiseaseViral;
+
+  /// No description provided for @inferenceDiseaseViralMosaic.
+  ///
+  /// In tr, this message translates to:
+  /// **'Viral mozaik'**
+  String get inferenceDiseaseViralMosaic;
 
   /// No description provided for @validationRequired.
   ///

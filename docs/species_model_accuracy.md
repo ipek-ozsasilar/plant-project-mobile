@@ -109,8 +109,8 @@
 
 ## Model Dosyaları (Güncel)
 
-- **TFLite model**: `C:\Users\HP\Desktop\plant_disease_model.tflite`
-- **Sınıf isimleri**: `C:\Users\HP\Desktop\disease_class_names.json`
+- **TFLite model**: `C:\Users\HP\Desktop\disease_10class.tflite`
+- **Sınıf isimleri**: `C:\Users\HP\Desktop\disease_class_names_10class.json`
 
 ## Özet (2026-04-21)
 
@@ -134,3 +134,27 @@
 | 8 | blight | 91.6 | 1033 | 1128 |
 | 9 | viral | 88.4 | 1164 | 1317 |
 | 10 | leaf_spot | 86.7 | 948 | 1094 |
+
+---
+
+## Özet (2026-04-26) — Yeniden Eğitim
+
+- **Test Loss**: **0.0846**
+- **Test Accuracy**: **0.9819** (**%98.2**)
+- **%70 altı sınıflar**: **0**
+- **%80 ve üstü sınıflar**: **10**
+
+## Sınıf Bazlı Accuracy (2026-04-26)
+
+| # | Hastalık | Accuracy (%) | Örnek |
+|---:|---|---:|---:|
+| 1 | mold | 96.5 | 258 |
+| 2 | leaf_damage | 96.9 | 3270 |
+| 3 | viral_mosaic | 97.2 | 497 |
+| 4 | pest_damage | 97.9 | 238 |
+| 5 | rot | 98.0 | 509 |
+| 6 | rust | 98.8 | 489 |
+| 7 | scab | 99.3 | 277 |
+| 8 | healthy | 99.5 | 2835 |
+| 9 | powdery_mildew | 99.6 | 451 |
+| 10 | chlorosis_yellowing | 99.6 | 272 |

@@ -1,16 +1,14 @@
 import 'package:bitirme_mobile/l10n/app_localizations.dart';
 
-/// [disease_class_names.json] anahtarını arayüz metnine çevirir.
+/// [disease_class_names_10class.json] anahtarını arayüz metnine çevirir.
 String diseaseClassKeyToDisplay(String key, AppLocalizations l10n) {
   switch (key) {
-    case 'bacterial':
-      return l10n.inferenceDiseaseBacterial;
-    case 'blight':
-      return l10n.inferenceDiseaseBlight;
+    case 'chlorosis_yellowing':
+      return l10n.inferenceDiseaseChlorosisYellowing;
     case 'healthy':
       return l10n.inferenceDiseaseHealthy;
-    case 'leaf_spot':
-      return l10n.inferenceDiseaseLeafSpot;
+    case 'leaf_damage':
+      return l10n.inferenceDiseaseLeafDamage;
     case 'mold':
       return l10n.inferenceDiseaseMold;
     case 'pest_damage':
@@ -21,8 +19,10 @@ String diseaseClassKeyToDisplay(String key, AppLocalizations l10n) {
       return l10n.inferenceDiseaseRot;
     case 'rust':
       return l10n.inferenceDiseaseRust;
-    case 'viral':
-      return l10n.inferenceDiseaseViral;
+    case 'scab':
+      return l10n.inferenceDiseaseScab;
+    case 'viral_mosaic':
+      return l10n.inferenceDiseaseViralMosaic;
     default:
       return key.replaceAll('_', ' ');
   }

@@ -111,12 +111,16 @@ class _OnboardingViewState extends ConsumerState<OnboardingView> {
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: WidgetSizesEnum.cardRadius.value),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: WidgetSizesEnum.cardRadius.value,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       TextButton(
-                        onPressed: (!_languageDone && _index == 0) ? null : _finish,
+                        onPressed: (!_languageDone && _index == 0)
+                            ? null
+                            : _finish,
                         child: Text(
                           l10n.onboardingSkip,
                           style: TextStyle(
@@ -137,7 +141,9 @@ class _OnboardingViewState extends ConsumerState<OnboardingView> {
                       _LanguageSlide(
                         enabled: !_languageDone,
                         onTurkish: () async {
-                          await ref.read(appLocaleProvider.notifier).selectTurkishFirstRun();
+                          await ref
+                              .read(appLocaleProvider.notifier)
+                              .selectTurkishFirstRun();
                           if (!mounted) {
                             return;
                           }
@@ -149,7 +155,9 @@ class _OnboardingViewState extends ConsumerState<OnboardingView> {
                           );
                         },
                         onEnglish: () async {
-                          await ref.read(appLocaleProvider.notifier).selectEnglishFirstRun();
+                          await ref
+                              .read(appLocaleProvider.notifier)
+                              .selectEnglishFirstRun();
                           if (!mounted) {
                             return;
                           }
@@ -186,12 +194,16 @@ class _OnboardingViewState extends ConsumerState<OnboardingView> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 1.25),
+                  padding: EdgeInsets.all(
+                    WidgetSizesEnum.cardRadius.value * 1.25,
+                  ),
                   child: Column(
                     children: <Widget>[
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: List<Widget>.generate(_visibleSlidesCount, (int i) {
+                        children: List<Widget>.generate(_visibleSlidesCount, (
+                          int i,
+                        ) {
                           final bool active = i == _visibleIndex;
                           return AnimatedContainer(
                             duration: const Duration(milliseconds: 220),
@@ -199,18 +211,28 @@ class _OnboardingViewState extends ConsumerState<OnboardingView> {
                               horizontal: WidgetSizesEnum.divider.value * 3,
                             ),
                             height: WidgetSizesEnum.divider.value * 3,
-                            width: active ? WidgetSizesEnum.cardRadius.value : WidgetSizesEnum.divider.value * 3,
+                            width: active
+                                ? WidgetSizesEnum.cardRadius.value
+                                : WidgetSizesEnum.divider.value * 3,
                             decoration: BoxDecoration(
-                              color: active ? context.palPrimary : context.palOutline.withValues(alpha: 0.8),
-                              borderRadius: BorderRadius.circular(WidgetSizesEnum.chipRadius.value),
+                              color: active
+                                  ? context.palPrimary
+                                  : context.palOutline.withValues(alpha: 0.8),
+                              borderRadius: BorderRadius.circular(
+                                WidgetSizesEnum.chipRadius.value,
+                              ),
                             ),
                           );
                         }),
                       ),
                       SizedBox(height: WidgetSizesEnum.cardRadius.value * 1.1),
                       AppPrimaryButton(
-                        label: _index < 3 ? l10n.onboardingNext : l10n.onboardingStart,
-                        onPressed: (!_languageDone && _index == 0) ? null : _next,
+                        label: _index < 3
+                            ? l10n.onboardingNext
+                            : l10n.onboardingStart,
+                        onPressed: (!_languageDone && _index == 0)
+                            ? null
+                            : _next,
                       ),
                     ],
                   ),
@@ -288,7 +310,9 @@ class _OnboardingSlide extends StatelessWidget {
                     ),
                     decoration: BoxDecoration(
                       color: context.palPrimarySoftBg,
-                      borderRadius: BorderRadius.circular(WidgetSizesEnum.chipRadius.value),
+                      borderRadius: BorderRadius.circular(
+                        WidgetSizesEnum.chipRadius.value,
+                      ),
                     ),
                     child: Text(
                       chipLabel,
@@ -302,7 +326,9 @@ class _OnboardingSlide extends StatelessWidget {
                 ),
                 SizedBox(height: WidgetSizesEnum.cardRadius.value * 1.5),
                 Container(
-                  padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 1.5),
+                  padding: EdgeInsets.all(
+                    WidgetSizesEnum.cardRadius.value * 1.5,
+                  ),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     gradient: LinearGradient(
@@ -465,12 +491,17 @@ class _LanguageChoiceCard extends StatelessWidget {
           decoration: BoxDecoration(
             color: context.palSurfaceCard,
             borderRadius: BorderRadius.circular(r),
-            border: Border.all(color: context.palOutline.withValues(alpha: 0.45)),
+            border: Border.all(
+              color: context.palOutline.withValues(alpha: 0.45),
+            ),
             boxShadow: <BoxShadow>[
               BoxShadow(
                 color: context.palAccent.withValues(alpha: 0.08),
                 blurRadius: WidgetSizesEnum.cardShadowBlur.value * 0.8,
-                offset: Offset(0, WidgetSizesEnum.cardShadowOffsetY.value * 0.45),
+                offset: Offset(
+                  0,
+                  WidgetSizesEnum.cardShadowOffsetY.value * 0.45,
+                ),
               ),
             ],
           ),
@@ -478,7 +509,10 @@ class _LanguageChoiceCard extends StatelessWidget {
             padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 1.05),
             child: Row(
               children: <Widget>[
-                Text(flag, style: TextStyle(fontSize: TextSizesEnum.title.value)),
+                Text(
+                  flag,
+                  style: TextStyle(fontSize: TextSizesEnum.title.value),
+                ),
                 SizedBox(width: WidgetSizesEnum.cardRadius.value),
                 Expanded(
                   child: Column(
@@ -494,7 +528,10 @@ class _LanguageChoiceCard extends StatelessWidget {
                       SizedBox(height: WidgetSizesEnum.divider.value * 4),
                       Text(
                         subtitle,
-                        style: tt.bodySmall?.copyWith(color: context.palMuted, height: 1.3),
+                        style: tt.bodySmall?.copyWith(
+                          color: context.palMuted,
+                          height: 1.3,
+                        ),
                       ),
                     ],
                   ),

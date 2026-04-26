@@ -531,7 +531,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get inferenceDiseaseBlight => 'Blight';
 
   @override
+  String get inferenceDiseaseChlorosisYellowing => 'Chlorosis / yellowing';
+
+  @override
   String get inferenceDiseaseHealthy => 'Healthy';
+
+  @override
+  String get inferenceDiseaseLeafDamage => 'Leaf damage';
+
+  @override
+  String get inferenceDiseaseLeafDisease => 'Leaf disease';
 
   @override
   String get inferenceDiseaseLeafSpot => 'Leaf spot';
@@ -552,7 +561,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get inferenceDiseaseRust => 'Rust';
 
   @override
+  String get inferenceDiseaseScab => 'Scab';
+
+  @override
   String get inferenceDiseaseViral => 'Viral';
+
+  @override
+  String get inferenceDiseaseViralMosaic => 'Viral mosaic';
 
   @override
   String get validationRequired => 'This field is required.';

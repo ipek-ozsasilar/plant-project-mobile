@@ -533,7 +533,16 @@ class AppLocalizationsTr extends AppLocalizations {
   String get inferenceDiseaseBlight => 'Yanıklık';
 
   @override
+  String get inferenceDiseaseChlorosisYellowing => 'Kloroz / sararma';
+
+  @override
   String get inferenceDiseaseHealthy => 'Sağlıklı';
+
+  @override
+  String get inferenceDiseaseLeafDamage => 'Yaprak hasarı';
+
+  @override
+  String get inferenceDiseaseLeafDisease => 'Yaprak hastalığı';
 
   @override
   String get inferenceDiseaseLeafSpot => 'Yaprak lekesi';
@@ -554,7 +563,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String get inferenceDiseaseRust => 'Pas';
 
   @override
+  String get inferenceDiseaseScab => 'Kabuklanma';
+
+  @override
   String get inferenceDiseaseViral => 'Viral';
+
+  @override
+  String get inferenceDiseaseViralMosaic => 'Viral mozaik';
 
   @override
   String get validationRequired => 'Bu alan zorunludur.';

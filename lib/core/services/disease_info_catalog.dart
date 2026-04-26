@@ -26,6 +26,7 @@ final class DiseaseInfoCatalog {
           treatment: l10n.diseaseDetailTreatmentHealthy,
           prevention: l10n.diseaseDetailPreventionHealthy,
         );
+      case 'leaf_disease':
       case 'leaf_spot':
         return DiseaseInfo(
           description: l10n.diseaseDetailDescriptionLeafSpot,

@@ -14,8 +14,8 @@ class InferenceApiService {
   InferenceApiService({
     required AppLogger logger,
     required TflitePlantInferenceService tflite,
-  })  : _logger = logger,
-        _tflite = tflite;
+  }) : _logger = logger,
+       _tflite = tflite;
 
   final AppLogger _logger;
   final TflitePlantInferenceService _tflite;
@@ -34,11 +34,12 @@ class InferenceApiService {
 
   static const List<String> _mockDiseaseKeys = <String>[
     'healthy',
-    'leaf_spot',
+    'leaf_disease',
+    'mold',
+    'pest_damage',
     'powdery_mildew',
+    'rot',
     'rust',
-    'bacterial',
-    'viral',
   ];
 
   Future<InferenceResultModel> predictSpecies(Uint8List imageBytes) async {
@@ -57,11 +58,7 @@ class InferenceApiService {
       final Uri uri = Uri.parse('${Env.apiBaseUrl}/predict/species');
       final http.MultipartRequest request = http.MultipartRequest('POST', uri);
       request.files.add(
-        http.MultipartFile.fromBytes(
-          'file',
-          imageBytes,
-          filename: 'crop.jpg',
-        ),
+        http.MultipartFile.fromBytes('file', imageBytes, filename: 'crop.jpg'),
       );
       final http.StreamedResponse streamed = await request.send();
       final String body = await streamed.stream.bytesToString();
@@ -91,11 +88,7 @@ class InferenceApiService {
       final Uri uri = Uri.parse('${Env.apiBaseUrl}/predict/disease');
       final http.MultipartRequest request = http.MultipartRequest('POST', uri);
       request.files.add(
-        http.MultipartFile.fromBytes(
-          'file',
-          imageBytes,
-          filename: 'crop.jpg',
-        ),
+        http.MultipartFile.fromBytes('file', imageBytes, filename: 'crop.jpg'),
       );
       final http.StreamedResponse streamed = await request.send();
       final String body = await streamed.stream.bytesToString();
@@ -141,12 +134,15 @@ class InferenceApiService {
     if (decoded is! Map<String, Object?>) {
       throw FormatException('Invalid JSON', body);
     }
-    final String? topLabel = decoded['label'] as String? ?? decoded['top_label'] as String?;
-    final num? topConf = decoded['confidence'] as num? ?? decoded['score'] as num?;
+    final String? topLabel =
+        decoded['label'] as String? ?? decoded['top_label'] as String?;
+    final num? topConf =
+        decoded['confidence'] as num? ?? decoded['score'] as num?;
     if (topLabel == null || topConf == null) {
       throw FormatException('Missing fields', body);
     }
-    final String? rawLabel = decoded['raw_label'] as String? ?? decoded['raw'] as String?;
+    final String? rawLabel =
+        decoded['raw_label'] as String? ?? decoded['raw'] as String?;
     return InferenceResultModel(
       top: InferenceClassScoreModel(
         label: topLabel,
