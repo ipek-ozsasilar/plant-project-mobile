@@ -94,17 +94,7 @@ class _OnboardingViewState extends ConsumerState<OnboardingView> {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: isDark
-                  ? <Color>[
-                      ColorName.surfaceDark,
-                      ColorName.themeDarkHeader1,
-                      ColorName.themeDarkHeader2,
-                    ]
-                  : <Color>[
-                      ColorName.surface,
-                      ColorName.primaryLight.withValues(alpha: 0.55),
-                      ColorName.gradientEnd.withValues(alpha: 0.25),
-                    ],
+              colors: context.palHeaderGradientColors,
             ),
           ),
           child: SafeArea(
@@ -115,8 +105,22 @@ class _OnboardingViewState extends ConsumerState<OnboardingView> {
                     horizontal: WidgetSizesEnum.cardRadius.value,
                   ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
+                      if (_index > 0)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: Text(
+                            l10n.onboardingStep(_index, 3),
+                            style: TextStyle(
+                              fontWeight: FontWeight.w900,
+                              color: context.palOnSurface,
+                              fontSize: TextSizesEnum.subtitle.value,
+                            ),
+                          ),
+                        )
+                      else
+                        const SizedBox.shrink(),
                       TextButton(
                         onPressed: (!_languageDone && _index == 0)
                             ? null
@@ -174,21 +178,18 @@ class _OnboardingViewState extends ConsumerState<OnboardingView> {
                         iconColor: context.palPrimary,
                         title: l10n.onboardingTitle1,
                         body: l10n.onboardingBody1,
-                        chipLabel: l10n.onboardingStep(1, 3),
                       ),
                       _OnboardingSlide(
                         icon: Icons.grid_view_rounded,
                         iconColor: context.palAccent,
                         title: l10n.onboardingTitle2,
                         body: l10n.onboardingBody2,
-                        chipLabel: l10n.onboardingStep(2, 3),
                       ),
                       _OnboardingSlide(
                         icon: Icons.insights_rounded,
                         iconColor: ColorName.info,
                         title: l10n.onboardingTitle3,
                         body: l10n.onboardingBody3,
-                        chipLabel: l10n.onboardingStep(3, 3),
                       ),
                     ],
                   ),
@@ -252,14 +253,12 @@ class _OnboardingSlide extends StatelessWidget {
     required this.iconColor,
     required this.title,
     required this.body,
-    required this.chipLabel,
   });
 
   final IconData icon;
   final Color iconColor;
   final String title;
   final String body;
-  final String chipLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -301,30 +300,6 @@ class _OnboardingSlide extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: WidgetSizesEnum.cardRadius.value * 0.75,
-                      vertical: WidgetSizesEnum.divider.value * 5,
-                    ),
-                    decoration: BoxDecoration(
-                      color: context.palPrimarySoftBg,
-                      borderRadius: BorderRadius.circular(
-                        WidgetSizesEnum.chipRadius.value,
-                      ),
-                    ),
-                    child: Text(
-                      chipLabel,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w800,
-                        color: context.palOnSurface,
-                        fontSize: TextSizesEnum.caption.value,
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: WidgetSizesEnum.cardRadius.value * 1.5),
                 Container(
                   padding: EdgeInsets.all(
                     WidgetSizesEnum.cardRadius.value * 1.5,

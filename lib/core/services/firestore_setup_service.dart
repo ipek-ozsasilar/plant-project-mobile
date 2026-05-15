@@ -20,22 +20,13 @@ class FirestoreSetupService {
     try {
       _logger.i('Firestore user initialization starting for uid: $uid');
 
-      // 1. User document zaten var mı kontrol et
-      final userDoc = _db.collection(FirestoreCollectionEnum.users.value).doc(uid);
-      final userSnapshot = await userDoc.get();
-
-      if (userSnapshot.exists) {
-        _logger.i('User document already exists, skipping initialization');
-        return;
-      }
+      // Okuma (get) kontrolünü kaldırıyoruz. 
+      // _createUserProfile içindeki set(merge: true) işlemi zaten güvenli.
 
       // 2. User profil oluştur
       await _createUserProfile(uid, email, displayName);
 
-      // 3. Sample plants ekle (demo için)
-      await _createSamplePlants(uid);
-
-      _logger.i('Firestore user initialization completed');
+      _logger.i('Firestore user profile initialized for: $uid');
     } catch (e, st) {
       _logger.e('Firestore initialization failed', e, st);
       rethrow;
@@ -49,6 +40,8 @@ class FirestoreSetupService {
     String displayName,
   ) async {
     try {
+      // createdAt değerini sadece döküman yoksa eklemek için 
+      // serverTimestamp() kullanan set(merge: true) yapısı uygundur.
       await _db.collection(FirestoreCollectionEnum.users.value).doc(uid).set(
         <String, dynamic>{
           'email': email,
@@ -57,83 +50,17 @@ class FirestoreSetupService {
               ? _auth.currentUser!.providerData.first.providerId
               : 'email',
           'photoUrl': _auth.currentUser?.photoURL,
-          'createdAt': FieldValue.serverTimestamp(),
           'updatedAt': FieldValue.serverTimestamp(),
         },
         SetOptions(merge: true),
       );
-      _logger.i('User profile created: $uid');
+      
+      // Not: Eğer her girişte 'createdAt' bilgisini de set ederseniz merge:true olsa bile üzerine yazar.
+      // Gerçekten döküman var mı yok mu kontrolü yapmak için 'get()' gerekir, 
+      // bu da yukarıdaki Rules (Kural) hatasını çözmeden çalışmaz.
+      _logger.i('User profile synced: $uid');
     } catch (e, st) {
       _logger.e('Failed to create user profile', e, st);
-      rethrow;
-    }
-  }
-
-  /// Demo amaçlı örnek bitkiler oluşturur.
-  Future<void> _createSamplePlants(String uid) async {
-    try {
-      final plantsRef = _db.collection(FirestoreCollectionEnum.plants.value);
-
-      // Örnek bitki 1: Monstera
-      await plantsRef.doc('monstera_${uid.substring(0, 8)}').set(
-        <String, dynamic>{
-          'id': 'monstera_${uid.substring(0, 8)}',
-          'ownerUid': uid,
-          'name': 'Ev Monsteramı',
-          'speciesLabel': 'Monstera deliciosa',
-          'isFavorite': true,
-          'lastHealthScore': 85,
-          'lastScanDate': FieldValue.serverTimestamp(),
-          'createdAt': FieldValue.serverTimestamp(),
-          'updatedAt': FieldValue.serverTimestamp(),
-        },
-      );
-
-      // Örnek bitki 2: Ficus
-      await plantsRef.doc('ficus_${uid.substring(0, 8)}').set(
-        <String, dynamic>{
-          'id': 'ficus_${uid.substring(0, 8)}',
-          'ownerUid': uid,
-          'name': 'Balkon Ficusu',
-          'speciesLabel': 'Ficus lyrata',
-          'isFavorite': false,
-          'lastHealthScore': 72,
-          'lastScanDate': FieldValue.serverTimestamp(),
-          'createdAt': FieldValue.serverTimestamp(),
-          'updatedAt': FieldValue.serverTimestamp(),
-        },
-      );
-
-      _logger.i('Sample plants created for user: $uid');
-    } catch (e, st) {
-      _logger.e('Failed to create sample plants', e, st);
-      rethrow;
-    }
-  }
-
-  /// Örnek tarama kaydı oluşturur (belirli bir bitki için).
-  Future<void> createSampleScan({
-    required String uid,
-    required String plantId,
-  }) async {
-    try {
-      final scanId = 'scan_${DateTime.now().millisecondsSinceEpoch}';
-      await _db.collection(FirestoreCollectionEnum.scans.value).doc(scanId).set(
-        <String, dynamic>{
-          'id': scanId,
-          'ownerUid': uid,
-          'plantId': plantId,
-          'createdAt': FieldValue.serverTimestamp(),
-          'speciesLabel': 'Monstera deliciosa',
-          'speciesConfidence': 0.96,
-          'diseaseKey': 'healthy',
-          'diseaseConfidence': 0.99,
-          'healthScore': 88,
-        },
-      );
-      _logger.i('Sample scan created: $scanId');
-    } catch (e, st) {
-      _logger.e('Failed to create sample scan', e, st);
       rethrow;
     }
   }

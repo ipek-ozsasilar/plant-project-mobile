@@ -16,5 +16,6 @@ final class _Env {
 
   static const String useLocalTfliteRaw = 'true';
 
-  static const String googleWebClientId = '';
+  static const String googleWebClientId =
+      '817892606519-sb6s1hdd9btqffj5bqmajigju5k59q94.apps.googleusercontent.com';
 }

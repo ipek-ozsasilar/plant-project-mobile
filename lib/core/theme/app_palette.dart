@@ -5,13 +5,14 @@ import 'package:flutter/material.dart';
 extension AppPalette on BuildContext {
   bool get _isDark => Theme.of(this).brightness == Brightness.dark;
 
-  Color get palSurface => _isDark ? ColorName.surfaceDark : ColorName.surface;
+  // Koyu modda daha belirgin koyu yeşil zemin
+  Color get palSurface => _isDark ? const Color(0xFF0F1A16) : ColorName.surface;
 
-  Color get palSurfaceCard => _isDark ? ColorName.surfaceCardDark : ColorName.surfaceCard;
+  Color get palSurfaceCard => _isDark ? const Color(0xFF1D2E28) : ColorName.surfaceCard;
 
   Color get palOnSurface => _isDark ? ColorName.onSurfaceDark : ColorName.onSurface;
 
-  Color get palMuted => _isDark ? ColorName.onSurfaceDarkMuted : ColorName.onSurfaceMuted;
+  Color get palMuted => _isDark ? const Color(0xFF9DB2A9) : ColorName.onSurfaceMuted;
 
   Color get palPrimary => _isDark ? ColorName.themeDarkPrimary : ColorName.primary;
 
@@ -19,7 +20,7 @@ extension AppPalette on BuildContext {
 
   Color get palAccent => _isDark ? ColorName.themeDarkAccent : ColorName.accent;
 
-  Color get palOutline => _isDark ? ColorName.outlineDark : ColorName.outline;
+  Color get palOutline => _isDark ? const Color(0xFF3A4D45) : ColorName.outline;
 
   Color get palPrimarySoftBg =>
       _isDark ? ColorName.themeDarkPrimary.withValues(alpha: 0.14) : ColorName.primaryLight.withValues(alpha: 0.55);
@@ -27,9 +28,9 @@ extension AppPalette on BuildContext {
   List<Color> get palHeaderGradientColors {
     if (_isDark) {
       return <Color>[
-        ColorName.themeDarkHeader1,
-        ColorName.themeDarkHeader2,
-        ColorName.themeDarkHeader3,
+        const Color(0xFF25503E), // Daha canlı koyu yeşil başlangıç
+        const Color(0xFF18362B),
+        const Color(0xFF0F1A16), // Zemine bağlanan son
       ];
     }
     return <Color>[
@@ -42,8 +43,8 @@ extension AppPalette on BuildContext {
   List<Color> get palHeroCardGradient {
     if (_isDark) {
       return <Color>[
-        ColorName.themeDarkHeader2,
-        ColorName.themeDarkHeader3,
+        const Color(0xFF2D5A47),
+        const Color(0xFF1D3B2F),
       ];
     }
     return <Color>[ColorName.primary, ColorName.accent];
@@ -52,9 +53,9 @@ extension AppPalette on BuildContext {
   List<Color> get palAuthHeroGradient {
     if (_isDark) {
       return <Color>[
-        ColorName.themeDarkHeader1,
-        ColorName.themeDarkHeader2,
-        ColorName.themeDarkHeader3,
+        const Color(0xFF2D5A47),
+        const Color(0xFF25503E),
+        const Color(0xFF0F1A16),
       ];
     }
     return <Color>[ColorName.primary, ColorName.accent, ColorName.gradientEnd];

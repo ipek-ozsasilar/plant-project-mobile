@@ -50,7 +50,6 @@ class AuthNotifier extends Notifier<AuthState> {
   Future<void> saveSession({required String uid, required String email, required String name}) async {
     final AuthStorageService svc = sl<AuthStorageService>();
     await svc.saveUser(uid: uid, email: email, name: name);
-    state = AuthState(uid: uid, email: email, displayName: name);
     state = AuthState(uid: uid, email: email, displayName: name, isInitialized: true);
   }
 
@@ -140,13 +139,13 @@ class AuthNotifier extends Notifier<AuthState> {
     }
   }
 
-  /// Google ile giriş. İptal veya hata durumunda `false`.
-  Future<bool> signInWithGoogle() async {
+  /// Google ile giriş. Başarıda `null`, hata durumunda mesaj döner.
+  Future<String?> signInWithGoogle(AppLocalizations l10n) async {
     try {
       final GoogleSignInService g = sl<GoogleSignInService>();
       final UserCredential? cred = await g.signInWithFirebase();
       if (cred?.user == null) {
-        return false;
+        return null; // Kullanıcı iptal etti
       }
       final User u = cred!.user!;
       final String uid = u.uid;
@@ -164,10 +163,13 @@ class AuthNotifier extends Notifier<AuthState> {
         email: email,
         displayName: name,
       );
-      return true;
+      return null;
+    } on FirebaseAuthException catch (e) {
+      sl<AppLogger>().w('Google sign-in firebase error', e);
+      return e.message ?? l10n.errorGoogleSignIn;
     } catch (e, st) {
       sl<AppLogger>().e('Google sign-in', e, st);
-      return false;
+      return l10n.errorGoogleSignIn;
     }
   }
 

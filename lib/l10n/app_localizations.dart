@@ -188,6 +188,30 @@ abstract class AppLocalizations {
   /// **'Hesabınıza giriş yapın'**
   String get loginSubtitle;
 
+  /// No description provided for @forgotPasswordTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Şifremi unuttum'**
+  String get forgotPasswordTitle;
+
+  /// No description provided for @forgotPasswordSubtitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Şifre sıfırlama bağlantısı için e-posta adresinizi girin'**
+  String get forgotPasswordSubtitle;
+
+  /// No description provided for @forgotPasswordCta.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bağlantı gönder'**
+  String get forgotPasswordCta;
+
+  /// No description provided for @forgotPasswordSuccess.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sıfırlama bağlantısı e-postanıza gönderildi'**
+  String get forgotPasswordSuccess;
+
   /// No description provided for @registerTitle.
   ///
   /// In tr, this message translates to:
@@ -647,7 +671,7 @@ abstract class AppLocalizations {
   /// No description provided for @guidesHeadline.
   ///
   /// In tr, this message translates to:
-  /// **'Bitki bakım rehberi'**
+  /// **'Bitki Bakım Rehberi'**
   String get guidesHeadline;
 
   /// No description provided for @guidesSubtitle.

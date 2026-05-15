@@ -8,13 +8,21 @@ class GoogleSignInService {
   GoogleSignInService({required AppLogger logger}) : _logger = logger;
 
   final AppLogger _logger;
+  GoogleSignIn? _googleSignIn;
 
   GoogleSignIn _client() {
+    if (_googleSignIn != null) return _googleSignIn!;
+
     final String webId = Env.googleWebClientId.trim();
-    return GoogleSignIn(
+    if (webId.isEmpty) {
+      _logger.w('Env.googleWebClientId is empty. This will cause null idToken on Android.');
+    }
+    
+    _googleSignIn = GoogleSignIn(
       scopes: <String>['email', 'profile'],
       serverClientId: webId.isEmpty ? null : webId,
     );
+    return _googleSignIn!;
   }
 
   /// Kullanıcı iptal ederse `null` döner.
@@ -27,12 +35,15 @@ class GoogleSignInService {
       }
       final GoogleSignInAuthentication auth = await account.authentication;
       if (auth.idToken == null || auth.idToken!.isEmpty) {
-        _logger.e(
-          'Google idToken boş — Android için Firebase projesinde SHA-1 ve Google Sign-In yapılandırmasını kontrol edin.',
-        );
+        final String errorMsg = 
+            'Google idToken alınamadı! Olası nedenler:\n'
+            '1- Firebase Console\'da SHA-1 parmak izi ekli değil.\n'
+            '2- Google Cloud Console\'daki Web Client ID, Env.googleWebClientId ile eşleşmiyor.\n'
+            '3- Google Sign-In, Firebase Auth panelinde etkinleştirilmemiş.';
+        _logger.e(errorMsg);
         throw FirebaseAuthException(
           code: 'invalid-credential',
-          message: 'Google kimlik doğrulama tokenı alınamadı.',
+          message: errorMsg,
         );
       }
       final OAuthCredential credential = GoogleAuthProvider.credential(

@@ -65,19 +65,19 @@ class _LoginViewState extends ConsumerState<LoginView> with ScaffoldMessageMixin
 
   Future<void> _onGoogleSignIn() async {
     setState(() => _googleLoading = true);
-    final bool ok = await ref.read(authProvider.notifier).signInWithGoogle();
+    final String? error = await ref.read(authProvider.notifier).signInWithGoogle(context.l10n);
     if (!mounted) {
       return;
     }
     setState(() => _googleLoading = false);
-    if (ok) {
-      context.go(AppPaths.home);
-    } else {
+    if (error != null) {
       showAppSnackBar(
         context,
-        message: context.l10n.errorGoogleSignIn,
+        message: error,
         isError: true,
       );
+    } else if (ref.read(authProvider).isAuthenticated) {
+      context.go(AppPaths.home);
     }
   }
 
@@ -166,6 +166,19 @@ class _LoginViewState extends ConsumerState<LoginView> with ScaffoldMessageMixin
                                 obscureText: true,
                                 validator: (String? v) =>
                                     (v == null || v.isEmpty) ? l10n.validationRequired : null,
+                              ),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: TextButton(
+                                  onPressed: () => context.push(AppPaths.forgotPassword),
+                                  child: Text(
+                                    l10n.forgotPasswordTitle,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      color: context.palPrimary,
+                                    ),
+                                  ),
+                                ),
                               ),
                               SizedBox(height: WidgetSizesEnum.cardRadius.value * 1.45),
                               AppPrimaryButton(

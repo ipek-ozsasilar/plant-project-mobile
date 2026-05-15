@@ -59,6 +59,20 @@ class AppLocalizationsTr extends AppLocalizations {
   String get loginSubtitle => 'Hesabınıza giriş yapın';
 
   @override
+  String get forgotPasswordTitle => 'Şifremi unuttum';
+
+  @override
+  String get forgotPasswordSubtitle =>
+      'Şifre sıfırlama bağlantısı için e-posta adresinizi girin';
+
+  @override
+  String get forgotPasswordCta => 'Bağlantı gönder';
+
+  @override
+  String get forgotPasswordSuccess =>
+      'Sıfırlama bağlantısı e-postanıza gönderildi';
+
+  @override
   String get registerTitle => 'Kayıt ol';
 
   @override
@@ -296,7 +310,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get guideTitle => 'Rehber';
 
   @override
-  String get guidesHeadline => 'Bitki bakım rehberi';
+  String get guidesHeadline => 'Bitki Bakım Rehberi';
 
   @override
   String get guidesSubtitle =>

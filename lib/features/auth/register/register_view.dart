@@ -68,19 +68,19 @@ class _RegisterViewState extends ConsumerState<RegisterView> with ScaffoldMessag
 
   Future<void> _onGoogleSignIn() async {
     setState(() => _googleLoading = true);
-    final bool ok = await ref.read(authProvider.notifier).signInWithGoogle();
+    final String? error = await ref.read(authProvider.notifier).signInWithGoogle(context.l10n);
     if (!mounted) {
       return;
     }
     setState(() => _googleLoading = false);
-    if (ok) {
-      context.go(AppPaths.home);
-    } else {
+    if (error != null) {
       showAppSnackBar(
         context,
-        message: context.l10n.errorGoogleSignIn,
+        message: error,
         isError: true,
       );
+    } else if (ref.read(authProvider).isAuthenticated) {
+      context.go(AppPaths.home);
     }
   }
 

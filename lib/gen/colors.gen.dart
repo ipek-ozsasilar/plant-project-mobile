@@ -35,8 +35,8 @@ class ColorName {
   /// Color: #FAFAFA
   static const Color onSurfaceDark = Color(0xFFFAFAFA);
 
-  /// Color: #7d9d94
-  static const Color onSurfaceDarkMuted = Color(0xFF7d9d94);
+  /// Color: #A1A1AA
+  static const Color onSurfaceDarkMuted = Color(0xFFA1A1AA);
 
   /// Color: #5C7068
   static const Color onSurfaceMuted = Color(0xFF5C7068);
@@ -44,8 +44,8 @@ class ColorName {
   /// Color: #F1C6D6
   static const Color outline = Color(0xFFF1C6D6);
 
-  /// Color: #2d5f52
-  static const Color outlineDark = Color(0xFF2d5f52);
+  /// Color: #3F3F46
+  static const Color outlineDark = Color(0xFF3F3F46);
 
   /// Color: #F7A8C3
   static const Color primary = Color(0xFFF7A8C3);
@@ -65,29 +65,29 @@ class ColorName {
   /// Color: #FFFFFF
   static const Color surfaceCard = Color(0xFFFFFFFF);
 
-  /// Color: #1a1f1b
-  static const Color surfaceCardDark = Color(0xFF1a1f1b);
+  /// Color: #18181B
+  static const Color surfaceCardDark = Color(0xFF18181B);
 
-  /// Color: #0f140d
-  static const Color surfaceDark = Color(0xFF0f140d);
+  /// Color: #09090B
+  static const Color surfaceDark = Color(0xFF09090B);
 
-  /// Color: #10b981
-  static const Color themeDarkAccent = Color(0xFF10b981);
+  /// Color: #22D3EE
+  static const Color themeDarkAccent = Color(0xFF22D3EE);
 
-  /// Color: #213027
-  static const Color themeDarkHeader1 = Color(0xFF213027);
+  /// Color: #27272A
+  static const Color themeDarkHeader1 = Color(0xFF27272A);
 
-  /// Color: #3d4f45
-  static const Color themeDarkHeader2 = Color(0xFF3d4f45);
+  /// Color: #3F3F46
+  static const Color themeDarkHeader2 = Color(0xFF3F3F46);
 
-  /// Color: #5a6d63
-  static const Color themeDarkHeader3 = Color(0xFF5a6d63);
+  /// Color: #52525B
+  static const Color themeDarkHeader3 = Color(0xFF52525B);
 
-  /// Color: #0f140d
-  static const Color themeDarkOnPrimary = Color(0xFF0f140d);
+  /// Color: #09090B
+  static const Color themeDarkOnPrimary = Color(0xFF09090B);
 
-  /// Color: #52e08c
-  static const Color themeDarkPrimary = Color(0xFF52e08c);
+  /// Color: #E4E4E7
+  static const Color themeDarkPrimary = Color(0xFFE4E4E7);
 
   /// Color: #E9C46A
   static const Color warning = Color(0xFFE9C46A);
