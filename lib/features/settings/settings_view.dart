@@ -14,33 +14,62 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 enum _LocaleSegment { system, turkish, english }
 
 /// Tema ve dil.
-class SettingsView extends ConsumerWidget {
+class SettingsView extends ConsumerStatefulWidget {
   const SettingsView({super.key});
 
   static Set<_LocaleSegment> _selectedLocale(AppLocaleMode mode) {
     return switch (mode) {
       AppLocaleUnset() => <_LocaleSegment>{_LocaleSegment.turkish},
       AppLocaleFollowSystem() => <_LocaleSegment>{_LocaleSegment.system},
-      AppLocaleFixed(:final Locale locale) => locale.languageCode == 'en'
-          ? <_LocaleSegment>{_LocaleSegment.english}
-          : <_LocaleSegment>{_LocaleSegment.turkish},
+      AppLocaleFixed(:final Locale locale) =>
+        locale.languageCode == 'en'
+            ? <_LocaleSegment>{_LocaleSegment.english}
+            : <_LocaleSegment>{_LocaleSegment.turkish},
     };
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SettingsView> createState() => _SettingsViewState();
+}
+
+class _SettingsViewState extends ConsumerState<SettingsView> {
+  bool? _isNotificationsEnabled;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadNotificationStatus();
+  }
+
+  Future<void> _loadNotificationStatus() async {
+    final bool status = await sl<NotificationService>().isEnabled();
+    if (mounted) setState(() => _isNotificationsEnabled = status);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final ThemeMode mode = ref.watch(themeModeProvider);
     final AppLocaleMode localeMode = ref.watch(appLocaleProvider);
-    final AppLocaleNotifier localeNotifier = ref.read(appLocaleProvider.notifier);
+    final AppLocaleNotifier localeNotifier = ref.read(
+      appLocaleProvider.notifier,
+    );
     final NotificationService notifications = sl<NotificationService>();
     final TextTheme tt = Theme.of(context).textTheme;
     final double pad = WidgetSizesEnum.cardRadius.value * 1.15;
 
     return Scaffold(
       backgroundColor: context.palSurface,
-      appBar: AppBar(title: Text(context.l10n.settingsTitle)),
+      appBar: AppBar(
+        title: Text(context.l10n.settingsTitle),
+        leading: const BackButton(),
+      ),
       body: ListView(
-        padding: EdgeInsets.fromLTRB(pad, pad, pad, WidgetSizesEnum.bottomNavHeight.value),
+        padding: EdgeInsets.fromLTRB(
+          pad,
+          pad,
+          pad,
+          WidgetSizesEnum.bottomNavHeight.value,
+        ),
         children: <Widget>[
           Text(
             context.l10n.settingsHeadline,
@@ -60,47 +89,46 @@ class SettingsView extends ConsumerWidget {
             ),
           ),
           SizedBox(height: WidgetSizesEnum.cardRadius.value * 1.25),
-          FutureBuilder<bool>(
-            future: notifications.isEnabled(),
-            builder: (BuildContext context, AsyncSnapshot<bool> snap) {
-              final bool enabled = snap.data ?? false;
-              final String wateringTitle = context.l10n.notificationWateringTitle;
-              final String wateringBody = context.l10n.notificationWateringBody;
-              return SoftElevationCard(
-                onTap: null,
-                padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 0.65),
-                child: SwitchListTile(
-                  contentPadding: EdgeInsets.symmetric(
-                    horizontal: WidgetSizesEnum.cardRadius.value * 0.45,
-                    vertical: WidgetSizesEnum.divider.value * 2,
-                  ),
-                  value: enabled,
-                  onChanged: (bool v) async {
-                    await notifications.setEnabled(v);
-                    if (v) {
-                      await notifications.requestPermissions();
-                      await notifications.scheduleDailyWatering(
-                        title: wateringTitle,
-                        body: wateringBody,
-                      );
-                    } else {
-                      await notifications.cancelAll();
-                    }
-                    if (context.mounted) {
-                      (context as Element).markNeedsBuild();
-                    }
-                  },
-                  title: Text(
-                    context.l10n.notificationsLabel,
-                    style: TextStyle(fontWeight: FontWeight.w900, color: context.palOnSurface),
-                  ),
-                  subtitle: Text(
-                    context.l10n.notificationsSubtitle,
-                    style: TextStyle(color: context.palMuted, height: 1.3),
-                  ),
+          SoftElevationCard(
+            onTap: null,
+            padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 0.65),
+            child: SwitchListTile(
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: WidgetSizesEnum.cardRadius.value * 0.45,
+                vertical: WidgetSizesEnum.divider.value * 2,
+              ),
+              value: _isNotificationsEnabled ?? false,
+              onChanged: (bool v) async {
+                setState(() => _isNotificationsEnabled = v);
+
+                final String wateringTitle =
+                    context.l10n.notificationWateringTitle;
+                final String wateringBody =
+                    context.l10n.notificationWateringBody;
+
+                await notifications.setEnabled(v);
+                if (v) {
+                  await notifications.requestPermissions();
+                  await notifications.scheduleDailyWatering(
+                    title: wateringTitle,
+                    body: wateringBody,
+                  );
+                } else {
+                  await notifications.cancelAll();
+                }
+              },
+              title: Text(
+                context.l10n.notificationsLabel,
+                style: TextStyle(
+                  fontWeight: FontWeight.w900,
+                  color: context.palOnSurface,
                 ),
-              );
-            },
+              ),
+              subtitle: Text(
+                context.l10n.notificationsSubtitle,
+                style: TextStyle(color: context.palMuted, height: 1.3),
+              ),
+            ),
           ),
           SizedBox(height: WidgetSizesEnum.cardRadius.value * 1.35),
           Text(
@@ -118,19 +146,19 @@ class SettingsView extends ConsumerWidget {
               segments: <ButtonSegment<_LocaleSegment>>[
                 ButtonSegment<_LocaleSegment>(
                   value: _LocaleSegment.system,
-                  label: Text(context.l10n.languageSystem),
+                  label: FittedBox(child: Text(context.l10n.languageSystem)),
                   icon: const Icon(Icons.language),
                 ),
                 ButtonSegment<_LocaleSegment>(
                   value: _LocaleSegment.turkish,
-                  label: Text(context.l10n.languageTurkish),
+                  label: FittedBox(child: Text(context.l10n.languageTurkish)),
                 ),
                 ButtonSegment<_LocaleSegment>(
                   value: _LocaleSegment.english,
-                  label: Text(context.l10n.languageEnglish),
+                  label: FittedBox(child: Text(context.l10n.languageEnglish)),
                 ),
               ],
-              selected: _selectedLocale(localeMode),
+              selected: SettingsView._selectedLocale(localeMode),
               onSelectionChanged: (Set<_LocaleSegment> next) {
                 final _LocaleSegment v = next.first;
                 if (v == _LocaleSegment.system) {
@@ -159,17 +187,17 @@ class SettingsView extends ConsumerWidget {
               segments: <ButtonSegment<ThemeMode>>[
                 ButtonSegment<ThemeMode>(
                   value: ThemeMode.system,
-                  label: Text(context.l10n.themeSystem),
+                  label: FittedBox(child: Text(context.l10n.themeSystem)),
                   icon: const Icon(Icons.brightness_auto),
                 ),
                 ButtonSegment<ThemeMode>(
                   value: ThemeMode.light,
-                  label: Text(context.l10n.themeLight),
+                  label: FittedBox(child: Text(context.l10n.themeLight)),
                   icon: const Icon(Icons.light_mode_outlined),
                 ),
                 ButtonSegment<ThemeMode>(
                   value: ThemeMode.dark,
-                  label: Text(context.l10n.themeDark),
+                  label: FittedBox(child: Text(context.l10n.themeDark)),
                   icon: const Icon(Icons.dark_mode_outlined),
                 ),
               ],

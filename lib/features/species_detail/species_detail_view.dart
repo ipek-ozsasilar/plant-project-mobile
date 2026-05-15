@@ -25,19 +25,33 @@ class SpeciesDetailView extends StatelessWidget {
     final TextTheme tt = Theme.of(context).textTheme;
 
     final List<_RiskDisease> risks = <_RiskDisease>[
-      _RiskDisease(key: 'powdery_mildew', label: context.l10n.inferenceDiseasePowderyMildew),
+      _RiskDisease(
+        key: 'powdery_mildew',
+        label: context.l10n.inferenceDiseasePowderyMildew,
+      ),
       _RiskDisease(key: 'blight', label: context.l10n.inferenceDiseaseBlight),
       _RiskDisease(key: 'rust', label: context.l10n.inferenceDiseaseRust),
     ];
 
     return Scaffold(
       backgroundColor: context.palSurface,
-      appBar: AppBar(title: Text(context.l10n.speciesDetailTitle)),
+      appBar: AppBar(
+        title: Text(context.l10n.speciesDetailTitle),
+        leading: const BackButton(),
+      ),
       body: ListView(
-        padding: EdgeInsets.fromLTRB(pad, pad, pad, WidgetSizesEnum.bottomNavHeight.value),
+        padding: EdgeInsets.fromLTRB(
+          pad,
+          pad,
+          pad,
+          WidgetSizesEnum.bottomNavHeight.value,
+        ),
         children: <Widget>[
           Text(
-            speciesClassDisplayForRaw(context, Uri.decodeComponent(speciesLabel)),
+            speciesClassDisplayForRaw(
+              context,
+              Uri.decodeComponent(speciesLabel),
+            ),
             style: tt.headlineSmall?.copyWith(
               fontWeight: FontWeight.w900,
               color: context.palOnSurface,
@@ -53,9 +67,18 @@ class SpeciesDetailView extends StatelessWidget {
           _CareCard(
             title: context.l10n.speciesDetailCareTitle,
             items: <_CareItem>[
-              _CareItem(label: context.l10n.speciesDetailWateringLabel, value: context.l10n.speciesDetailWateringValue),
-              _CareItem(label: context.l10n.speciesDetailSunLabel, value: context.l10n.speciesDetailSunValue),
-              _CareItem(label: context.l10n.speciesDetailSoilLabel, value: context.l10n.speciesDetailSoilValue),
+              _CareItem(
+                label: context.l10n.speciesDetailWateringLabel,
+                value: context.l10n.speciesDetailWateringValue,
+              ),
+              _CareItem(
+                label: context.l10n.speciesDetailSunLabel,
+                value: context.l10n.speciesDetailSunValue,
+              ),
+              _CareItem(
+                label: context.l10n.speciesDetailSoilLabel,
+                value: context.l10n.speciesDetailSoilValue,
+              ),
             ],
           ),
           SizedBox(height: WidgetSizesEnum.cardRadius.value),
@@ -75,12 +98,16 @@ class SpeciesDetailView extends StatelessWidget {
                 SizedBox(height: WidgetSizesEnum.divider.value * 10),
                 ...risks.map((_RiskDisease d) {
                   return Padding(
-                    padding: EdgeInsets.only(bottom: WidgetSizesEnum.divider.value * 10),
+                    padding: EdgeInsets.only(
+                      bottom: WidgetSizesEnum.divider.value * 10,
+                    ),
                     child: SoftElevationCard(
                       onTap: () => context.push(
                         '${AppPaths.diseaseDetail}/${d.key}?confidence=0',
                       ),
-                      padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 0.85),
+                      padding: EdgeInsets.all(
+                        WidgetSizesEnum.cardRadius.value * 0.85,
+                      ),
                       child: Row(
                         children: <Widget>[
                           Container(
@@ -88,11 +115,18 @@ class SpeciesDetailView extends StatelessWidget {
                             height: WidgetSizesEnum.cardRadius.value * 1.35,
                             decoration: BoxDecoration(
                               color: context.palAccent.withValues(alpha: 0.14),
-                              borderRadius: BorderRadius.circular(WidgetSizesEnum.chipRadius.value),
+                              borderRadius: BorderRadius.circular(
+                                WidgetSizesEnum.chipRadius.value,
+                              ),
                             ),
-                            child: Icon(Icons.warning_rounded, color: context.palAccent),
+                            child: Icon(
+                              Icons.warning_rounded,
+                              color: context.palAccent,
+                            ),
                           ),
-                          SizedBox(width: WidgetSizesEnum.cardRadius.value * 0.75),
+                          SizedBox(
+                            width: WidgetSizesEnum.cardRadius.value * 0.75,
+                          ),
                           Expanded(
                             child: Text(
                               d.label,
@@ -102,7 +136,10 @@ class SpeciesDetailView extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Icon(Icons.chevron_right_rounded, color: context.palMuted),
+                          Icon(
+                            Icons.chevron_right_rounded,
+                            color: context.palMuted,
+                          ),
                         ],
                       ),
                     ),
@@ -154,10 +191,15 @@ class _CareCard extends StatelessWidget {
           SizedBox(height: WidgetSizesEnum.cardRadius.value * 0.85),
           ...items.map((_CareItem it) {
             return Padding(
-              padding: EdgeInsets.only(bottom: WidgetSizesEnum.divider.value * 10),
+              padding: EdgeInsets.only(
+                bottom: WidgetSizesEnum.divider.value * 10,
+              ),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Expanded(
+                  SizedBox(
+                    width:
+                        100, // Etiket için sabit genişlik vererek kaymayı engelliyoruz
                     child: Text(
                       it.label,
                       style: tt.bodyMedium?.copyWith(
@@ -166,11 +208,15 @@ class _CareCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Text(
-                    it.value,
-                    style: tt.bodyMedium?.copyWith(
-                      color: context.palOnSurface,
-                      fontWeight: FontWeight.w900,
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      it.value,
+                      textAlign: TextAlign.right,
+                      style: tt.bodyMedium?.copyWith(
+                        color: context.palOnSurface,
+                        fontWeight: FontWeight.w900,
+                      ),
                     ),
                   ),
                 ],
@@ -182,4 +228,3 @@ class _CareCard extends StatelessWidget {
     );
   }
 }
-

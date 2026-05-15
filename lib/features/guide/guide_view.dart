@@ -257,6 +257,7 @@ class _SafetyCheckCard extends StatelessWidget {
     final TextTheme tt = Theme.of(context).textTheme;
     return SoftElevationCard(
       onTap: onTap,
+      backgroundColor: context.palPrimarySoftBg,
       padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 1.05),
       child: Row(
         children: <Widget>[
@@ -270,7 +271,7 @@ class _SafetyCheckCard extends StatelessWidget {
                     vertical: WidgetSizesEnum.divider.value * 8,
                   ),
                   decoration: BoxDecoration(
-                    color: context.palPrimarySoftBg,
+                    color: context.palSurfaceCard,
                     borderRadius: BorderRadius.circular(
                       WidgetSizesEnum.chipRadius.value,
                     ),
@@ -310,7 +311,7 @@ class _SafetyCheckCard extends StatelessWidget {
                     vertical: WidgetSizesEnum.divider.value * 10,
                   ),
                   decoration: BoxDecoration(
-                    color: context.palPrimarySoftBg,
+                    color: context.palSurfaceCard,
                     borderRadius: BorderRadius.circular(
                       WidgetSizesEnum.chipRadius.value,
                     ),
@@ -359,6 +360,7 @@ class _InfoBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SoftElevationCard(
+      backgroundColor: context.palPrimarySoftBg,
       padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 0.95),
       child: Row(
         children: <Widget>[

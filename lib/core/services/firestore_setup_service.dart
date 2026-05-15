@@ -20,7 +20,7 @@ class FirestoreSetupService {
     try {
       _logger.i('Firestore user initialization starting for uid: $uid');
 
-      // Okuma (get) kontrolünü kaldırıyoruz. 
+      // Okuma (get) kontrolünü kaldırıyoruz.
       // _createUserProfile içindeki set(merge: true) işlemi zaten güvenli.
 
       // 2. User profil oluştur
@@ -40,23 +40,23 @@ class FirestoreSetupService {
     String displayName,
   ) async {
     try {
-      // createdAt değerini sadece döküman yoksa eklemek için 
+      // createdAt değerini sadece döküman yoksa eklemek için
       // serverTimestamp() kullanan set(merge: true) yapısı uygundur.
-      await _db.collection(FirestoreCollectionEnum.users.value).doc(uid).set(
-        <String, dynamic>{
-          'email': email,
-          'displayName': displayName,
-          'authProvider': _auth.currentUser?.providerData.isNotEmpty == true
-              ? _auth.currentUser!.providerData.first.providerId
-              : 'email',
-          'photoUrl': _auth.currentUser?.photoURL,
-          'updatedAt': FieldValue.serverTimestamp(),
-        },
-        SetOptions(merge: true),
-      );
-      
+      await _db
+          .collection(FirestoreCollectionEnum.users.value)
+          .doc(uid)
+          .set(<String, dynamic>{
+            'email': email,
+            'displayName': displayName,
+            'authProvider': _auth.currentUser?.providerData.isNotEmpty == true
+                ? _auth.currentUser!.providerData.first.providerId
+                : 'email',
+            'photoUrl': _auth.currentUser?.photoURL,
+            'updatedAt': FieldValue.serverTimestamp(),
+          }, SetOptions(merge: true));
+
       // Not: Eğer her girişte 'createdAt' bilgisini de set ederseniz merge:true olsa bile üzerine yazar.
-      // Gerçekten döküman var mı yok mu kontrolü yapmak için 'get()' gerekir, 
+      // Gerçekten döküman var mı yok mu kontrolü yapmak için 'get()' gerekir,
       // bu da yukarıdaki Rules (Kural) hatasını çözmeden çalışmaz.
       _logger.i('User profile synced: $uid');
     } catch (e, st) {
@@ -70,15 +70,6 @@ class FirestoreSetupService {
     try {
       _logger.w('Deleting all data for user: $uid');
 
-      // Scans sil
-      final scans = await _db
-          .collection(FirestoreCollectionEnum.scans.value)
-          .where('ownerUid', isEqualTo: uid)
-          .get();
-      for (final doc in scans.docs) {
-        await doc.reference.delete();
-      }
-
       // Plants sil
       final plants = await _db
           .collection(FirestoreCollectionEnum.plants.value)
@@ -89,7 +80,10 @@ class FirestoreSetupService {
       }
 
       // User sil
-      await _db.collection(FirestoreCollectionEnum.users.value).doc(uid).delete();
+      await _db
+          .collection(FirestoreCollectionEnum.users.value)
+          .doc(uid)
+          .delete();
 
       _logger.i('All user data deleted');
     } catch (e, st) {

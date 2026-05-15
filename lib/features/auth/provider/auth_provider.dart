@@ -11,7 +11,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Oturum durumu.
 class AuthState {
-  const AuthState({this.uid, this.email, this.displayName, this.isInitialized = false});
+  const AuthState({
+    this.uid,
+    this.email,
+    this.displayName,
+    this.isInitialized = false,
+  });
 
   final String? uid;
   final String? email;
@@ -34,8 +39,14 @@ class AuthNotifier extends Notifier<AuthState> {
       final String uid = fb.uid;
       final String email = fb.email ?? '';
       final String name =
-          fb.displayName ?? (email.contains('@') ? email.split('@').first : email);
-      state = AuthState(uid: uid, email: email, displayName: name, isInitialized: true);
+          fb.displayName ??
+          (email.contains('@') ? email.split('@').first : email);
+      state = AuthState(
+        uid: uid,
+        email: email,
+        displayName: name,
+        isInitialized: true,
+      );
       final AuthStorageService svc = sl<AuthStorageService>();
       await svc.saveUser(uid: uid, email: email, name: name);
       return;
@@ -44,13 +55,27 @@ class AuthNotifier extends Notifier<AuthState> {
     final String? savedUid = await svc.getUid();
     final String? savedEmail = await svc.getEmail();
     final String? savedName = await svc.getName();
-    state = AuthState(uid: savedUid, email: savedEmail, displayName: savedName, isInitialized: true);
+    state = AuthState(
+      uid: savedUid,
+      email: savedEmail,
+      displayName: savedName,
+      isInitialized: true,
+    );
   }
 
-  Future<void> saveSession({required String uid, required String email, required String name}) async {
+  Future<void> saveSession({
+    required String uid,
+    required String email,
+    required String name,
+  }) async {
     final AuthStorageService svc = sl<AuthStorageService>();
     await svc.saveUser(uid: uid, email: email, name: name);
-    state = AuthState(uid: uid, email: email, displayName: name, isInitialized: true);
+    state = AuthState(
+      uid: uid,
+      email: email,
+      displayName: name,
+      isInitialized: true,
+    );
   }
 
   /// E-posta/şifre girişi. Başarıda `null`, aksi halde gösterilecek mesaj.
@@ -60,10 +85,8 @@ class AuthNotifier extends Notifier<AuthState> {
     AppLocalizations l10n,
   ) async {
     try {
-      final UserCredential cred = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      final UserCredential cred = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
       final User? u = cred.user;
       if (u == null) {
         return l10n.errorAuth;
@@ -101,11 +124,8 @@ class AuthNotifier extends Notifier<AuthState> {
     required AppLocalizations l10n,
   }) async {
     try {
-      final UserCredential cred =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      final UserCredential cred = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
       final User? u0 = cred.user;
       if (u0 == null) {
         return l10n.errorAuth;
@@ -151,7 +171,8 @@ class AuthNotifier extends Notifier<AuthState> {
       final String uid = u.uid;
       final String email = u.email ?? '';
       final String name =
-          u.displayName ?? (email.contains('@') ? email.split('@').first : email);
+          u.displayName ??
+          (email.contains('@') ? email.split('@').first : email);
       await saveSession(uid: uid, email: email, name: name);
       await sl<UserProfileFirestoreService>().upsertFromFirebaseUser(
         u,
@@ -170,6 +191,23 @@ class AuthNotifier extends Notifier<AuthState> {
     } catch (e, st) {
       sl<AppLogger>().e('Google sign-in', e, st);
       return l10n.errorGoogleSignIn;
+    }
+  }
+
+  /// Şifre sıfırlama e-postası gönderir.
+  Future<String?> sendPasswordResetEmail(
+    String email,
+    AppLocalizations l10n,
+  ) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      return null;
+    } on FirebaseAuthException catch (e) {
+      sl<AppLogger>().w('sendPasswordResetEmail', e);
+      return firebaseAuthCodeToMessage(e.code, l10n);
+    } catch (e, st) {
+      sl<AppLogger>().e('sendPasswordResetEmail', e, st);
+      return l10n.errorGeneric;
     }
   }
 

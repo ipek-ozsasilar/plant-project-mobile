@@ -91,6 +91,13 @@ flutter:
   assets:
     - assets/colors/
     - assets/ml/
+    - assets/fonts/
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Regular.ttf
+        - asset: assets/fonts/Roboto-Bold.ttf
+          weight: 700
 
 flutter_gen:
   output: lib/gen/

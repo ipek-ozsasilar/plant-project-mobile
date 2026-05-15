@@ -4,6 +4,7 @@ import 'package:bitirme_mobile/core/mixins/scaffold_message_mixin.dart';
 import 'package:bitirme_mobile/core/theme/app_palette.dart';
 import 'package:bitirme_mobile/core/widgets/button/app_primary_button.dart';
 import 'package:bitirme_mobile/core/widgets/input/app_text_field.dart';
+import 'package:bitirme_mobile/features/auth/provider/auth_provider.dart';
 import 'package:bitirme_mobile/features/auth/sub_view/auth_gradient_hero.dart';
 import 'package:bitirme_mobile/l10n/app_localizations.dart';
 import 'package:bitirme_mobile/core/navigation/app_paths.dart';
@@ -36,14 +37,19 @@ class _ForgotPasswordViewState extends ConsumerState<ForgotPasswordView>
     if (!(_formKey.currentState?.validate() ?? false)) return;
     setState(() => _loading = true);
 
-    // Burada normalde authProvider üzerinden şifre sıfırlama maili tetiklenir.
-    await Future.delayed(const Duration(seconds: 1));
+    final String? error = await ref
+        .read(authProvider.notifier)
+        .sendPasswordResetEmail(_email.text.trim(), context.l10n);
 
     if (!mounted) return;
     setState(() => _loading = false);
 
-    showAppSnackBar(context, message: context.l10n.forgotPasswordSuccess);
-    context.pop();
+    if (error != null) {
+      showAppSnackBar(context, message: error, isError: true);
+    } else {
+      showAppSnackBar(context, message: context.l10n.forgotPasswordSuccess);
+      context.pop();
+    }
   }
 
   @override
@@ -77,6 +83,16 @@ class _ForgotPasswordViewState extends ConsumerState<ForgotPasswordView>
                     borderRadius: BorderRadius.vertical(
                       top: Radius.circular(topRadius),
                     ),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.09),
+                        blurRadius: WidgetSizesEnum.cardShadowBlur.value,
+                        offset: Offset(
+                          0,
+                          -WidgetSizesEnum.cardShadowOffsetY.value * 0.35,
+                        ),
+                      ),
+                    ],
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.vertical(
@@ -119,7 +135,9 @@ class _ForgotPasswordViewState extends ConsumerState<ForgotPasswordView>
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 16),
+                              SizedBox(
+                                height: WidgetSizesEnum.divider.value * 6,
+                              ),
                               Text(
                                 l10n.forgotPasswordSubtitle,
                                 style: tt.bodyLarge?.copyWith(
@@ -127,7 +145,9 @@ class _ForgotPasswordViewState extends ConsumerState<ForgotPasswordView>
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              const SizedBox(height: 32),
+                              SizedBox(
+                                height: WidgetSizesEnum.cardRadius.value * 1.35,
+                              ),
                               AppTextField(
                                 label: l10n.emailLabel,
                                 controller: _email,
@@ -137,7 +157,9 @@ class _ForgotPasswordViewState extends ConsumerState<ForgotPasswordView>
                                     ? l10n.validationRequired
                                     : null,
                               ),
-                              const SizedBox(height: 32),
+                              SizedBox(
+                                height: WidgetSizesEnum.cardRadius.value * 1.45,
+                              ),
                               AppPrimaryButton(
                                 label: l10n.forgotPasswordCta,
                                 isLoading: _loading,

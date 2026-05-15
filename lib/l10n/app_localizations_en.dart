@@ -271,7 +271,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get scanSaveToPlantTitle => 'Save to which plant?';
 
   @override
-  String get scanSaveToPlantCta => 'Save to plant';
+  String get scanSaveToPlantCta => 'Save to my home plant';
 
   @override
   String get scanSavedToPlantSuccess => 'Saved to plant tracking.';

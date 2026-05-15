@@ -599,7 +599,7 @@ abstract class AppLocalizations {
   /// No description provided for @scanSaveToPlantCta.
   ///
   /// In tr, this message translates to:
-  /// **'Bitkiye kaydet'**
+  /// **'Evimdeki bitkiye kaydet'**
   String get scanSaveToPlantCta;
 
   /// No description provided for @scanSavedToPlantSuccess.
@@ -677,7 +677,7 @@ abstract class AppLocalizations {
   /// No description provided for @guidesSubtitle.
   ///
   /// In tr, this message translates to:
-  /// **'Daha doğru sonuçlar için çekim ipuçları, çoklu bitki kullanımı ve hastalık taraması önerileri.'**
+  /// **'Taramalarınızı \'Geçmiş\' (hızlı tanı) veya \'Evimdeki Bitkiler\' (takip) olarak kaydedebilirsiniz. \'Geçmiş\' her taramayı tarih sırasına göre saklarken; \'Evimdeki Bitkiler\' saksı bazlı sağlık gelişimini izlemenizi ve hatırlatıcılar almanızı sağlar.'**
   String get guidesSubtitle;
 
   /// No description provided for @guidesEssentialsBadge.
@@ -713,7 +713,7 @@ abstract class AppLocalizations {
   /// No description provided for @guidesFooterInfo.
   ///
   /// In tr, this message translates to:
-  /// **'İpucu: Işık, netlik ve tek bitki kadrajı güven skorunu en çok etkileyen üç faktördür.'**
+  /// **'Önemli: \'Evimdeki Bitkiye Kaydet\' seçeneğini seçerseniz, bitkinizin sağlık durumu kötüleştiğinde size otomatik hatırlatıcılar gönderilir.'**
   String get guidesFooterInfo;
 
   /// No description provided for @guideSectionPhoto.
@@ -749,7 +749,7 @@ abstract class AppLocalizations {
   /// No description provided for @guideDiseaseTips.
   ///
   /// In tr, this message translates to:
-  /// **'Belirtiler yaprak üst yüzeyinde görünür olmalı; bulanık görüntüler güveni düşürür.'**
+  /// **'Hastalık tespit edildiğinde \'Evimdeki Bitkiye Kaydet\' diyerek 1, 3 veya 5 gün sonraki takip hatırlatıcılarını aktif edebilirsiniz.'**
   String get guideDiseaseTips;
 
   /// No description provided for @settingsTitle.

@@ -19,7 +19,7 @@ class ProfileView extends ConsumerStatefulWidget {
 
   @override
   ConsumerState<ProfileView> createState() => _ProfileViewState();
-  }
+}
 
 class _ProfileViewState extends ConsumerState<ProfileView> {
   @override
@@ -78,12 +78,17 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: context.palSurfaceCard,
-                      border: Border.all(color: context.palOutline.withValues(alpha: 0.55)),
+                      border: Border.all(
+                        color: context.palOutline.withValues(alpha: 0.55),
+                      ),
                       boxShadow: <BoxShadow>[
                         BoxShadow(
                           color: context.palPrimary.withValues(alpha: 0.18),
                           blurRadius: WidgetSizesEnum.cardShadowBlur.value,
-                          offset: Offset(0, WidgetSizesEnum.cardShadowOffsetY.value * 0.85),
+                          offset: Offset(
+                            0,
+                            WidgetSizesEnum.cardShadowOffsetY.value * 0.85,
+                          ),
                         ),
                       ],
                     ),

@@ -273,7 +273,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get scanSaveToPlantTitle => 'Hangi bitkiye kaydedilsin?';
 
   @override
-  String get scanSaveToPlantCta => 'Bitkiye kaydet';
+  String get scanSaveToPlantCta => 'Evimdeki bitkiye kaydet';
 
   @override
   String get scanSavedToPlantSuccess => 'Bitki takibine kaydedildi.';
@@ -314,7 +314,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get guidesSubtitle =>
-      'Daha doğru sonuçlar için çekim ipuçları, çoklu bitki kullanımı ve hastalık taraması önerileri.';
+      'Taramalarınızı \'Geçmiş\' (hızlı tanı) veya \'Evimdeki Bitkiler\' (takip) olarak kaydedebilirsiniz. \'Geçmiş\' her taramayı tarih sırasına göre saklarken; \'Evimdeki Bitkiler\' saksı bazlı sağlık gelişimini izlemenizi ve hatırlatıcılar almanızı sağlar.';
 
   @override
   String get guidesEssentialsBadge => 'Temel';
@@ -333,7 +333,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get guidesFooterInfo =>
-      'İpucu: Işık, netlik ve tek bitki kadrajı güven skorunu en çok etkileyen üç faktördür.';
+      'Önemli: \'Evimdeki Bitkiye Kaydet\' seçeneğini seçerseniz, bitkinizin sağlık durumu kötüleştiğinde size otomatik hatırlatıcılar gönderilir.';
 
   @override
   String get guideSectionPhoto => 'İyi fotoğraf';
@@ -354,7 +354,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get guideDiseaseTips =>
-      'Belirtiler yaprak üst yüzeyinde görünür olmalı; bulanık görüntüler güveni düşürür.';
+      'Hastalık tespit edildiğinde \'Evimdeki Bitkiye Kaydet\' diyerek 1, 3 veya 5 gün sonraki takip hatırlatıcılarını aktif edebilirsiniz.';
 
   @override
   String get settingsTitle => 'Ayarlar';

@@ -4,8 +4,9 @@ import 'package:bitirme_mobile/core/services/disease_info_catalog.dart';
 import 'package:bitirme_mobile/core/services/disease_label_display.dart';
 import 'package:bitirme_mobile/core/utils/confidence_format.dart';
 import 'package:bitirme_mobile/l10n/app_localizations.dart';
-import 'package:bitirme_mobile/models/scan_record_model.dart';
+import 'package:bitirme_mobile/models/plant_scan_model.dart';
 import 'dart:typed_data';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
@@ -14,13 +15,30 @@ class PdfReportService {
   const PdfReportService();
 
   Future<Uint8List> buildScanReportPdf({
-    required ScanRecordModel record,
+    required PlantScanModel record,
     required AppLocalizations l10n,
   }) async {
     final pw.Document doc = pw.Document();
-    final DiseaseInfo info = const DiseaseInfoCatalog().get(record.diseaseLabel, l10n);
-    final String diseaseDisplay = diseaseClassKeyToDisplay(record.diseaseLabel, l10n);
-    final String speciesDisplay = speciesClassDisplayForExport(l10n, record.speciesLabel);
+
+    // Türkçe karakter desteği için Roboto fontlarını yüklüyoruz
+    final fontData = await rootBundle.load('assets/fonts/Roboto-Regular.ttf');
+    final fontBoldData = await rootBundle.load('assets/fonts/Roboto-Bold.ttf');
+
+    final pw.Font mainFont = pw.Font.ttf(fontData);
+    final pw.Font boldFont = pw.Font.ttf(fontBoldData);
+
+    final DiseaseInfo info = const DiseaseInfoCatalog().get(
+      record.diseaseKey,
+      l10n,
+    );
+    final String diseaseDisplay = diseaseClassKeyToDisplay(
+      record.diseaseKey,
+      l10n,
+    );
+    final String speciesDisplay = speciesClassDisplayForExport(
+      l10n,
+      record.speciesLabel,
+    );
     final String dateLine = record.createdAt.toIso8601String();
 
     final double pad = WidgetSizesEnum.pdfPagePadding.value;
@@ -31,6 +49,7 @@ class PdfReportService {
     doc.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4,
+        theme: pw.ThemeData.withFont(base: mainFont, bold: boldFont),
         margin: pw.EdgeInsets.all(pad),
         build: (pw.Context context) {
           return pw.Column(
@@ -38,35 +57,83 @@ class PdfReportService {
             children: <pw.Widget>[
               pw.Text(
                 l10n.pdfReportTitle,
-                style: pw.TextStyle(fontSize: titleSize, fontWeight: pw.FontWeight.bold),
+                style: pw.TextStyle(font: boldFont, fontSize: titleSize),
               ),
               pw.SizedBox(height: sectionGap),
-              _kv(l10n.pdfReportDate, dateLine, bodySize),
-              _kv(l10n.pdfReportSpecies, speciesDisplay, bodySize),
+              _kv(l10n.pdfReportDate, dateLine, bodySize, mainFont, boldFont),
+              _kv(
+                l10n.pdfReportSpecies,
+                speciesDisplay,
+                bodySize,
+                mainFont,
+                boldFont,
+              ),
               _kv(
                 l10n.pdfReportSpeciesConfidence,
-                confidencePercentLabel(record.speciesConfidence),
+                confidencePercentLabel(
+                  record.speciesConfidence,
+                ), // Zaten 0-1 aralığında
                 bodySize,
+                mainFont,
+                boldFont,
               ),
-              _kv(l10n.pdfReportDisease, diseaseDisplay, bodySize),
+              _kv(
+                l10n.pdfReportDisease,
+                diseaseDisplay,
+                bodySize,
+                mainFont,
+                boldFont,
+              ),
               _kv(
                 l10n.pdfReportDiseaseConfidence,
-                confidencePercentLabel(record.diseaseConfidence),
+                confidencePercentLabel(
+                  record.diseaseConfidence,
+                ), // Zaten 0-1 aralığında
                 bodySize,
+                mainFont,
+                boldFont,
               ),
               pw.SizedBox(height: sectionGap),
-              _section(l10n.diseaseDetailSectionDescription, info.description, bodySize),
+              _section(
+                l10n.diseaseDetailSectionDescription,
+                info.description,
+                bodySize,
+                mainFont,
+                boldFont,
+              ),
               pw.SizedBox(height: sectionGap * 0.75),
-              _section(l10n.diseaseDetailSectionCauses, info.causes, bodySize),
+              _section(
+                l10n.diseaseDetailSectionCauses,
+                info.causes,
+                bodySize,
+                mainFont,
+                boldFont,
+              ),
               pw.SizedBox(height: sectionGap * 0.75),
-              _section(l10n.diseaseDetailSectionTreatment, info.treatment, bodySize),
+              _section(
+                l10n.diseaseDetailSectionTreatment,
+                info.treatment,
+                bodySize,
+                mainFont,
+                boldFont,
+              ),
               pw.SizedBox(height: sectionGap * 0.75),
-              _section(l10n.diseaseDetailSectionPrevention, info.prevention, bodySize),
+              _section(
+                l10n.diseaseDetailSectionPrevention,
+                info.prevention,
+                bodySize,
+                mainFont,
+                boldFont,
+              ),
               pw.Spacer(),
               pw.Divider(),
               pw.Text(
                 l10n.pdfReportDisclaimer,
-                style: pw.TextStyle(fontSize: bodySize, color: PdfColors.grey700),
+                style: pw.TextStyle(
+                  font: mainFont,
+                  fontSize: bodySize,
+                  color: PdfColors.grey700,
+                ),
               ),
             ],
           );
@@ -77,7 +144,7 @@ class PdfReportService {
     return doc.save();
   }
 
-  pw.Widget _kv(String k, String v, double size) {
+  pw.Widget _kv(String k, String v, double size, pw.Font main, pw.Font bold) {
     return pw.Padding(
       padding: pw.EdgeInsets.only(bottom: 6),
       child: pw.Row(
@@ -87,29 +154,40 @@ class PdfReportService {
             width: 160,
             child: pw.Text(
               k,
-              style: pw.TextStyle(fontSize: size, fontWeight: pw.FontWeight.bold),
+              style: pw.TextStyle(font: bold, fontSize: size),
             ),
           ),
           pw.Expanded(
-            child: pw.Text(v, style: pw.TextStyle(fontSize: size)),
+            child: pw.Text(
+              v,
+              style: pw.TextStyle(font: main, fontSize: size),
+            ),
           ),
         ],
       ),
     );
   }
 
-  pw.Widget _section(String title, String body, double size) {
+  pw.Widget _section(
+    String title,
+    String body,
+    double size,
+    pw.Font main,
+    pw.Font bold,
+  ) {
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: <pw.Widget>[
         pw.Text(
           title,
-          style: pw.TextStyle(fontSize: size + 1, fontWeight: pw.FontWeight.bold),
+          style: pw.TextStyle(font: bold, fontSize: size + 1),
         ),
         pw.SizedBox(height: 6),
-        pw.Text(body, style: pw.TextStyle(fontSize: size)),
+        pw.Text(
+          body,
+          style: pw.TextStyle(font: main, fontSize: size),
+        ),
       ],
     );
   }
 }
-

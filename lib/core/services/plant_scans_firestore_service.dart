@@ -23,7 +23,10 @@ class PlantScansFirestoreService {
           .limit(limit)
           .get();
       return snap.docs
-          .map((QueryDocumentSnapshot<Map<String, dynamic>> d) => PlantScanModel.fromJson(d.data()))
+          .map(
+            (QueryDocumentSnapshot<Map<String, dynamic>> d) =>
+                PlantScanModel.fromJson(d.data()),
+          )
           .whereType<PlantScanModel>()
           .toList(growable: false);
     } catch (e, st) {
@@ -46,7 +49,10 @@ class PlantScansFirestoreService {
           .limit(limit)
           .get();
       return snap.docs
-          .map((QueryDocumentSnapshot<Map<String, dynamic>> d) => PlantScanModel.fromJson(d.data()))
+          .map(
+            (QueryDocumentSnapshot<Map<String, dynamic>> d) =>
+                PlantScanModel.fromJson(d.data()),
+          )
           .whereType<PlantScanModel>()
           .toList(growable: false);
     } catch (e, st) {
@@ -55,27 +61,31 @@ class PlantScansFirestoreService {
     }
   }
 
-  /// Yeni bir tarama kaydeder ve eşzamanlı olarak [plants] koleksiyonundaki 
+  /// Yeni bir tarama kaydeder ve eşzamanlı olarak [plants] koleksiyonundaki
   /// ilgili bitkinin son sağlık skorunu ve tarihini günceller.
   Future<void> addScan(PlantScanModel scan) async {
     try {
       final WriteBatch batch = _db.batch();
 
       // 1. Tarama kaydını oluştur
-      final DocumentReference<Map<String, dynamic>> scanRef =
-          _db.collection(FirestoreCollectionEnum.scans.value).doc(scan.id);
+      final DocumentReference<Map<String, dynamic>> scanRef = _db
+          .collection(FirestoreCollectionEnum.scans.value)
+          .doc(scan.id);
       batch.set(scanRef, scan.toJson());
 
-      // 2. Bitki özet bilgisini güncelle
-      final DocumentReference<Map<String, dynamic>> plantRef =
-          _db.collection(FirestoreCollectionEnum.plants.value).doc(scan.plantId);
-      
-      batch.update(plantRef, <String, dynamic>{
-        'lastHealthScore': scan.healthScore,
-        'lastScanDate': FieldValue.serverTimestamp(),
-        'updatedAt': FieldValue.serverTimestamp(),
-        'speciesLabel': scan.speciesLabel, // Tür tespiti güncellenmiş olabilir
-      });
+      // 2. Bitki özet bilgisini güncelle (Eğer bir bitki seçilmişse)
+      if (scan.plantId.isNotEmpty && scan.plantId != 'general') {
+        final DocumentReference<Map<String, dynamic>> plantRef = _db
+            .collection(FirestoreCollectionEnum.plants.value)
+            .doc(scan.plantId);
+
+        batch.update(plantRef, <String, dynamic>{
+          'lastHealthScore': scan.healthScore,
+          'lastScanDate': FieldValue.serverTimestamp(),
+          'updatedAt': FieldValue.serverTimestamp(),
+          'speciesLabel': scan.speciesLabel,
+        });
+      }
 
       await batch.commit();
       _logger.i('Scan added and plant updated: ${scan.id}');

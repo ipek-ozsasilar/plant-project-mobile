@@ -23,13 +23,24 @@ class DiseaseDetailView extends StatelessWidget {
     final double pad = WidgetSizesEnum.cardRadius.value * 1.15;
     final TextTheme tt = Theme.of(context).textTheme;
     final String title = diseaseClassKeyToDisplay(diseaseKey, context.l10n);
-    final DiseaseInfo info = const DiseaseInfoCatalog().get(diseaseKey, context.l10n);
+    final DiseaseInfo info = const DiseaseInfoCatalog().get(
+      diseaseKey,
+      context.l10n,
+    );
 
     return Scaffold(
       backgroundColor: context.palSurface,
-      appBar: AppBar(title: Text(context.l10n.diseaseDetailTitle)),
+      appBar: AppBar(
+        title: Text(context.l10n.diseaseDetailTitle),
+        leading: const BackButton(),
+      ),
       body: ListView(
-        padding: EdgeInsets.fromLTRB(pad, pad, pad, WidgetSizesEnum.bottomNavHeight.value),
+        padding: EdgeInsets.fromLTRB(
+          pad,
+          pad,
+          pad,
+          WidgetSizesEnum.bottomNavHeight.value,
+        ),
         children: <Widget>[
           Text(
             title,
@@ -106,4 +117,3 @@ class _SectionCard extends StatelessWidget {
     );
   }
 }
-

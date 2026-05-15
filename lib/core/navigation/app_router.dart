@@ -1,5 +1,6 @@
 import 'package:bitirme_mobile/core/navigation/app_paths.dart';
 import 'package:bitirme_mobile/features/about/about_view.dart';
+import 'package:bitirme_mobile/features/auth/login/forgot_password_view.dart';
 import 'package:bitirme_mobile/features/auth/login/login_view.dart';
 import 'package:bitirme_mobile/features/auth/register/register_view.dart';
 import 'package:bitirme_mobile/features/disease_detail/disease_detail_view.dart';
@@ -30,23 +31,33 @@ final Provider<GoRouter> appRouterProvider = Provider<GoRouter>((Ref ref) {
     routes: <RouteBase>[
       GoRoute(
         path: AppPaths.language,
-        builder: (BuildContext context, GoRouterState state) => const LanguageSelectView(),
+        builder: (BuildContext context, GoRouterState state) =>
+            const LanguageSelectView(),
       ),
       GoRoute(
         path: AppPaths.splash,
-        builder: (BuildContext context, GoRouterState state) => const SplashView(),
+        builder: (BuildContext context, GoRouterState state) =>
+            const SplashView(),
       ),
       GoRoute(
         path: AppPaths.onboarding,
-        builder: (BuildContext context, GoRouterState state) => const OnboardingView(),
+        builder: (BuildContext context, GoRouterState state) =>
+            const OnboardingView(),
       ),
       GoRoute(
         path: AppPaths.login,
-        builder: (BuildContext context, GoRouterState state) => const LoginView(),
+        builder: (BuildContext context, GoRouterState state) =>
+            const LoginView(),
       ),
       GoRoute(
         path: AppPaths.register,
-        builder: (BuildContext context, GoRouterState state) => const RegisterView(),
+        builder: (BuildContext context, GoRouterState state) =>
+            const RegisterView(),
+      ),
+      GoRoute(
+        path: AppPaths.forgotPassword,
+        builder: (BuildContext context, GoRouterState state) =>
+            const ForgotPasswordView(),
       ),
       GoRoute(
         path: '${AppPaths.diseaseDetail}/:diseaseKey',
@@ -54,25 +65,34 @@ final Provider<GoRouter> appRouterProvider = Provider<GoRouter>((Ref ref) {
           final String diseaseKey = state.pathParameters['diseaseKey'] ?? '';
           final String? confidenceRaw = state.uri.queryParameters['confidence'];
           final double confidence = double.tryParse(confidenceRaw ?? '') ?? 0;
-          return DiseaseDetailView(diseaseKey: diseaseKey, confidence: confidence);
+          return DiseaseDetailView(
+            diseaseKey: diseaseKey,
+            confidence: confidence,
+          );
         },
       ),
       GoRoute(
         path: '${AppPaths.speciesDetail}/:speciesLabel',
         builder: (BuildContext context, GoRouterState state) {
-          final String speciesLabel = state.pathParameters['speciesLabel'] ?? '';
+          final String speciesLabel =
+              state.pathParameters['speciesLabel'] ?? '';
           final String? confidenceRaw = state.uri.queryParameters['confidence'];
           final double confidence = double.tryParse(confidenceRaw ?? '') ?? 0;
-          return SpeciesDetailView(speciesLabel: speciesLabel, confidence: confidence);
+          return SpeciesDetailView(
+            speciesLabel: speciesLabel,
+            confidence: confidence,
+          );
         },
       ),
       GoRoute(
         path: AppPaths.myPlants,
-        builder: (BuildContext context, GoRouterState state) => const PlantsListView(),
+        builder: (BuildContext context, GoRouterState state) =>
+            const PlantsListView(),
         routes: <RouteBase>[
           GoRoute(
             path: 'add',
-            builder: (BuildContext context, GoRouterState state) => const PlantsAddView(),
+            builder: (BuildContext context, GoRouterState state) =>
+                const PlantsAddView(),
           ),
           GoRoute(
             path: ':plantId',
@@ -85,38 +105,45 @@ final Provider<GoRouter> appRouterProvider = Provider<GoRouter>((Ref ref) {
       ),
       GoRoute(
         path: AppPaths.scan,
-        builder: (BuildContext context, GoRouterState state) => const ScanFlowView(),
+        builder: (BuildContext context, GoRouterState state) =>
+            const ScanFlowView(),
       ),
       GoRoute(
         path: AppPaths.guide,
-        builder: (BuildContext context, GoRouterState state) => const GuideView(),
+        builder: (BuildContext context, GoRouterState state) =>
+            const GuideView(),
       ),
       GoRoute(
         path: AppPaths.profile,
-        builder: (BuildContext context, GoRouterState state) => const ProfileView(),
+        builder: (BuildContext context, GoRouterState state) =>
+            const ProfileView(),
       ),
       GoRoute(
         path: AppPaths.settings,
-        builder: (BuildContext context, GoRouterState state) => const SettingsView(),
+        builder: (BuildContext context, GoRouterState state) =>
+            const SettingsView(),
       ),
       GoRoute(
         path: AppPaths.about,
-        builder: (BuildContext context, GoRouterState state) => const AboutView(),
+        builder: (BuildContext context, GoRouterState state) =>
+            const AboutView(),
       ),
       StatefulShellRoute.indexedStack(
-        builder: (
-          BuildContext context,
-          GoRouterState state,
-          StatefulNavigationShell navigationShell,
-        ) {
-          return MainShellView(navigationShell: navigationShell);
-        },
+        builder:
+            (
+              BuildContext context,
+              GoRouterState state,
+              StatefulNavigationShell navigationShell,
+            ) {
+              return MainShellView(navigationShell: navigationShell);
+            },
         branches: <StatefulShellBranch>[
           StatefulShellBranch(
             routes: <RouteBase>[
               GoRoute(
                 path: AppPaths.home,
-                builder: (BuildContext context, GoRouterState state) => const HomeView(),
+                builder: (BuildContext context, GoRouterState state) =>
+                    const HomeView(),
               ),
             ],
           ),
@@ -124,7 +151,8 @@ final Provider<GoRouter> appRouterProvider = Provider<GoRouter>((Ref ref) {
             routes: <RouteBase>[
               GoRoute(
                 path: AppPaths.history,
-                builder: (BuildContext context, GoRouterState state) => const HistoryView(),
+                builder: (BuildContext context, GoRouterState state) =>
+                    const HistoryView(),
               ),
             ],
           ),
@@ -132,7 +160,8 @@ final Provider<GoRouter> appRouterProvider = Provider<GoRouter>((Ref ref) {
             routes: <RouteBase>[
               GoRoute(
                 path: AppPaths.healthProgress,
-                builder: (BuildContext context, GoRouterState state) => const HealthProgressView(),
+                builder: (BuildContext context, GoRouterState state) =>
+                    const HealthProgressView(),
               ),
             ],
           ),
@@ -140,7 +169,8 @@ final Provider<GoRouter> appRouterProvider = Provider<GoRouter>((Ref ref) {
             routes: <RouteBase>[
               GoRoute(
                 path: AppPaths.more,
-                builder: (BuildContext context, GoRouterState state) => const MoreView(),
+                builder: (BuildContext context, GoRouterState state) =>
+                    const MoreView(),
               ),
             ],
           ),

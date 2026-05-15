@@ -21,7 +21,9 @@ import 'package:bitirme_mobile/core/utils/confidence_format.dart';
 import 'package:bitirme_mobile/core/widgets/animation/scan_loading_widget.dart';
 import 'package:bitirme_mobile/core/widgets/button/app_primary_button.dart';
 import 'package:bitirme_mobile/core/widgets/surface/soft_elevation_card.dart';
-import 'package:bitirme_mobile/features/history/provider/history_provider.dart';
+import 'package:bitirme_mobile/features/auth/provider/auth_provider.dart';
+import 'package:bitirme_mobile/features/history/provider/history_firestore_provider.dart';
+import 'package:bitirme_mobile/features/settings/home_stats_provider.dart';
 import 'package:bitirme_mobile/features/plants/provider/plants_provider.dart';
 import 'package:bitirme_mobile/features/scan/provider/scan_flow_provider.dart';
 import 'package:bitirme_mobile/features/scan/sub_view/plant_region_picker_widget.dart';
@@ -29,7 +31,6 @@ import 'package:bitirme_mobile/l10n/app_localizations.dart';
 import 'package:bitirme_mobile/models/inference_result_model.dart';
 import 'package:bitirme_mobile/models/plant_model.dart';
 import 'package:bitirme_mobile/models/plant_scan_model.dart';
-import 'package:bitirme_mobile/models/scan_record_model.dart';
 import 'package:bitirme_mobile/service_locator/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -47,9 +48,11 @@ class ScanFlowView extends ConsumerStatefulWidget {
   ConsumerState<ScanFlowView> createState() => _ScanFlowViewState();
 }
 
-class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessageMixin {
+class _ScanFlowViewState extends ConsumerState<ScanFlowView>
+    with ScaffoldMessageMixin {
   final ImagePicker _picker = ImagePicker();
   bool _savingToPlant = false;
+  bool _savingToHistory = false;
   bool _exportingPdf = false;
 
   @override
@@ -77,31 +80,52 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
     } catch (e, st) {
       sl<AppLogger>().e('image_pick', e, st);
       if (mounted) {
-        showAppSnackBar(context, message: context.l10n.errorImagePick, isError: true);
+        showAppSnackBar(
+          context,
+          message: context.l10n.errorImagePick,
+          isError: true,
+        );
       }
     }
   }
 
-  Future<void> _onSaveToHistory() async {
-    final ScanFlowState s = ref.read(scanFlowProvider);
-    final InferenceResultModel? sp = s.species;
-    final InferenceResultModel? dis = s.disease;
-    if (sp == null || dis == null) {
-      return;
+  /// Analiz sonucuna göre bildirim planlar.
+  Future<void> _scheduleFollowUpNotification(PlantScanModel scan) async {
+    final NotificationService svc = sl<NotificationService>();
+    final bool enabled = await svc.isEnabled();
+    if (!enabled) return;
+
+    int days;
+    String body;
+    final String plantName = scan.plantId == 'general'
+        ? speciesClassDisplayForRaw(context, scan.speciesLabel)
+        : scan.plantId; // Bitki adı l10n ile daha iyi yönetilebilir.
+
+    if (scan.healthScore >= 85) {
+      days = 7;
+      body = context
+          .l10n
+          .notificationWateringBody; // "Sağlıklı, 7 gün sonra kontrol et"
+    } else if (scan.healthScore >= 70) {
+      days = 5;
+      body =
+          "${context.l10n.homeGreeting}! $plantName için hafif risk tespiti. 5 gün sonra tekrar kontrol önerilir.";
+    } else if (scan.healthScore >= 55) {
+      days = 3;
+      body =
+          context.l10n.notificationRiskBody; // "Orta risk, 3 gün sonra kontrol"
+    } else {
+      days = 1;
+      body =
+          "Acil: $plantName durumu ciddi görünüyor. Lütfen yarın tekrar kontrol edin.";
     }
-    final ScanRecordModel record = ScanRecordModel(
-      id: Uuid().v4(),
-      createdAt: DateTime.now(),
-      speciesLabel: sp.top.rawKey ?? sp.top.label,
-      speciesConfidence: confidenceToUnit(sp.top.confidence),
-      diseaseLabel: dis.top.label,
-      diseaseConfidence: confidenceToUnit(dis.top.confidence),
+
+    await svc.scheduleDailyWatering(
+      title: context.l10n.notificationWateringTitle,
+      body: body,
+      // Not: Servisinizde 'delayDays' parametresi olduğunu varsayıyoruz veya
+      // o servisi buna göre güncelliyoruz.
     );
-    await ref.read(historyProvider.notifier).addRecord(record);
-    if (mounted) {
-      showAppSnackBar(context, message: context.l10n.successTitle, isError: false);
-      context.pop();
-    }
   }
 
   Future<void> _onSaveToPlant() async {
@@ -116,9 +140,23 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
     if (!mounted) {
       return;
     }
-    final List<PlantModel> plants = ref.read(plantsProvider).items;
-    if (plants.isEmpty) {
-      showAppSnackBar(context, message: context.l10n.myPlantsEmpty, isError: true);
+    // 'Tanınmadı' olan bitkileri filtrele
+    final List<PlantModel> validPlants = ref
+        .read(plantsProvider)
+        .items
+        .where(
+          (p) => !p.name.toLowerCase().contains(
+            context.l10n.scanUnrecognizedTitle.toLowerCase(),
+          ),
+        )
+        .toList();
+
+    if (validPlants.isEmpty) {
+      showAppSnackBar(
+        context,
+        message: context.l10n.myPlantsEmpty,
+        isError: true,
+      );
       return;
     }
 
@@ -145,27 +183,37 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
               Flexible(
                 child: ListView.separated(
                   shrinkWrap: true,
-                  itemCount: plants.length,
-                  separatorBuilder: (_, __) => SizedBox(height: WidgetSizesEnum.divider.value * 8),
+                  itemCount: validPlants.length,
+                  separatorBuilder: (_, __) =>
+                      SizedBox(height: WidgetSizesEnum.divider.value * 8),
                   itemBuilder: (BuildContext context, int index) {
-                    final PlantModel p = plants[index];
+                    final PlantModel p = validPlants[index];
                     return SoftElevationCard(
                       onTap: () => Navigator.of(ctx).pop(p),
-                      padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 0.9),
+                      padding: EdgeInsets.all(
+                        WidgetSizesEnum.cardRadius.value * 0.9,
+                      ),
                       child: Row(
                         children: <Widget>[
                           Container(
                             width: WidgetSizesEnum.cardRadius.value * 1.9,
                             height: WidgetSizesEnum.cardRadius.value * 1.9,
                             decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.12),
-                              borderRadius:
-                                  BorderRadius.circular(WidgetSizesEnum.chipRadius.value),
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.primary.withValues(alpha: 0.12),
+                              borderRadius: BorderRadius.circular(
+                                WidgetSizesEnum.chipRadius.value,
+                              ),
                             ),
-                            child: Icon(Icons.local_florist_rounded,
-                                color: Theme.of(context).colorScheme.primary),
+                            child: Icon(
+                              Icons.local_florist_rounded,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
                           ),
-                          SizedBox(width: WidgetSizesEnum.cardRadius.value * 0.75),
+                          SizedBox(
+                            width: WidgetSizesEnum.cardRadius.value * 0.75,
+                          ),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,12 +222,19 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
                                   p.name,
                                   style: TextStyle(
                                     fontWeight: FontWeight.w900,
-                                    color: Theme.of(context).colorScheme.onSurface,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurface,
                                   ),
                                 ),
-                                SizedBox(height: WidgetSizesEnum.divider.value * 4),
+                                SizedBox(
+                                  height: WidgetSizesEnum.divider.value * 4,
+                                ),
                                 Text(
-                                  speciesClassDisplayForRaw(context, p.speciesLabel),
+                                  speciesClassDisplayForRaw(
+                                    context,
+                                    p.speciesLabel,
+                                  ),
                                   style: TextStyle(
                                     color: Theme.of(context)
                                         .colorScheme
@@ -192,11 +247,12 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
                               ],
                             ),
                           ),
-                          Icon(Icons.chevron_right_rounded,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurface
-                                  .withValues(alpha: 0.45)),
+                          Icon(
+                            Icons.chevron_right_rounded,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurface.withValues(alpha: 0.45),
+                          ),
                         ],
                       ),
                     );
@@ -261,9 +317,18 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
       healthScore: scan.healthScore,
       imageUrl: imageUrl,
     );
-    await sl<CatalogFirestoreService>().ensureSpecies(rawLabel: scanWithImage.speciesLabel);
-    await sl<CatalogFirestoreService>().ensureDisease(diseaseKey: scanWithImage.diseaseKey);
+    await sl<CatalogFirestoreService>().ensureSpecies(
+      rawLabel: scanWithImage.speciesLabel,
+    );
+    await sl<CatalogFirestoreService>().ensureDisease(
+      diseaseKey: scanWithImage.diseaseKey,
+    );
+
+    // Hem bitkiyi güncelle hem de geçmişe (scans) kaydet
     await sl<PlantScansFirestoreService>().addScan(scanWithImage);
+    ref.invalidate(historyFirestoreProvider);
+    await _scheduleFollowUpNotification(scanWithImage);
+
     if (healthScore < 55) {
       await sl<NotificationService>().showRiskAlert(
         title: riskTitle,
@@ -274,7 +339,11 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
       return;
     }
     setState(() => _savingToPlant = false);
-    showAppSnackBar(context, message: context.l10n.scanSavedToPlantSuccess, isError: false);
+    showAppSnackBar(
+      context,
+      message: context.l10n.scanSavedToPlantSuccess,
+      isError: false,
+    );
   }
 
   Future<void> _exportPdfFromCurrent() async {
@@ -284,17 +353,32 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
     if (sp == null || dis == null) {
       return;
     }
+    final String? uid = ref.read(authProvider).uid;
     setState(() => _exportingPdf = true);
-    final ScanRecordModel record = ScanRecordModel(
+
+    final double diseaseConfUnit = confidenceToUnit(dis.top.confidence);
+    final int healthScore = computeHealthScore(
+      diseaseKey: dis.top.label,
+      diseaseConfidenceUnit: diseaseConfUnit,
+    );
+
+    final PlantScanModel record = PlantScanModel(
       id: const Uuid().v4(),
+      ownerUid: uid ?? '',
+      plantId: 'general',
       createdAt: DateTime.now(),
       speciesLabel: sp.top.rawKey ?? sp.top.label,
       speciesConfidence: confidenceToUnit(sp.top.confidence),
-      diseaseLabel: dis.top.label,
-      diseaseConfidence: confidenceToUnit(dis.top.confidence),
+      diseaseKey: dis.top.label,
+      diseaseConfidence: diseaseConfUnit,
+      healthScore: healthScore,
+      imageUrl: null,
     );
     final PdfReportService pdf = sl<PdfReportService>();
-    final Uint8List bytes = await pdf.buildScanReportPdf(record: record, l10n: context.l10n);
+    final Uint8List bytes = await pdf.buildScanReportPdf(
+      record: record,
+      l10n: context.l10n,
+    );
     await Printing.sharePdf(bytes: bytes, filename: 'phytoguard_report.pdf');
     if (!mounted) {
       return;
@@ -305,7 +389,10 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
   @override
   Widget build(BuildContext context) {
     final AppLocalizations l10n = context.l10n;
-    ref.listen<ScanFlowState>(scanFlowProvider, (ScanFlowState? previous, ScanFlowState next) {
+    ref.listen<ScanFlowState>(scanFlowProvider, (
+      ScanFlowState? previous,
+      ScanFlowState next,
+    ) {
       final String? msg = next.errorMessage;
       if (msg != null && msg.isNotEmpty) {
         showAppSnackBar(
@@ -420,18 +507,18 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
             bytes: bytes,
             regions: state.regions,
             selectedIndex: state.selectedRegionIndex,
-            onCreateRegionFromDrag: ({
-              required double startNx,
-              required double startNy,
-              required double endNx,
-              required double endNy,
-            }) =>
-                notifier.addRegionFromDragRect(
-              startNx: startNx,
-              startNy: startNy,
-              endNx: endNx,
-              endNy: endNy,
-            ),
+            onCreateRegionFromDrag:
+                ({
+                  required double startNx,
+                  required double startNy,
+                  required double endNx,
+                  required double endNy,
+                }) => notifier.addRegionFromDragRect(
+                  startNx: startNx,
+                  startNy: startNy,
+                  endNx: endNx,
+                  endNy: endNy,
+                ),
             onSelectRegion: notifier.selectRegion,
           ),
         ),
@@ -536,7 +623,8 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
       return const SizedBox.shrink();
     }
     final double unit = confidenceToUnit(dis.top.confidence);
-    final bool unrecognized = unit < InferenceThresholdEnum.unrecognizedGlobal.value;
+    final bool unrecognized =
+        unit < InferenceThresholdEnum.unrecognizedGlobal.value;
     final String diseaseText = diseaseClassKeyToDisplay(dis.top.label, l10n);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -559,7 +647,9 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
         SizedBox(height: WidgetSizesEnum.cardRadius.value),
         Card(
           child: ListTile(
-            title: Text(unrecognized ? l10n.scanUnrecognizedTitle : diseaseText),
+            title: Text(
+              unrecognized ? l10n.scanUnrecognizedTitle : diseaseText,
+            ),
             subtitle: Text(
               unrecognized
                   ? l10n.scanUnrecognizedBody
@@ -598,11 +688,14 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
     final double spUnit = confidenceToUnit(sp.top.confidence);
     final double disUnit = confidenceToUnit(dis.top.confidence);
     final String spRaw = (sp.top.rawKey ?? sp.top.label).trim();
-    final bool spIsSink = sl<SinkSpeciesClassRepository>().snapshot.contains(spRaw);
+    final bool spIsSink = sl<SinkSpeciesClassRepository>().snapshot.contains(
+      spRaw,
+    );
     final bool spUnrecognized = spIsSink
         ? spUnit < InferenceThresholdEnum.unrecognizedSink.value
         : spUnit < InferenceThresholdEnum.unrecognizedGlobal.value;
-    final bool disUnrecognized = disUnit < InferenceThresholdEnum.unrecognizedGlobal.value;
+    final bool disUnrecognized =
+        disUnit < InferenceThresholdEnum.unrecognizedGlobal.value;
     final String diseaseText = diseaseClassKeyToDisplay(dis.top.label, l10n);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -646,11 +739,6 @@ class _ScanFlowViewState extends ConsumerState<ScanFlowView> with ScaffoldMessag
           label: l10n.scanSaveToPlantCta,
           isLoading: _savingToPlant,
           onPressed: _onSaveToPlant,
-        ),
-        SizedBox(height: WidgetSizesEnum.cardRadius.value),
-        AppPrimaryButton(
-          label: l10n.scanSaveHistory,
-          onPressed: _onSaveToHistory,
         ),
         SizedBox(height: WidgetSizesEnum.cardRadius.value),
         OutlinedButton(
