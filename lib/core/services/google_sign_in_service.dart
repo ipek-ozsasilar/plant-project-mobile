@@ -26,13 +26,19 @@ class GoogleSignInService {
         return null;
       }
       final GoogleSignInAuthentication auth = await account.authentication;
+      if (auth.idToken == null || auth.idToken!.isEmpty) {
+        _logger.e(
+          'Google idToken boş — Android için Firebase projesinde SHA-1 ve Google Sign-In yapılandırmasını kontrol edin.',
+        );
+        throw FirebaseAuthException(
+          code: 'invalid-credential',
+          message: 'Google kimlik doğrulama tokenı alınamadı.',
+        );
+      }
       final OAuthCredential credential = GoogleAuthProvider.credential(
         accessToken: auth.accessToken,
         idToken: auth.idToken,
       );
-      if (auth.idToken == null || auth.idToken!.isEmpty) {
-        _logger.w('Google idToken boş — .env içinde GOOGLE_WEB_CLIENT_ID (Web client) gerekli olabilir.');
-      }
       return FirebaseAuth.instance.signInWithCredential(credential);
     } catch (e, st) {
       _logger.e('google_sign_in', e, st);

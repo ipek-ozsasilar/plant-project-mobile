@@ -13,7 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:image/image.dart' as img;
 import 'package:tflite_flutter/tflite_flutter.dart';
 
-/// Yerel [plant_species_model] / [plant_disease_model] TFLite çıkarımı.
+/// Yerel tür (`MlAssetsEnum.speciesModel`) ve hastalık (`MlAssetsEnum.diseaseModel`) TFLite çıkarımı.
 class TflitePlantInferenceService {
   TflitePlantInferenceService({
     required AppLogger logger,

@@ -26,7 +26,7 @@ class SpeciesDetailView extends StatelessWidget {
 
     final List<_RiskDisease> risks = <_RiskDisease>[
       _RiskDisease(key: 'powdery_mildew', label: context.l10n.inferenceDiseasePowderyMildew),
-      _RiskDisease(key: 'leaf_damage', label: context.l10n.inferenceDiseaseLeafDamage),
+      _RiskDisease(key: 'blight', label: context.l10n.inferenceDiseaseBlight),
       _RiskDisease(key: 'rust', label: context.l10n.inferenceDiseaseRust),
     ];
 

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 /// Kullanıcının koleksiyonundaki bitki.
 class PlantModel extends Equatable {
@@ -10,6 +11,9 @@ class PlantModel extends Equatable {
     required this.createdAt,
     this.photoUrl,
     this.isFavorite = false,
+    this.lastHealthScore,
+    this.lastScanDate,
+    this.updatedAt,
   });
 
   final String id;
@@ -19,12 +23,18 @@ class PlantModel extends Equatable {
   final DateTime createdAt;
   final String? photoUrl;
   final bool isFavorite;
+  final int? lastHealthScore;
+  final DateTime? lastScanDate;
+  final DateTime? updatedAt;
 
   PlantModel copyWith({
     String? name,
     String? speciesLabel,
     String? photoUrl,
     bool? isFavorite,
+    int? lastHealthScore,
+    DateTime? lastScanDate,
+    DateTime? updatedAt,
   }) {
     return PlantModel(
       id: id,
@@ -34,6 +44,9 @@ class PlantModel extends Equatable {
       createdAt: createdAt,
       photoUrl: photoUrl ?? this.photoUrl,
       isFavorite: isFavorite ?? this.isFavorite,
+      lastHealthScore: lastHealthScore ?? this.lastHealthScore,
+      lastScanDate: lastScanDate ?? this.lastScanDate,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 
@@ -43,9 +56,12 @@ class PlantModel extends Equatable {
       'ownerUid': ownerUid,
       'name': name,
       'speciesLabel': speciesLabel,
-      'createdAt': createdAt.toIso8601String(),
+      'createdAt': Timestamp.fromDate(createdAt),
       'photoUrl': photoUrl,
       'isFavorite': isFavorite,
+      'lastHealthScore': lastHealthScore,
+      'lastScanDate': lastScanDate != null ? Timestamp.fromDate(lastScanDate!) : null,
+      'updatedAt': updatedAt != null ? Timestamp.fromDate(updatedAt!) : null,
     };
   }
 
@@ -57,18 +73,24 @@ class PlantModel extends Equatable {
     final String? ownerUid = json['ownerUid'] as String?;
     final String? name = json['name'] as String?;
     final String? speciesLabel = json['speciesLabel'] as String?;
-    final String? createdRaw = json['createdAt'] as String?;
-    if (id == null || ownerUid == null || name == null || speciesLabel == null || createdRaw == null) {
+    
+    if (id == null || ownerUid == null || name == null || speciesLabel == null) {
       return null;
     }
+
+    final DateTime createdAt = (json['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now();
+
     return PlantModel(
       id: id,
       ownerUid: ownerUid,
       name: name,
       speciesLabel: speciesLabel,
-      createdAt: DateTime.tryParse(createdRaw) ?? DateTime.now(),
+      createdAt: createdAt,
       photoUrl: json['photoUrl'] as String?,
       isFavorite: json['isFavorite'] as bool? ?? false,
+      lastHealthScore: json['lastHealthScore'] as int?,
+      lastScanDate: (json['lastScanDate'] as Timestamp?)?.toDate(),
+      updatedAt: (json['updatedAt'] as Timestamp?)?.toDate(),
     );
   }
 
@@ -81,6 +103,8 @@ class PlantModel extends Equatable {
         createdAt,
         photoUrl,
         isFavorite,
+        lastHealthScore,
+        lastScanDate,
+        updatedAt,
       ];
 }
-

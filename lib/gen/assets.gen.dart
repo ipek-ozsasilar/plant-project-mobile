@@ -25,11 +25,11 @@ class $AssetsMlGen {
   /// File path: assets/ml/class_names.json
   String get classNames => 'assets/ml/class_names.json';
 
-  /// File path: assets/ml/disease_10class.tflite
-  String get disease10class => 'assets/ml/disease_10class.tflite';
+  /// File path: assets/ml/disease_5class.tflite
+  String get disease5class => 'assets/ml/disease_5class.tflite';
 
-  /// File path: assets/ml/disease_class_names_10class.json
-  String get diseaseClassNames10class => 'assets/ml/disease_class_names_10class.json';
+  /// File path: assets/ml/disease_class_names_5class.json
+  String get diseaseClassNames5class => 'assets/ml/disease_class_names_5class.json';
 
   /// File path: assets/ml/plant_species_model.tflite
   String get plantSpeciesModel => 'assets/ml/plant_species_model.tflite';
@@ -43,8 +43,8 @@ class $AssetsMlGen {
   /// List of all assets
   List<String> get values => [
     classNames,
-    disease10class,
-    diseaseClassNames10class,
+    disease5class,
+    diseaseClassNames5class,
     plantSpeciesModel,
     plantnetSpeciesIdMap,
     sinkClasses,

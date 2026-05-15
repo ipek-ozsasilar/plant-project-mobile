@@ -109,52 +109,59 @@
 
 ## Model Dosyaları (Güncel)
 
-- **TFLite model**: `C:\Users\HP\Desktop\disease_10class.tflite`
-- **Sınıf isimleri**: `C:\Users\HP\Desktop\disease_class_names_10class.json`
+- **TFLite model**: `C:\Users\HP\Desktop\plant_project_hastalık\plant_project\models\disease_5class.tflite`
+- **Sınıf isimleri**: `assets/ml/disease_class_names_5class.json` (`blight`, `healthy`, `mold`, `powdery_mildew`, `rust`)
 
-## Özet (2026-04-21)
+## Özet (2026-05-15) — Hastalık Tanıma Modeli (5 Sınıf)
 
-- **Kaynak (Keras)**: `C:\Users\HP\Desktop\plant_project_hastalık\plant_project\models\best_disease_model.keras`
-- **Genel Test Accuracy**: **%91.86**
-- **En düşük sınıf accuracy**: **%86.7** → `leaf_spot`
-- **En yüksek sınıf accuracy**: **%100.0** → `pest_damage`
-- **CSV çıktısı**: `C:\Users\HP\Desktop\plant_project_hastalık\plant_project\outputs\per_class_accuracy_disease.csv`
+- **Keras Kaynak**: `C:\Users\HP\Desktop\plant_project_hastalık\plant_project\models\disease_5class_best.keras`
+- **Model Dosyası**: `C:\Users\HP\Desktop\plant_project_hastalık\plant_project\models\disease_5class.tflite`
+- **Sınıf isimleri**: `assets/ml/disease_class_names_5class.json`
 
-## Sınıf Bazlı Accuracy
-
-| # | Hastalık | Accuracy (%) | Doğru | Toplam |
-|---:|---|---:|---:|---:|
-| 1 | pest_damage | 100.0 | 175 | 175 |
-| 2 | rot | 99.2 | 385 | 388 |
-| 3 | powdery_mildew | 98.5 | 338 | 343 |
-| 4 | mold | 97.9 | 185 | 189 |
-| 5 | rust | 96.7 | 355 | 367 |
-| 6 | bacterial | 93.1 | 509 | 547 |
-| 7 | healthy | 92.1 | 2053 | 2230 |
-| 8 | blight | 91.6 | 1033 | 1128 |
-| 9 | viral | 88.4 | 1164 | 1317 |
-| 10 | leaf_spot | 86.7 | 948 | 1094 |
-
----
-
-## Özet (2026-04-26) — Yeniden Eğitim
-
-- **Test Loss**: **0.0846**
-- **Test Accuracy**: **0.9819** (**%98.2**)
+- **Normal Accuracy**: **0.9429** (**%94.3**)
+- **TTA Accuracy**: **0.9447** (**%94.5**)
+- **TTA kazanımı**: **+0.18 puan**
+- **Genel Doğruluk**: **%94.29**
+- **F1 (Weighted)**: **0.9428**
+- **Test Loss**: **0.1741**
+- **Test Accuracy**: **0.9429** (**%94.3**)
+- **PlantVillage HARİÇ test**: **N=247**, **acc=75.30%**, **loss=0.7168**
 - **%70 altı sınıflar**: **0**
-- **%80 ve üstü sınıflar**: **10**
+- **%80 ve üstü sınıflar**: **5**
 
-## Sınıf Bazlı Accuracy (2026-04-26)
+- **CSV çıktısı**: `C:\Users\HP\Desktop\plant_project_hastalık\plant_project\outputs\per_class_accuracy_disease_5class.csv`
+- **JSON çıktısı**: `C:\Users\HP\Desktop\plant_project_hastalık\plant_project\outputs\per_class_accuracy_disease_5class.json`
+- **Classification report**: `C:\Users\HP\Desktop\plant_project_hastalık\plant_project\outputs\classification_report_disease_5class.json`
+- **Metrikler**: `C:\Users\HP\Desktop\plant_project_hastalık\plant_project\outputs\metrics_disease_5class.json`
+
+## Sınıf Bazlı Accuracy (5 Sınıf)
 
 | # | Hastalık | Accuracy (%) | Örnek |
 |---:|---|---:|---:|
-| 1 | mold | 96.5 | 258 |
-| 2 | leaf_damage | 96.9 | 3270 |
-| 3 | viral_mosaic | 97.2 | 497 |
-| 4 | pest_damage | 97.9 | 238 |
-| 5 | rot | 98.0 | 509 |
-| 6 | rust | 98.8 | 489 |
-| 7 | scab | 99.3 | 277 |
-| 8 | healthy | 99.5 | 2835 |
-| 9 | powdery_mildew | 99.6 | 451 |
-| 10 | chlorosis_yellowing | 99.6 | 272 |
+| 1 | healthy | 97.8 | 496 |
+| 2 | powdery_mildew | 96.7 | 461 |
+| 3 | rust | 94.9 | 490 |
+| 4 | mold | 91.0 | 278 |
+| 5 | blight | 90.1 | 535 |
+
+- **En düşük accuracy**: **90.1%** → blight
+- **En yüksek accuracy**: **97.8%** → healthy
+
+---
+
+## En Çok Karışan Sınıflar (Hata Analizi)
+
+- Gerçek: blight | Tahmin: healthy | Hata Sayısı: 33
+- Gerçek: blight | Tahmin: mold | Hata Sayısı: 10
+- Gerçek: blight | Tahmin: rust | Hata Sayısı: 7
+- Gerçek: healthy | Tahmin: blight | Hata Sayısı: 9
+- Gerçek: mold | Tahmin: blight | Hata Sayısı: 15
+- Gerçek: rust | Tahmin: blight | Hata Sayısı: 11
+- Gerçek: rust | Tahmin: healthy | Hata Sayısı: 8
+- Gerçek: rust | Tahmin: powdery_mildew | Hata Sayısı: 6
+
+---
+
+### blight confusion satırı
+- Doğru: 482/535
+- Yanlış oranı: 9.9%

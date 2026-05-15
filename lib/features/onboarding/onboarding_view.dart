@@ -397,66 +397,70 @@ class _LanguageSlide extends StatelessWidget {
       ),
       child: SoftElevationCard(
         onTap: null,
-        padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 1.35),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 1.35),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: <Color>[
-                    context.palAccent.withValues(alpha: 0.22),
-                    context.palPrimary.withValues(alpha: 0.12),
-                  ],
+        padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 0.95),
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 1.1),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: <Color>[
+                      context.palAccent.withValues(alpha: 0.22),
+                      context.palPrimary.withValues(alpha: 0.12),
+                    ],
+                  ),
+                ),
+                child: Icon(
+                  Icons.language_rounded,
+                  size: ImageSizesEnum.hero.value * 0.48,
+                  color: context.palPrimary,
                 ),
               ),
-              child: Icon(
-                Icons.language_rounded,
-                size: ImageSizesEnum.hero.value * 0.52,
-                color: context.palPrimary,
+              SizedBox(height: WidgetSizesEnum.cardRadius.value * 0.95),
+              Text(
+                LanguagePickerStringsEnum.headline.value,
+                textAlign: TextAlign.center,
+                style: tt.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w800,
+                  color: context.palOnSurface,
+                  letterSpacing: -0.35,
+                ),
               ),
-            ),
-            SizedBox(height: WidgetSizesEnum.cardRadius.value * 1.35),
-            Text(
-              LanguagePickerStringsEnum.headline.value,
-              textAlign: TextAlign.center,
-              style: tt.titleLarge?.copyWith(
-                fontWeight: FontWeight.w800,
-                color: context.palOnSurface,
-                letterSpacing: -0.35,
+              SizedBox(height: WidgetSizesEnum.divider.value * 6),
+              Text(
+                LanguagePickerStringsEnum.subtitle.value,
+                textAlign: TextAlign.center,
+                style: tt.bodyLarge?.copyWith(
+                  color: context.palMuted,
+                  height: 1.3,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),
-            SizedBox(height: WidgetSizesEnum.divider.value * 10),
-            Text(
-              LanguagePickerStringsEnum.subtitle.value,
-              textAlign: TextAlign.center,
-              style: tt.bodyLarge?.copyWith(
-                color: context.palMuted,
-                height: 1.4,
-                fontWeight: FontWeight.w500,
+              SizedBox(height: WidgetSizesEnum.cardRadius.value * 1.1),
+              _LanguageChoiceCard(
+                enabled: enabled,
+                title: LanguagePickerStringsEnum.turkishTitle.value,
+                subtitle: LanguagePickerStringsEnum.turkishSubtitle.value,
+                flag: '🇹🇷',
+                onTap: onTurkish,
               ),
-            ),
-            SizedBox(height: WidgetSizesEnum.cardRadius.value * 1.5),
-            _LanguageChoiceCard(
-              enabled: enabled,
-              title: LanguagePickerStringsEnum.turkishTitle.value,
-              subtitle: LanguagePickerStringsEnum.turkishSubtitle.value,
-              flag: '🇹🇷',
-              onTap: onTurkish,
-            ),
-            SizedBox(height: WidgetSizesEnum.cardRadius.value * 0.75),
-            _LanguageChoiceCard(
-              enabled: enabled,
-              title: LanguagePickerStringsEnum.englishTitle.value,
-              subtitle: LanguagePickerStringsEnum.englishSubtitle.value,
-              flag: '🇬🇧',
-              onTap: onEnglish,
-            ),
-          ],
+              SizedBox(height: WidgetSizesEnum.cardRadius.value * 0.6),
+              _LanguageChoiceCard(
+                enabled: enabled,
+                title: LanguagePickerStringsEnum.englishTitle.value,
+                subtitle: LanguagePickerStringsEnum.englishSubtitle.value,
+                flag: '🇬🇧',
+                onTap: onEnglish,
+              ),
+              SizedBox(height: WidgetSizesEnum.cardRadius.value * 0.4),
+            ],
+          ),
         ),
       ),
     );
@@ -506,14 +510,14 @@ class _LanguageChoiceCard extends StatelessWidget {
             ],
           ),
           child: Padding(
-            padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 1.05),
+            padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 0.85),
             child: Row(
               children: <Widget>[
                 Text(
                   flag,
-                  style: TextStyle(fontSize: TextSizesEnum.title.value),
+                  style: TextStyle(fontSize: TextSizesEnum.title.value * 0.9),
                 ),
-                SizedBox(width: WidgetSizesEnum.cardRadius.value),
+                SizedBox(width: WidgetSizesEnum.cardRadius.value * 0.75),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -525,18 +529,18 @@ class _LanguageChoiceCard extends StatelessWidget {
                           color: context.palOnSurface,
                         ),
                       ),
-                      SizedBox(height: WidgetSizesEnum.divider.value * 4),
+                      SizedBox(height: WidgetSizesEnum.divider.value * 3),
                       Text(
                         subtitle,
                         style: tt.bodySmall?.copyWith(
                           color: context.palMuted,
-                          height: 1.3,
+                          height: 1.25,
                         ),
                       ),
                     ],
                   ),
                 ),
-                Icon(Icons.chevron_right_rounded, color: context.palMuted),
+                Icon(Icons.chevron_right_rounded, color: context.palMuted, size: 20),
               ],
             ),
           ),

@@ -10,6 +10,28 @@ class PlantScansFirestoreService {
   final AppLogger _logger;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
+  /// Kullanıcının son taramalarını listeler (limitli).
+  Future<List<PlantScanModel>> listUserScans({
+    required String ownerUid,
+    int limit = 60,
+  }) async {
+    try {
+      final QuerySnapshot<Map<String, dynamic>> snap = await _db
+          .collection(FirestoreCollectionEnum.scans.value)
+          .where('ownerUid', isEqualTo: ownerUid)
+          .orderBy('createdAt', descending: true)
+          .limit(limit)
+          .get();
+      return snap.docs
+          .map((QueryDocumentSnapshot<Map<String, dynamic>> d) => PlantScanModel.fromJson(d.data()))
+          .whereType<PlantScanModel>()
+          .toList(growable: false);
+    } catch (e, st) {
+      _logger.e('Firestore list user scans', e, st);
+      return <PlantScanModel>[];
+    }
+  }
+
   Future<List<PlantScanModel>> listScans({
     required String ownerUid,
     required String plantId,
@@ -33,15 +55,33 @@ class PlantScansFirestoreService {
     }
   }
 
+  /// Yeni bir tarama kaydeder ve eşzamanlı olarak [plants] koleksiyonundaki 
+  /// ilgili bitkinin son sağlık skorunu ve tarihini günceller.
   Future<void> addScan(PlantScanModel scan) async {
     try {
-      await _db
-          .collection(FirestoreCollectionEnum.scans.value)
-          .doc(scan.id)
-          .set(scan.toJson());
+      final WriteBatch batch = _db.batch();
+
+      // 1. Tarama kaydını oluştur
+      final DocumentReference<Map<String, dynamic>> scanRef =
+          _db.collection(FirestoreCollectionEnum.scans.value).doc(scan.id);
+      batch.set(scanRef, scan.toJson());
+
+      // 2. Bitki özet bilgisini güncelle
+      final DocumentReference<Map<String, dynamic>> plantRef =
+          _db.collection(FirestoreCollectionEnum.plants.value).doc(scan.plantId);
+      
+      batch.update(plantRef, <String, dynamic>{
+        'lastHealthScore': scan.healthScore,
+        'lastScanDate': FieldValue.serverTimestamp(),
+        'updatedAt': FieldValue.serverTimestamp(),
+        'speciesLabel': scan.speciesLabel, // Tür tespiti güncellenmiş olabilir
+      });
+
+      await batch.commit();
+      _logger.i('Scan added and plant updated: ${scan.id}');
     } catch (e, st) {
       _logger.e('Firestore add scan', e, st);
+      rethrow;
     }
   }
 }
-

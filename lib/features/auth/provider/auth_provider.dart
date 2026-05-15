@@ -1,6 +1,7 @@
 import 'package:bitirme_mobile/core/services/app_logger.dart';
 import 'package:bitirme_mobile/core/services/auth_storage_service.dart';
 import 'package:bitirme_mobile/core/services/firebase_auth_error_mapper.dart';
+import 'package:bitirme_mobile/core/services/firestore_setup_service.dart';
 import 'package:bitirme_mobile/core/services/google_sign_in_service.dart';
 import 'package:bitirme_mobile/core/services/user_profile_firestore_service.dart';
 import 'package:bitirme_mobile/l10n/app_localizations.dart';
@@ -10,11 +11,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Oturum durumu.
 class AuthState {
-  const AuthState({this.uid, this.email, this.displayName});
+  const AuthState({this.uid, this.email, this.displayName, this.isInitialized = false});
 
   final String? uid;
   final String? email;
   final String? displayName;
+  final bool isInitialized;
 
   bool get isAuthenticated => email != null && email!.isNotEmpty;
 }
@@ -33,22 +35,23 @@ class AuthNotifier extends Notifier<AuthState> {
       final String email = fb.email ?? '';
       final String name =
           fb.displayName ?? (email.contains('@') ? email.split('@').first : email);
-      state = AuthState(uid: uid, email: email, displayName: name);
+      state = AuthState(uid: uid, email: email, displayName: name, isInitialized: true);
       final AuthStorageService svc = sl<AuthStorageService>();
       await svc.saveUser(uid: uid, email: email, name: name);
       return;
     }
     final AuthStorageService svc = sl<AuthStorageService>();
-    final String? uid = await svc.getUid();
-    final String? email = await svc.getEmail();
-    final String? name = await svc.getName();
-    state = AuthState(uid: uid, email: email, displayName: name);
+    final String? savedUid = await svc.getUid();
+    final String? savedEmail = await svc.getEmail();
+    final String? savedName = await svc.getName();
+    state = AuthState(uid: savedUid, email: savedEmail, displayName: savedName, isInitialized: true);
   }
 
   Future<void> saveSession({required String uid, required String email, required String name}) async {
     final AuthStorageService svc = sl<AuthStorageService>();
     await svc.saveUser(uid: uid, email: email, name: name);
     state = AuthState(uid: uid, email: email, displayName: name);
+    state = AuthState(uid: uid, email: email, displayName: name, isInitialized: true);
   }
 
   /// E-posta/şifre girişi. Başarıda `null`, aksi halde gösterilecek mesaj.
@@ -74,6 +77,12 @@ class AuthNotifier extends Notifier<AuthState> {
       await sl<UserProfileFirestoreService>().upsertFromFirebaseUser(
         u,
         authProvider: 'password',
+      );
+      // Initialize Firestore for user
+      await sl<FirestoreSetupService>().initializeUserData(
+        uid: uid,
+        email: e,
+        displayName: name,
       );
       return null;
     } on FirebaseAuthException catch (e) {
@@ -115,6 +124,12 @@ class AuthNotifier extends Notifier<AuthState> {
         u,
         authProvider: 'password',
       );
+      // Yeni kayıt olan kullanıcı için veritabanını hazırla (Örnek bitkiler vb.)
+      await sl<FirestoreSetupService>().initializeUserData(
+        uid: uid,
+        email: e,
+        displayName: name,
+      );
       return null;
     } on FirebaseAuthException catch (e) {
       sl<AppLogger>().w('registerWithEmailPassword', e);
@@ -142,6 +157,12 @@ class AuthNotifier extends Notifier<AuthState> {
       await sl<UserProfileFirestoreService>().upsertFromFirebaseUser(
         u,
         authProvider: 'google.com',
+      );
+      // Google ile ilk kez giren kullanıcı için veritabanını hazırla
+      await sl<FirestoreSetupService>().initializeUserData(
+        uid: uid,
+        email: email,
+        displayName: name,
       );
       return true;
     } catch (e, st) {

@@ -14,7 +14,7 @@ class LanguageSelectView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final TextTheme tt = Theme.of(context).textTheme;
-    final double pad = WidgetSizesEnum.cardRadius.value * 1.35;
+    final double pad = WidgetSizesEnum.cardRadius.value * 0.95;
 
     Future<void> onTurkish() async {
       await ref.read(appLocaleProvider.notifier).selectTurkishFirstRun();
@@ -33,45 +33,49 @@ class LanguageSelectView extends ConsumerWidget {
     return Scaffold(
       backgroundColor: context.palSurface,
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(pad),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              SizedBox(height: WidgetSizesEnum.cardRadius.value * 2),
-              Text(
-                LanguagePickerStringsEnum.headline.value,
-                textAlign: TextAlign.center,
-                style: tt.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w800,
-                  color: context.palOnSurface,
-                  letterSpacing: -0.3,
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: pad, vertical: pad * 0.75),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                SizedBox(height: WidgetSizesEnum.cardRadius.value),
+                Text(
+                  LanguagePickerStringsEnum.headline.value,
+                  textAlign: TextAlign.center,
+                  style: tt.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: context.palOnSurface,
+                    letterSpacing: -0.3,
+                  ),
                 ),
-              ),
-              SizedBox(height: WidgetSizesEnum.divider.value * 8),
-              Text(
-                LanguagePickerStringsEnum.subtitle.value,
-                textAlign: TextAlign.center,
-                style: tt.bodyLarge?.copyWith(
-                  color: context.palMuted,
-                  height: 1.35,
+                SizedBox(height: WidgetSizesEnum.divider.value * 5),
+                Text(
+                  LanguagePickerStringsEnum.subtitle.value,
+                  textAlign: TextAlign.center,
+                  style: tt.bodyLarge?.copyWith(
+                    color: context.palMuted,
+                    height: 1.25,
+                  ),
                 ),
-              ),
-              SizedBox(height: WidgetSizesEnum.cardRadius.value * 2.5),
-              _LanguageCard(
-                title: LanguagePickerStringsEnum.turkishTitle.value,
-                subtitle: LanguagePickerStringsEnum.turkishSubtitle.value,
-                flag: '🇹🇷',
-                onTap: onTurkish,
-              ),
-              SizedBox(height: WidgetSizesEnum.cardRadius.value),
-              _LanguageCard(
-                title: LanguagePickerStringsEnum.englishTitle.value,
-                subtitle: LanguagePickerStringsEnum.englishSubtitle.value,
-                flag: '🇬🇧',
-                onTap: onEnglish,
-              ),
-            ],
+                SizedBox(height: WidgetSizesEnum.cardRadius.value * 1.8),
+                _LanguageCard(
+                  title: LanguagePickerStringsEnum.turkishTitle.value,
+                  subtitle: LanguagePickerStringsEnum.turkishSubtitle.value,
+                  flag: '🇹🇷',
+                  onTap: onTurkish,
+                ),
+                SizedBox(height: WidgetSizesEnum.cardRadius.value * 0.75),
+                _LanguageCard(
+                  title: LanguagePickerStringsEnum.englishTitle.value,
+                  subtitle: LanguagePickerStringsEnum.englishSubtitle.value,
+                  flag: '🇬🇧',
+                  onTap: onEnglish,
+                ),
+                SizedBox(height: WidgetSizesEnum.cardRadius.value * 0.5),
+              ],
+            ),
           ),
         ),
       ),
@@ -115,11 +119,11 @@ class _LanguageCard extends StatelessWidget {
             ],
           ),
           child: Padding(
-            padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 1.15),
+            padding: EdgeInsets.all(WidgetSizesEnum.cardRadius.value * 0.95),
             child: Row(
               children: <Widget>[
-                Text(flag, style: TextStyle(fontSize: TextSizesEnum.title.value)),
-                SizedBox(width: WidgetSizesEnum.cardRadius.value),
+                Text(flag, style: TextStyle(fontSize: TextSizesEnum.title.value * 0.95)),
+                SizedBox(width: WidgetSizesEnum.cardRadius.value * 0.8),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -131,15 +135,15 @@ class _LanguageCard extends StatelessWidget {
                           color: context.palOnSurface,
                         ),
                       ),
-                      SizedBox(height: WidgetSizesEnum.divider.value * 4),
+                      SizedBox(height: WidgetSizesEnum.divider.value * 3),
                       Text(
                         subtitle,
-                        style: tt.bodySmall?.copyWith(color: context.palMuted, height: 1.3),
+                        style: tt.bodySmall?.copyWith(color: context.palMuted, height: 1.25),
                       ),
                     ],
                   ),
                 ),
-                Icon(Icons.chevron_right_rounded, color: context.palMuted),
+                Icon(Icons.chevron_right_rounded, color: context.palMuted, size: 22),
               ],
             ),
           ),

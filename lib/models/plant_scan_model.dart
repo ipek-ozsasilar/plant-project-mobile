@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 /// Bir bitki için günlük/tekil tarama kaydı.
 class PlantScanModel extends Equatable {
@@ -13,6 +14,7 @@ class PlantScanModel extends Equatable {
     required this.diseaseConfidence,
     required this.healthScore,
     this.imageUrl,
+    this.notes,
   });
 
   final String id;
@@ -28,19 +30,21 @@ class PlantScanModel extends Equatable {
   final int healthScore;
 
   final String? imageUrl;
+  final String? notes;
 
   Map<String, Object?> toJson() {
     return <String, Object?>{
       'id': id,
       'ownerUid': ownerUid,
       'plantId': plantId,
-      'createdAt': createdAt.toIso8601String(),
+      'createdAt': Timestamp.fromDate(createdAt),
       'speciesLabel': speciesLabel,
       'speciesConfidence': speciesConfidence,
       'diseaseKey': diseaseKey,
       'diseaseConfidence': diseaseConfidence,
       'healthScore': healthScore,
       'imageUrl': imageUrl,
+      'notes': notes,
     };
   }
 
@@ -51,21 +55,25 @@ class PlantScanModel extends Equatable {
     final String? id = json['id'] as String?;
     final String? ownerUid = json['ownerUid'] as String?;
     final String? plantId = json['plantId'] as String?;
-    final String? createdRaw = json['createdAt'] as String?;
-    if (id == null || ownerUid == null || plantId == null || createdRaw == null) {
+
+    if (id == null || ownerUid == null || plantId == null) {
       return null;
     }
+
+    final DateTime createdAt = (json['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now();
+
     return PlantScanModel(
       id: id,
       ownerUid: ownerUid,
       plantId: plantId,
-      createdAt: DateTime.tryParse(createdRaw) ?? DateTime.now(),
+      createdAt: createdAt,
       speciesLabel: json['speciesLabel'] as String? ?? '',
       speciesConfidence: (json['speciesConfidence'] as num?)?.toDouble() ?? 0,
       diseaseKey: json['diseaseKey'] as String? ?? '',
       diseaseConfidence: (json['diseaseConfidence'] as num?)?.toDouble() ?? 0,
       healthScore: (json['healthScore'] as num?)?.toInt() ?? 0,
       imageUrl: json['imageUrl'] as String?,
+      notes: json['notes'] as String?,
     );
   }
 
@@ -81,6 +89,6 @@ class PlantScanModel extends Equatable {
         diseaseConfidence,
         healthScore,
         imageUrl,
+        notes,
       ];
 }
-

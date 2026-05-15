@@ -1,8 +1,10 @@
 import 'package:bitirme_mobile/l10n/app_localizations.dart';
 
-/// [disease_class_names_10class.json] anahtarını arayüz metnine çevirir.
+/// [disease_class_names_5class.json] anahtarını arayüz metnine çevirir.
 String diseaseClassKeyToDisplay(String key, AppLocalizations l10n) {
   switch (key) {
+    case 'blight':
+      return l10n.inferenceDiseaseBlight;
     case 'chlorosis_yellowing':
       return l10n.inferenceDiseaseChlorosisYellowing;
     case 'healthy':
